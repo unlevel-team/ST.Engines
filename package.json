@@ -1,0 +1,42 @@
+{
+  "name": "st.engines",
+  "version": "0.0.1-alpha00-build001",
+  "description": "ST Engines",
+  "author": "Unlevel Team <unlevelteam@gmail.com>",
+  "readme": "ST Network",
+  "readmeFilename": "readme.md",
+  "scripts": {
+    "gulp": "gulp",
+    "toES5": "gulp babel"
+  },
+  "files": [
+	".gitignore",
+	"package.json",
+    "lib/",
+    "lib_es5/",
+    "readme.md",
+    "gulpfile.js"
+  ],
+  "main": "lib/stEngines/STEngines.js",
+  "keywords": [
+    "st.engines",
+    "st",
+    "IoT",
+    "SomeThings",
+    "sensor",
+    "actuator",
+    "network"
+  ],
+  "dependencies": {
+    "body-parser" : "~1.15",
+    "source-map-support": "*"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "*",
+    "gulp": "*",
+    "gulp-babel": "*",
+    "gulp-sourcemaps": "*"
+  },
+  "analyze": true,
+  "license": "MIT"
+}
