@@ -1,6 +1,6 @@
 {
   "name": "st.engines",
-  "version": "0.0.1-alpha00-build001",
+  "version": "0.0.1-beta00-build001",
   "description": "ST Engines",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
@@ -17,7 +17,7 @@
     "readme.md",
     "gulpfile.js"
   ],
-  "main": "lib/stEngines/STEngines.js",
+  "main": "lib_es5/stEngines/STEngines.js",
   "keywords": [
     "st.engines",
     "st",
