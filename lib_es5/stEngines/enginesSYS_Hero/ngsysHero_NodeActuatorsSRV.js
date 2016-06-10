@@ -97,11 +97,15 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 	}, {
 		key: '_mapControlMessages',
-		value: function _mapControlMessages(socket) {
+		value: function _mapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_mapControlMessages', this).call(this, socket);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_mapControlMessages', this).call(this, socket, options);
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
 			var amng = service.actuatorsManager;
 
 			// Map message getActuatorsList
@@ -141,11 +145,14 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 	}, {
 		key: '_unmapControlMessages',
-		value: function _unmapControlMessages(socket) {
+		value: function _unmapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_unmapControlMessages', this).call(this, socket);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_unmapControlMessages', this).call(this, socket, options);
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
 
 			//		socket.removeListener(service.CONSTANTS.Messages.getActuatorsList, service._msg_getActuatorsList);
 			//		socket.removeListener(service.CONSTANTS.Messages.getActuatorOptions, service._msg_getActuatorOptions);

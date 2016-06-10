@@ -102,11 +102,15 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_mapControlMessages",
-		value: function _mapControlMessages(socket) {
+		value: function _mapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket, options);
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
 			var smng = service.sensorsManager;
 
 			// Map message getSensorsList
@@ -146,11 +150,14 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_unmapControlMessages",
-		value: function _unmapControlMessages(socket) {
+		value: function _unmapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket, options);
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
 
 			//		socket.removeListener(service.CONSTANTS.Messages.getSensorsList, service._msg_getSensorsList);
 			//		socket.removeListener(service.CONSTANTS.Messages.getSensorOptions, service._msg_getSensorOptions);

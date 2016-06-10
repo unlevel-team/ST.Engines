@@ -73,7 +73,9 @@ var SensorsServices = function () {
 			}
 
 			try {
-				service._mapControlMessages(service.controlChannel.socket);
+				service._mapControlMessages(service.controlChannel.socket, {
+					"service": service
+				});
 			} catch (e) {
 				// TODO: handle exception
 				throw "Error mapping control messages. " + e;
@@ -101,21 +103,37 @@ var SensorsServices = function () {
 
 	}, {
 		key: "_mapControlMessages",
-		value: function _mapControlMessages(socket) {
+		value: function _mapControlMessages(socket, options) {
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
 			var smng = service.sensorsManager;
 
 			if (service._mapped !== undefined && service._mapped === true) {
 				throw "control messages already mapped.";
 			}
 
+			service._mapped = null;
+
 			if (socket === undefined) {
 				socket = service.controlChannel.socket;
 			}
 
+			socket.on("connect", function (data) {
+				if (service._mapped !== true) {
+					service._mapControlMessages(socket, {
+						"service": service
+					});
+				}
+			});
+
 			socket.on("disconnect", function (data) {
-				service._unmapControlMessages(socket);
+				service._unmapControlMessages(socket, {
+					"service": service
+				});
 			});
 
 			service._mapped = true;
@@ -127,9 +145,12 @@ var SensorsServices = function () {
 
 	}, {
 		key: "_unmapControlMessages",
-		value: function _unmapControlMessages(socket) {
+		value: function _unmapControlMessages(socket, options) {
 
 			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
 
 			if (service._mapped === undefined || service._mapped !== true) {
 				throw "control messages not already mapped.";
