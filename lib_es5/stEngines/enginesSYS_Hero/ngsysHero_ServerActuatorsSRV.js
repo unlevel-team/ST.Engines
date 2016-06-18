@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * Sensors services
- * for Node sever
+ * Actuators services
+ * for Server role
  * 
  * SomeThings Engines System library
  * version Hero
@@ -19,32 +19,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SensorsServices = require('../services/SensorsServices.js').SensorsServices;
+var ActuatorsServices = require('../services/ActuatorsServices.js').ActuatorsServices;
 
 /**
- * Sensors Services
+ * Actuators Services
  */
 
-var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
-	_inherits(NGSYS_Hero_Server_SensorsSRV, _SensorsServices);
+var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
+	_inherits(NGSYS_Hero_Server_ActuatorsSRV, _ActuatorsServices);
 
-	function NGSYS_Hero_Server_SensorsSRV(sensorsManager, controlChannel, nodesManager) {
-		_classCallCheck(this, NGSYS_Hero_Server_SensorsSRV);
+	function NGSYS_Hero_Server_ActuatorsSRV(actuatorsManager, controlChannel, nodesManager) {
+		_classCallCheck(this, NGSYS_Hero_Server_ActuatorsSRV);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV).call(this, sensorsManager, controlChannel));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV).call(this, actuatorsManager, controlChannel));
 
 		var service = _this;
 
 		service.nodesManager = nodesManager;
 
+		//		service._mapControlEvents(actuatorsManager);
+
 		return _this;
 	}
 
-	_createClass(NGSYS_Hero_Server_SensorsSRV, [{
+	_createClass(NGSYS_Hero_Server_ActuatorsSRV, [{
 		key: "initialize",
 		value: function initialize() {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "initialize", this).call(this);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV.prototype), "initialize", this).call(this);
 
 			var service = this;
 
@@ -54,49 +56,19 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			service._mapControlEventsForNodes(service.nodesManager);
 		}
-
-		/**
-   * Map control events
-   */
-
 	}, {
 		key: "_mapControlEvents",
-		value: function _mapControlEvents(sensorsManager) {
+		value: function _mapControlEvents(actuatorsManager) {
 
 			var service = this;
 
-			if (sensorsManager === undefined) {
-				sensorsManager = service.sensorsManager;
+			if (actuatorsManager === undefined) {
+				actuatorsManager = service.actuatorsManager;
 			}
-		}
 
-		/**
-   * Map control messages
-   */
-
-	}, {
-		key: "_mapControlMessages",
-		value: function _mapControlMessages(socket) {
-
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket);
-
-			var service = this;
-			var smng = service.sensorsManager;
-		}
-
-		/**
-   * Unmap control messages
-   */
-
-	}, {
-		key: "_unmapControlMessages",
-		value: function _unmapControlMessages(socket) {
-
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket);
-
-			var service = this;
-
-			service._mapped = null;
+			//		actuatorsManager.actuatorsList.forEach(function(actuator, _i) {
+			//			service._mapActuatorControlEvents(actuator);
+			//		});
 		}
 
 		/**
@@ -139,16 +111,34 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		}
 
 		/**
-   * Manage sensors from node
+   * Map control messages
+   */
+
+	}, {
+		key: "_mapControlMessages",
+		value: function _mapControlMessages(socket, options) {
+
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV.prototype), "_mapControlMessages", this).call(this, socket, options);
+
+			var service = this;
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
+			var amng = service.actuatorsManager;
+		}
+
+		/**
+   * Manage actuators from node
    * 
    * @param stNode Node object
    */
 
 	}, {
-		key: "manageSensorsFromNode",
-		value: function manageSensorsFromNode(stNode) {
+		key: "manageActuatorsFromNode",
+		value: function manageActuatorsFromNode(stNode) {
 
-			if (stNode.config._SensorsManaged !== undefined) {
+			if (stNode.config._ActuatorsManaged !== undefined) {
 				throw "This node is already managed.";
 			}
 
@@ -157,7 +147,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			service._mapNodeControlEvents(stNode);
 			service._mapNodeControlMessages(stNode);
 
-			stNode.config._SensorsManaged = true;
+			stNode.config._ActuatorsManaged = true;
 		}
 	}, {
 		key: "_mapNodeControlEvents",
@@ -176,37 +166,44 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var service = this;
 			var socket = stNode.socket;
 
-			// Map message SensorsList
-			socket.on(service.CONSTANTS.Messages.SensorsList, function (msg) {
-				service._msg_SensorsList(msg, { "node": stNode,
+			// Map event disconnect
+			socket.on("disconnect", function (msg) {
+				service._unmapNodeControlMessages(stNode, { "node": stNode,
 					"service": service
 				});
 			});
 
-			// Map message SensorOptions
-			socket.on(service.CONSTANTS.Messages.SensorOptions, function (msg) {
-				service._msg_SensorOptions(msg, { "node": stNode,
+			// Map message ActuatorsList
+			socket.on(service.CONSTANTS.Messages.ActuatorsList, function (msg) {
+				service._msg_ActuatorsList(msg, { "node": stNode,
 					"service": service
 				});
 			});
 
-			// Map message SensorOptionsUpdated
-			socket.on(service.CONSTANTS.Messages.SensorOptionsUpdated, function (msg) {
-				service._msg_SensorOptionsUpdated(msg, { "node": stNode,
+			// Map message ActuatorOptions
+			socket.on(service.CONSTANTS.Messages.ActuatorOptions, function (msg) {
+				service._msg_ActuatorOptions(msg, { "node": stNode,
 					"service": service
 				});
 			});
 
-			// Map message SensorStarted
-			socket.on(service.CONSTANTS.Messages.SensorStarted, function (msg) {
-				service._msg_SensorStarted(msg, { "node": stNode,
+			// Map message ActuatorOptionsUpdated
+			socket.on(service.CONSTANTS.Messages.ActuatorOptionsUpdated, function (msg) {
+				service._msg_ActuatorOptionsUpdated(msg, { "node": stNode,
 					"service": service
 				});
 			});
 
-			// Map message SensorStopped
-			socket.on(service.CONSTANTS.Messages.SensorStopped, function (msg) {
-				service._msg_SensorStopped(msg, { "node": stNode,
+			// Map message ActuatorStarted
+			socket.on(service.CONSTANTS.Messages.ActuatorStarted, function (msg) {
+				service._msg_ActuatorStarted(msg, { "node": stNode,
+					"service": service
+				});
+			});
+
+			// Map message ActuatorStopped
+			socket.on(service.CONSTANTS.Messages.ActuatorStopped, function (msg) {
+				service._msg_ActuatorStopped(msg, { "node": stNode,
 					"service": service
 				});
 			});
@@ -214,6 +211,9 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Unmap node control messages
+   * 
+   * @param stNode Node object
+   * @param options Options object
    */
 
 	}, {
@@ -226,15 +226,15 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
-			socket.removeAllListeners(service.CONSTANTS.Messages.SensorsList);
-			socket.removeAllListeners(service.CONSTANTS.Messages.SensorOptions);
-			socket.removeAllListeners(service.CONSTANTS.Messages.SensorOptionsUpdated);
-			socket.removeAllListeners(service.CONSTANTS.Messages.SensorStarted);
-			socket.removeAllListeners(service.CONSTANTS.Messages.SensorStopped);
+			socket.removeAllListeners(service.CONSTANTS.Messages.ActuatorsList);
+			socket.removeAllListeners(service.CONSTANTS.Messages.ActuatorOptions);
+			socket.removeAllListeners(service.CONSTANTS.Messages.ActuatorOptionsUpdated);
+			socket.removeAllListeners(service.CONSTANTS.Messages.ActuatorStarted);
+			socket.removeAllListeners(service.CONSTANTS.Messages.ActuatorStopped);
 		}
 
 		/**
@@ -258,10 +258,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var stNode = data.node;
 
 			try {
-				service.manageSensorsFromNode(stNode);
+				service.manageActuatorsFromNode(stNode);
 			} catch (e) {
 				// TODO: handle exception
-				throw "Cannot manage sensors of node. " + e;
+				throw "Cannot manage actuators of node. " + e;
 			}
 		}
 
@@ -309,26 +309,26 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			}
 
 			var nodeID = data.nodeID;
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 
-			var stSensors = smng.getSensorsByNode(nodeID);
+			var stActuators = amng.getActuatorsByNode(nodeID);
 
-			stSensors.sensors.forEach(function (sensor, _i, _sensors) {
+			stActuators.actuators.forEach(function (actuator, _i, _actuators) {
 
-				var sensorSearch = smng.getSensorBy_sysID(sensor.config._sysID);
-				if (sensorSearch.stSensor !== null) {
-					smng.sensorsList.splice(sensorSearch.position, 1);
+				var actuatorSearch = amng.getActuatorBy_sysID(actuator.config._sysID);
+				if (actuatorSearch.stActuator !== null) {
+					amng.actuatorsList.splice(actuatorSearch.position, 1);
 				}
 			});
 		}
 
 		/**
-   * Message SensorsList
+   * Message ActuatorsList
    */
 
 	}, {
-		key: "_msg_SensorsList",
-		value: function _msg_SensorsList(msg, options) {
+		key: "_msg_ActuatorsList",
+		value: function _msg_ActuatorsList(msg, options) {
 
 			var service = this;
 
@@ -336,35 +336,35 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 			var data = options.data;
 
-			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorsList'); // TODO REMOVE DEBUG LOG
+			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorsList'); // TODO REMOVE DEBUG LOG
 
-			if (data.numSensors > 0) {
+			if (data.numActuators > 0) {
 
-				data.sensors.forEach(function (snsDATA, _i) {
+				data.actuators.forEach(function (actDATA, _i) {
 
-					snsDATA._sysID = node.config.nodeID + '.' + snsDATA.sensorID;
-					snsDATA._refSTNodeID = node.config.nodeID;
+					actDATA._sysID = node.config.nodeID + '.' + actDATA.actuatorID;
+					actDATA._refSTNodeID = node.config.nodeID;
 
-					//				snsDATA._nodeEvents = node.eventEmitter;
-					snsDATA._controlSocket = socket;
+					//				actDATA._nodeEvents = node.eventEmitter;
+					actDATA._controlSocket = socket;
 
-					smng.addSensorFromNode(snsDATA);
+					amng.addActuatorFromNode(actDATA);
 				});
 			}
 		}
 
 		/**
-   * Message SensorOptions
+   * Message ActuatorOptions
    */
 
 	}, {
-		key: "_msg_SensorOptions",
-		value: function _msg_SensorOptions(msg, options) {
+		key: "_msg_ActuatorOptions",
+		value: function _msg_ActuatorOptions(msg, options) {
 
 			var service = this;
 
@@ -372,48 +372,48 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = msg.sensorID;
-			var sensorOptions = msg.options;
+			var actuatorID = msg.actuatorID;
+			var actuatorOptions = msg.options;
 
-			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorOptions'); // TODO REMOVE DEBUG LOG
+			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorOptions'); // TODO REMOVE DEBUG LOG
 
-			var sensor_sysID = node.config.nodeID + '.' + sensorID;
+			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
 			var response = {
-				"sensorID": sensorID
+				"actuatorID": actuatorID
 			};
 
 			try {
 
-				var sensorSearch = smng.getSensorBy_sysID(sensor_sysID);
-				if (sensorSearch.stSensor === null) {
-					throw "Sensor not found";
+				var actuatorSearch = amng.getActuatorBy_sysID(actuator_sysID);
+				if (actuatorSearch.stActuator === null) {
+					throw "Actuator not found";
 				}
 
-				var sns = sensorSearch.stSensor;
+				var act = actuatorSearch.stActuator;
 
-				sns.options = sensorOptions;
+				act.options = actuatorOptions;
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
 				response.error = e;
 
-				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV._msg_SensorOptions ERROR'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> NGSYS_Hero_Server_ActuatorsSRV._msg_ActuatorOptions ERROR'); // TODO REMOVE DEBUG LOG
 				console.log(response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
 		/**
-   * Message SensorOptionsUpdated
+   * Message ActuatorOptionsUpdated
    */
 
 	}, {
-		key: "_msg_SensorOptionsUpdated",
-		value: function _msg_SensorOptionsUpdated(msg, options) {
+		key: "_msg_ActuatorOptionsUpdated",
+		value: function _msg_ActuatorOptionsUpdated(msg, options) {
 
 			var service = this;
 
@@ -421,50 +421,48 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
-			var sensor_sysID = node.config.nodeID + '.' + sensorID;
+			var actuatorID = options.actuatorID;
+			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
 			var response = {
-				"sensorID": sensorID
+				"actuatorID": actuatorID
 			};
 
-			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorOptionsUpdated'); // TODO REMOVE DEBUG LOG
+			console.log('<*> ST NGSYS_Hero_Server_ActuatorsSRV.ActuatorOptionsUpdated'); // TODO REMOVE DEBUG LOG
 			console.log(options); // TODO REMOVE DEBUG LOG
 
 			try {
 
-				var sensorSearch = smng.getSensorBy_sysID(sensor_sysID);
-				if (sensorSearch.stSensor === null) {
-					throw "Sensor not found";
+				var actuatorSearch = amng.getActuatorBy_sysID(actuator_sysID);
+				if (actuatorSearch.stActuator === null) {
+					throw "Actuator not found";
 				}
 
-				var sns = sensorSearch.stSensor;
+				var act = actuatorSearch.stActuator;
 
-				smng.getOptionsOfSensor(sns);
-
-				// Emit message getSensorOptions
-				socket.emit(smng.CONSTANTS.Messages.getSensorOptions, { "sensorID": sns.config.sensorID });
+				// Emit message getActuatorOptions
+				socket.emit(amng.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": act.config.actuatorID });
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
 				response.error = e;
 
-				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV._msg_SensorOptionsUpdated ERROR'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> NGSYS_Hero_Server_ActuatorsSRV._msg_ActuatorOptionsUpdated ERROR'); // TODO REMOVE DEBUG LOG
 				console.log(response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
 		/**
-   * Message SensorStarted
+   * Message ActuatorStarted
    */
 
 	}, {
-		key: "_msg_SensorStarted",
-		value: function _msg_SensorStarted(msg, options) {
+		key: "_msg_ActuatorStarted",
+		value: function _msg_ActuatorStarted(msg, options) {
 
 			var service = this;
 
@@ -472,29 +470,29 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
-			var sensor_sysID = node.config.nodeID + '.' + sensorID;
+			var actuatorID = options.actuatorID;
+			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
-			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorStarted'); // TODO REMOVE DEBUG LOG
-			console.log('<~~~> ' + sensor_sysID); // TODO REMOVE DEBUG LOG
+			console.log('<*> ST NGSYS_Hero_Server_ActuatorsSRV.ActuatorStarted'); // TODO REMOVE DEBUG LOG
+			console.log('<~~~> ' + actuator_sysID); // TODO REMOVE DEBUG LOG
 
 			var response = {
-				"sensorID": sensorID
+				"actuatorID": actuatorID
 			};
 
 			try {
 
-				var sensorSearch = smng.getSensorBy_sysID(sensor_sysID);
-				if (sensorSearch.stSensor === null) {
-					throw "Sensor not found";
+				var actuatorSearch = amng.getActuatorBy_sysID(actuator_sysID);
+				if (actuatorSearch.stActuator === null) {
+					throw "Actuator not found";
 				}
 
-				var sns = sensorSearch.stSensor;
-				var engine = sns.sensorEngine;
+				var act = actuatorSearch.stActuator;
+				var engine = act.actuatorEngine;
 
 				engine.state = engine.CONSTANTS.States.SEstate_Working;
 			} catch (e) {
@@ -502,18 +500,18 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				response.result = "ERROR";
 				response.error = e;
 
-				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV._msg_SensorOptionsUpdated ERROR'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> NGSYS_Hero_Server_ActuatorsSRV._msg_ActuatorOptionsUpdated ERROR'); // TODO REMOVE DEBUG LOG
 				console.log(response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
 		/**
-   * Message SensorStopped
+   * Message ActuatorStopped
    */
 
 	}, {
-		key: "_msg_SensorStopped",
-		value: function _msg_SensorStopped(msg, options) {
+		key: "_msg_ActuatorStopped",
+		value: function _msg_ActuatorStopped(msg, options) {
 
 			var service = this;
 
@@ -521,29 +519,29 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
-			var sensor_sysID = node.config.nodeID + '.' + sensorID;
+			var actuatorID = options.actuatorID;
+			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
-			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorStopped'); // TODO REMOVE DEBUG LOG
-			console.log(' <~~~> ' + sensor_sysID); // TODO REMOVE DEBUG LOG
+			console.log('<*> ST NGSYS_Hero_Server_ActuatorsSRV.ActuatorStopped'); // TODO REMOVE DEBUG LOG
+			console.log(' <~~~> ' + actuator_sysID); // TODO REMOVE DEBUG LOG
 
 			var response = {
-				"sensorID": sensorID
+				"actuatorID": actuatorID
 			};
 
 			try {
 
-				var sensorSearch = smng.getSensorBy_sysID(sensor_sysID);
-				if (sensorSearch.stSensor === null) {
-					throw "Sensor not found";
+				var actuatorSearch = amng.getActuatorBy_sysID(actuator_sysID);
+				if (actuatorSearch.stActuator === null) {
+					throw "Actuator not found";
 				}
 
-				var sns = sensorSearch.stSensor;
-				var engine = sns.sensorEngine;
+				var act = actuatorSearch.stActuator;
+				var engine = act.actuatorEngine;
 
 				engine.state = engine.CONSTANTS.States.SEstate_Ready;
 			} catch (e) {
@@ -551,18 +549,18 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				response.result = "ERROR";
 				response.error = e;
 
-				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV._msg_SensorStopped ERROR'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> NGSYS_Hero_Server_ActuatorsSRV._msg_ActuatorStopped ERROR'); // TODO REMOVE DEBUG LOG
 				console.log(response); // TODO REMOVE DEBUG LOG
 			}
 		}
 	}]);
 
-	return NGSYS_Hero_Server_SensorsSRV;
-}(SensorsServices);
+	return NGSYS_Hero_Server_ActuatorsSRV;
+}(ActuatorsServices);
 
 var _Lib = {
-	"NGSYS_Hero_Server_SensorsSRV": NGSYS_Hero_Server_SensorsSRV
+	"NGSYS_Hero_Server_ActuatorsSRV": NGSYS_Hero_Server_ActuatorsSRV
 };
 
 module.exports = _Lib;
-//# sourceMappingURL=ngsysHero_ServerSensorsSRV.js.map
+//# sourceMappingURL=ngsysHero_ServerActuatorsSRV.js.map

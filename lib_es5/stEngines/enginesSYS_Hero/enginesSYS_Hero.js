@@ -225,16 +225,7 @@ var getEnginesSystem = function getEnginesSystem(config) {
 
 		case EnginesSystem_CONSTANTS.Config.Role_Node:
 
-			console.log("NGSYS Hero getEnginesSystem..."); // TODO REMOVE DEBUG LOG
-
-			//			let ngsysHero_Node = require('./ngsysHero_Node.js');
 			var NGSYS_Hero_Node = require('./ngsysHero_Node.js');
-			//			let NGSYS_Hero_Node = ngsysHero_Node.NGSYS_Hero_Node;
-
-			console.log("NGSYS Hero getEnginesSystem..."); // TODO REMOVE DEBUG LOG
-
-			console.log(NGSYS_Hero_Node); // TODO REMOVE DEBUG LOG
-
 			ngSystem = new NGSYS_Hero_Node(config);
 			break;
 

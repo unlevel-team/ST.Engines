@@ -106,17 +106,18 @@ var SensorsServices = function () {
 		value: function _mapControlMessages(socket, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
 
-			var smng = service.sensorsManager;
-
 			if (service._mapped !== undefined && service._mapped === true) {
 				throw "control messages already mapped.";
 			}
-
-			service._mapped = null;
 
 			if (socket === undefined) {
 				socket = service.controlChannel.socket;
@@ -148,6 +149,11 @@ var SensorsServices = function () {
 		value: function _unmapControlMessages(socket, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}

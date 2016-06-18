@@ -6,8 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var express = require('express');
 
-var SCS_RouteNetNodes = require("./SCS_RouteNetNodes.js");
-var SCS_RouteNetServer = require("./SCS_RouteNetServer.js");
+var SCS_RouteSensors = require('./SCS_RouteSensors.js');
+var SCS_RouteActuators = require('./SCS_RouteActuators.js');
 
 /**
  * Routes for Engines
@@ -18,38 +18,40 @@ var SCS_RouteEngines = function () {
 	function SCS_RouteEngines(sensorsManager, actuatorsManager) {
 		_classCallCheck(this, SCS_RouteEngines);
 
-		this.expressRoute = null;
-		this.messages = 0;
+		var scs_Routes = this;
 
-		this.sensorsManager = sensorsManager;
-		this.actuatorsManager = actuatorsManager;
+		scs_Routes.expressRoute = null;
+		scs_Routes.messages = 0;
 
-		this.routesforSersors = null;
-		this.routesforActuators = null;
+		scs_Routes.sensorsManager = sensorsManager;
+		scs_Routes.actuatorsManager = actuatorsManager;
 
-		this.expressRoute = null;
+		scs_Routes.routesforSersors = null;
+		scs_Routes.routesforActuators = null;
 
-		this.initialize();
-		this.mapServiceRoutes();
+		scs_Routes.expressRoute = null;
+
+		scs_Routes.initialize();
+		scs_Routes.mapServiceRoutes();
 	}
 
 	_createClass(SCS_RouteEngines, [{
-		key: "initialize",
+		key: 'initialize',
 		value: function initialize() {
 
-			var routerNet = this;
+			var scs_Routes = this;
 
-			if (routerNet.expressRoute !== null) {
+			if (scs_Routes.expressRoute !== null) {
 				throw "Already initialized";
 			}
 
-			routerNet.expressRoute = express.Router();
+			scs_Routes.expressRoute = express.Router();
 
-			routerNet.routesforNodes = new SCS_RouteNetNodes(routerNet.nodesManager, routerNet.nodesNetManager);
-			routerNet.routesforServer = new SCS_RouteNetServer(routerNet.serverNetManager);
+			scs_Routes.routesforSersors = new SCS_RouteSensors(scs_Routes.sensorsManager);
+			scs_Routes.routesforActuators = new SCS_RouteActuators(scs_Routes.actuatorsManager);
 		}
 	}, {
-		key: "mapServiceRoutes",
+		key: 'mapServiceRoutes',
 		value: function mapServiceRoutes() {
 
 			var routerNet = this;
@@ -58,8 +60,8 @@ var SCS_RouteEngines = function () {
 				throw "Not initialized";
 			}
 
-			routerNet.expressRoute.use('/Nodes', routerNet.routesforNodes.expressRoute);
-			routerNet.expressRoute.use('/Server', routerNet.routesforServer.expressRoute);
+			routerNet.expressRoute.use('/Sensors', routerNet.routesforNodes.expressRoute);
+			routerNet.expressRoute.use('/Actuators', routerNet.routesforServer.expressRoute);
 		}
 	}]);
 

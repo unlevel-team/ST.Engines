@@ -74,7 +74,11 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 			console.log('<*> NGSYS_Hero_Node._mapSensorControlEvents'); // TODO REMOVE DEBUG LOG
 			console.log(sensor);
 
-			sensor.eventEmitter.on(sensor.CONSTANTS.Events.SensorOptionsUpdated, service._event_SensorOptionsUpdated);
+			sensor.eventEmitter.on(sensor.CONSTANTS.Events.SensorOptionsUpdated, function (data) {
+				service._event_SensorOptionsUpdated(data, {
+					"service": service
+				});
+			});
 
 			if (sensorEngine !== null) {
 
@@ -155,6 +159,11 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket, options);
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -182,9 +191,18 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_event_SensorOptionsUpdated",
-		value: function _event_SensorOptionsUpdated(data) {
+		value: function _event_SensorOptionsUpdated(data, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
 			var socket = service.controlChannel.socket;
 			var sensor = data.sensor;
 
@@ -329,7 +347,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 			var smng = service.sensorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.setSensorOptions'); // TODO REMOVE DEBUG LO
-			console.log(' <~> ' + msg); // TODO REMOVE DEBUG LO
+			console.log(msg); // TODO REMOVE DEBUG LO
 
 			var sensorID = msg.sensorID;
 			var options = msg.options;

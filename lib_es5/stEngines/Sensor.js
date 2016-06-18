@@ -95,7 +95,7 @@ var Sensor = function () {
 
 			var sensor = this;
 
-			if (sensor.sensorEngine && sensor.sensorEngine.state === sensor.sensorEngine.CONSTANTS.States.SEstate_Working) {
+			if (sensor.sensorEngine !== undefined && sensor.sensorEngine.state === sensor.sensorEngine.CONSTANTS.States.SEstate_Working) {
 				throw "Bad sensor state.";
 			}
 

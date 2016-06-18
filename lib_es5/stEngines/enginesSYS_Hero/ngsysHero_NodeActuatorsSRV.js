@@ -69,7 +69,12 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 			console.log('<*> NGSYS_Hero_Node._mapActuatorControlEvents'); // TODO REMOVE DEBUG LOG
 			console.log(actuator);
 
-			actuator.eventEmitter.on(actuator.CONSTANTS.Events.ActuatorOptionsUpdated, service._event_ActuatorOptionsUpdated);
+			// Map event ActuatorOptionsUpdated
+			actuator.eventEmitter.on(actuator.CONSTANTS.Events.ActuatorOptionsUpdated, function (data) {
+				service._event_ActuatorOptionsUpdated(data, {
+					"service": service
+				});
+			});
 
 			if (actuatorEngine !== null) {
 
@@ -177,9 +182,18 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 	}, {
 		key: '_event_ActuatorOptionsUpdated',
-		value: function _event_ActuatorOptionsUpdated(data) {
+		value: function _event_ActuatorOptionsUpdated(data, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
 			var socket = service.controlChannel.socket;
 
 			var actuator = data.actuator;
@@ -324,7 +338,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 			var amng = service.actuatorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.setActuatorOptions'); // TODO REMOVE DEBUG LO
-			console.log(' <~> ' + msg); // TODO REMOVE DEBUG LO
+			console.log(msg); // TODO REMOVE DEBUG LO
 
 			var actuatorID = msg.actuatorID;
 			var options = msg.options;

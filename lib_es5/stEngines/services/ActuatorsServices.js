@@ -80,7 +80,7 @@ var ActuatorsServices = function () {
 
 	}, {
 		key: "_mapControlEvents",
-		value: function _mapControlEvents(sensorsManager) {}
+		value: function _mapControlEvents(actuatorsManager) {}
 
 		/**
    * Map control messages
@@ -91,6 +91,11 @@ var ActuatorsServices = function () {
 		value: function _mapControlMessages(socket, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
