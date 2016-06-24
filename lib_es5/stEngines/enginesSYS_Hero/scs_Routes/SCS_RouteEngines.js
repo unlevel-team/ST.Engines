@@ -60,8 +60,8 @@ var SCS_RouteEngines = function () {
 				throw "Not initialized";
 			}
 
-			routerNet.expressRoute.use('/Sensors', routerNet.routesforNodes.expressRoute);
-			routerNet.expressRoute.use('/Actuators', routerNet.routesforServer.expressRoute);
+			routerNet.expressRoute.use('/Sensors', routerNet.routesforSersors.expressRoute);
+			routerNet.expressRoute.use('/Actuators', routerNet.routesforActuators.expressRoute);
 		}
 	}]);
 

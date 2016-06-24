@@ -76,12 +76,21 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_mapControlMessages",
-		value: function _mapControlMessages(socket) {
-
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket);
+		value: function _mapControlMessages(socket, options) {
 
 			var service = this;
-			var smng = service.sensorsManager;
+
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket, {
+				"service": service
+			});
 		}
 
 		/**
@@ -90,11 +99,21 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_unmapControlMessages",
-		value: function _unmapControlMessages(socket) {
-
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket);
+		value: function _unmapControlMessages(socket, options) {
 
 			var service = this;
+
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_SensorsSRV.prototype), "_unmapControlMessages", this).call(this, socket, {
+				"service": service
+			});
 
 			service._mapped = null;
 		}
@@ -114,7 +133,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			}
 
 			// Map event NodeAdded
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeAdded, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeAdded, function (data) {
 
 				service._event_NodeAdded(data, {
 					"service": service
@@ -122,7 +141,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			});
 
 			// Map event NodeDisconnected
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeDisconnected, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeDisconnected, function (data) {
 
 				service._event_NodeDisconnected(data, {
 					"service": service
@@ -130,7 +149,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			});
 
 			// Map event NodeRemoved
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeRemoved, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeRemoved, function (data) {
 
 				service._event_NodeRemoved(data, {
 					"service": service
@@ -156,6 +175,12 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			service._mapNodeControlEvents(stNode);
 			service._mapNodeControlMessages(stNode);
+
+			if (stNode.config.numSensors > 0) {
+
+				// Emit message getSensorsList
+				stNode.socket.emit(service.CONSTANTS.Messages.getSensorsList);
+			}
 
 			stNode.config._SensorsManaged = true;
 		}
@@ -222,6 +247,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -257,11 +286,17 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var stNode = data.node;
 
+			console.log('<~*~> ST NGSYS_Hero_Server_SensorsSRV._event_NodeAdded'); // TODO REMOVE DEBUG LOG
+
 			try {
 				service.manageSensorsFromNode(stNode);
 			} catch (e) {
+
 				// TODO: handle exception
-				throw "Cannot manage sensors of node. " + e;
+				//			throw "Cannot manage sensors of node. " + e;
+				console.log('<~EEE~> ST NGSYS_Hero_Server_SensorsSRV._event_NodeAdded'); // TODO REMOVE DEBUG LOG
+				console.log('<~EEE~> Cannot manage sensors of node'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -332,6 +367,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -339,7 +378,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var smng = service.sensorsManager;
 			var node = options.node;
 			var socket = node.socket;
-			var data = options.data;
+			var data = msg;
 
 			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorsList'); // TODO REMOVE DEBUG LOG
 
@@ -353,7 +392,21 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 					//				snsDATA._nodeEvents = node.eventEmitter;
 					snsDATA._controlSocket = socket;
 
-					smng.addSensorFromNode(snsDATA);
+					try {
+
+						smng.addSensorFromNode(snsDATA);
+
+						socket.emit(service.CONSTANTS.Messages.getSensorOptions, {
+							"sensorID": snsDATA.sensorID
+						});
+					} catch (e) {
+
+						// TODO: handle exception
+						console.log('<~EEE~> NGSYS_Hero_Server_SensorsSRV.Messages.SensorsList'); // TODO REMOVE DEBUG LOG
+						console.log('<~EEE~> Cannot add sensor from node.'); // TODO REMOVE DEBUG LOG
+						console.log(e); // TODO REMOVE DEBUG LOG
+						console.log(snsDATA); // TODO REMOVE DEBUG LOG
+					}
 				});
 			}
 		}
@@ -368,6 +421,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -379,9 +436,11 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var sensorID = msg.sensorID;
 			var sensorOptions = msg.options;
 
-			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorOptions'); // TODO REMOVE DEBUG LOG
-
 			var sensor_sysID = node.config.nodeID + '.' + sensorID;
+
+			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorOptions'); // TODO REMOVE DEBUG LOG
+			console.log(' <~~~> ' + sensor_sysID); // TODO REMOVE DEBUG LOG
+			console.log(sensorOptions); // TODO REMOVE DEBUG LOG
 
 			var response = {
 				"sensorID": sensorID
@@ -425,7 +484,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
+			var sensorID = msg.sensorID;
 			var sensor_sysID = node.config.nodeID + '.' + sensorID;
 
 			var response = {
@@ -433,7 +492,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			};
 
 			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorOptionsUpdated'); // TODO REMOVE DEBUG LOG
-			console.log(options); // TODO REMOVE DEBUG LOG
+			console.log('<~~~> ' + sensor_sysID); // TODO REMOVE DEBUG LOG
 
 			try {
 
@@ -444,10 +503,8 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 				var sns = sensorSearch.stSensor;
 
-				smng.getOptionsOfSensor(sns);
-
 				// Emit message getSensorOptions
-				socket.emit(smng.CONSTANTS.Messages.getSensorOptions, { "sensorID": sns.config.sensorID });
+				socket.emit(service.CONSTANTS.Messages.getSensorOptions, { "sensorID": sns.config.sensorID });
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
@@ -468,6 +525,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -476,7 +537,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
+			var sensorID = msg.sensorID;
 			var sensor_sysID = node.config.nodeID + '.' + sensorID;
 
 			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorStarted'); // TODO REMOVE DEBUG LOG
@@ -502,7 +563,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				response.result = "ERROR";
 				response.error = e;
 
-				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV._msg_SensorOptionsUpdated ERROR'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> NGSYS_Hero_Server_SensorsSRV.SensorStarted ERROR'); // TODO REMOVE DEBUG LOG
 				console.log(response); // TODO REMOVE DEBUG LOG
 			}
 		}
@@ -517,6 +578,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -525,7 +590,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var sensorID = options.sensorID;
+			var sensorID = msg.sensorID;
 			var sensor_sysID = node.config.nodeID + '.' + sensorID;
 
 			console.log('<*> ST NGSYS_Hero_Server_SensorsSRV.SensorStopped'); // TODO REMOVE DEBUG LOG

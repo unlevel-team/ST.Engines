@@ -23,6 +23,7 @@ var SensorEngine = require('../SensorEngine.js');
 
 var SensorsManager_CONSTANTS = require('../services/SensorsManager.js').CONSTANTS;
 var SensorsManager = require('../services/SensorsManager.js').SensorsManager;
+var SensorsServices_CONSTANTS = require('../services/SensorsServices.js').SensorsServices_CONSTANTS;
 var NGSYS_Hero_Server_SensorsSRV = require('./ngsysHero_ServerSensorsSRV.js').NGSYS_Hero_Server_SensorsSRV;
 
 var Actuator = require('../Actuator.js');
@@ -30,6 +31,7 @@ var ActuatorEngine = require('../ActuatorEngine.js');
 
 var ActuatorsManager_CONSTANTS = require('../services/ActuatorsManager.js').CONSTANTS;
 var ActuatorsManager = require('../services/ActuatorsManager.js').ActuatorsManager;
+var ActuatorsServices_CONSTANTS = require('../services/ActuatorsServices.js').ActuatorsServices_CONSTANTS;
 var NGSYS_Hero_Server_ActuatorsSRV = require('./ngsysHero_ServerActuatorsSRV.js').NGSYS_Hero_Server_ActuatorsSRV;
 
 var NGSystem_Hero_Lib = require('./enginesSYS_Hero.js');
@@ -113,7 +115,7 @@ var SensorRef = function (_Sensor) {
 				};
 
 				// Emit message StartSensor
-				stSensor.config._controlSocket.emit(SensorsManager_CONSTANTS.Messages.StartSensor, request);
+				stSensor.config._controlSocket.emit(SensorsServices_CONSTANTS.Messages.StartSensor, request);
 
 				resolve(request);
 			});
@@ -138,7 +140,7 @@ var SensorRef = function (_Sensor) {
 				};
 
 				// Emit message StopSensor
-				stSensor.config._controlSocket.emit(SensorsManager_CONSTANTS.Messages.StopSensor, request);
+				stSensor.config._controlSocket.emit(SensorsServices_CONSTANTS.Messages.StopSensor, request);
 				resolve(request);
 			});
 		}
@@ -152,13 +154,18 @@ var SensorRef = function (_Sensor) {
 		value: function setOptions(options) {
 
 			var stSensor = this;
-			var socket = stSensor.socket;
+			var socket = stSensor.config._controlSocket;
 
 			console.log('<*> ST SensorRef.setOptions'); // TODO REMOVE DEBUG LOG
 			console.log(options); // TODO REMOVE DEBUG LOG
 
-			// Emit message setSensorOptions
-			socket.emit(SensorsManager_CONSTANTS.Messages.setSensorOptions, { "sensorID": stSensor.config.sensorID, "options": options });
+			try {
+				// Emit message setSensorOptions
+				socket.emit(SensorsServices_CONSTANTS.Messages.setSensorOptions, { "sensorID": stSensor.config.sensorID, "options": options });
+			} catch (e) {
+				// TODO: handle exception
+				throw "Cannot send message setSensorOptions. " + e;
+			}
 		}
 	}]);
 
@@ -247,8 +254,8 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 
 			var sensorSearch = smng.getSensorBy_sysID(sensor.config._sysID);
 
-			if (sensorSearch.STsensor !== null) {
-				throw "Sensor ID already exists.";
+			if (sensorSearch.stSensor !== null) {
+				throw "Sensor sysID already exists.";
 			}
 
 			smng.sensorsList.push(sensor);
@@ -278,6 +285,7 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 			}
 
 			var sensor = new SensorRef(config);
+			sensor.initialize();
 
 			try {
 				smng.addSensor(sensor);
@@ -303,7 +311,7 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 			if (sensorsSearch.sensors !== null) {
 
 				// Emit message TurnOffSensors
-				sensorsSearch.sensors[0].config._controlSocket.emit(smng.CONSTANTS.Messages.TurnOffSensors);
+				sensorsSearch.sensors[0].config._controlSocket.emit(SensorsServices_CONSTANTS.Messages.TurnOffSensors);
 			} else {
 				console.log(' <~> Node not found!!!'); // TODO REMOVE DEBUG LOG
 			}
@@ -391,7 +399,7 @@ var ActuatorRef = function (_Actuator) {
 				};
 
 				// Emit message StartActuator
-				stActuator.config._controlSocket.emit(ActuatorsManager_CONSTANTS.Messages.StartActuator, request);
+				stActuator.config._controlSocket.emit(ActuatorsServices_CONSTANTS.Messages.StartActuator, request);
 
 				resolve(request);
 			});
@@ -416,7 +424,7 @@ var ActuatorRef = function (_Actuator) {
 				};
 
 				// Emit message StopActuator
-				stActuator.config._controlSocket.emit(ActuatorsManager_CONSTANTS.Messages.StopActuator, request);
+				stActuator.config._controlSocket.emit(ActuatorsServices_CONSTANTS.Messages.StopActuator, request);
 				resolve(request);
 			});
 		}
@@ -436,7 +444,7 @@ var ActuatorRef = function (_Actuator) {
 			console.log(options); // TODO REMOVE DEBUG LOG
 
 			// Emit message setActuatorOptions
-			socket.emit(ActuatorsManager_CONSTANTS.Messages.setActuatorOptions, { "actuatorID": stActuator.config.actuatorID, "options": options });
+			socket.emit(ActuatorsServices_CONSTANTS.Messages.setActuatorOptions, { "actuatorID": stActuator.config.actuatorID, "options": options });
 		}
 	}]);
 
@@ -525,7 +533,7 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 
 			var actuatorSearch = amng.getActuatorBy_sysID(actuator.config._sysID);
 
-			if (actuatorSearch.STactuator !== null) {
+			if (actuatorSearch.stActuator !== null) {
 				throw "Actuator ID already exists.";
 			}
 
@@ -556,6 +564,7 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 			}
 
 			var actuator = new ActuatorRef(config);
+			actuator.initialize();
 
 			try {
 				amng.addActuator(actuator);
@@ -581,7 +590,7 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 			if (actuatorsSearch.actuators !== null) {
 
 				// Emit message TurnOffActuators
-				actuatorsSearch.actuators[0].config._controlSocket.emit(amngr.CONSTANTS.Messages.TurnOffActuators);
+				actuatorsSearch.actuators[0].config._controlSocket.emit(ActuatorsServices_CONSTANTS.Messages.TurnOffActuators);
 			} else {
 				console.log(' <~> Node not found!!!'); // TODO REMOVE DEBUG LOG
 			}
@@ -650,8 +659,6 @@ var NGSYS_Hero_Server = function (_NGSystem_Hero) {
 				// TODO: handle exception
 				throw "Cannot initialize Actuators. " + e;
 			}
-
-			//		comSYS._service = new COMSys_Morse_Srv_Node(comSYS);
 		}
 
 		/**
@@ -717,26 +724,37 @@ var NGSYS_Hero_Server = function (_NGSystem_Hero) {
    * Get Server Control Services routes
    * for engines
    * 
+   * @param options An object with options
+   * 
    */
 
 	}, {
 		key: 'getSCSRoutes',
-		value: function getSCSRoutes() {
+		value: function getSCSRoutes(options) {
 
 			var ngSYS = this;
-			var scs_RouteEngines = ngSYS._scs_RouteEngines;
 
-			if (scs_RouteEngines === null) {
-
-				var SCS_RouteEngines = require('./scs_routes/SCS_RouteEngines.js');
-
-				scs_RouteEngines = new SCS_RouteEngines(ngSYS.sensorsManager, ngSYS.actuatorsManager);
-
-				scs_RouteEngines.initialize();
-				scs_RouteEngines.mapServiceRoutes();
+			if (options === undefined || options === null) {
+				options = {};
 			}
 
-			return scs_RouteEngines;
+			if (options.ngSYS !== undefined) {
+				ngSYS = options.ngSYS;
+			}
+
+			if (ngSYS._scs_RouteEngines === null) {
+
+				var SCS_RouteEngines = require('./scs_Routes/SCS_RouteEngines.js');
+
+				try {
+					ngSYS._scs_RouteEngines = new SCS_RouteEngines(ngSYS.sensorsManager, ngSYS.actuatorsManager);
+				} catch (e) {
+					// TODO: handle exception
+					throw "Error in route engines." + e;
+				}
+			}
+
+			return ngSYS._scs_RouteEngines;
 		}
 	}]);
 

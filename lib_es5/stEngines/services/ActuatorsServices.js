@@ -134,6 +134,11 @@ var ActuatorsServices = function () {
 		value: function _unmapControlMessages(socket, options) {
 
 			var service = this;
+
+			if (options === undefined) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}

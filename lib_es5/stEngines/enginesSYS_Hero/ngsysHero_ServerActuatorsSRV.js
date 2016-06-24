@@ -86,7 +86,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			}
 
 			// Map event NodeAdded
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeAdded, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeAdded, function (data) {
 
 				service._event_NodeAdded(data, {
 					"service": service
@@ -94,7 +94,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			});
 
 			// Map event NodeDisconnected
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeDisconnected, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeDisconnected, function (data) {
 
 				service._event_NodeDisconnected(data, {
 					"service": service
@@ -102,7 +102,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			});
 
 			// Map event NodeRemoved
-			nodesManager.EventEmitter.on(nodesManager.CONSTANTS.Events.NodeRemoved, function (data) {
+			nodesManager.eventEmitter.on(nodesManager.CONSTANTS.Events.NodeRemoved, function (data) {
 
 				service._event_NodeRemoved(data, {
 					"service": service
@@ -118,14 +118,44 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		key: "_mapControlMessages",
 		value: function _mapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV.prototype), "_mapControlMessages", this).call(this, socket, options);
-
 			var service = this;
+
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
 
-			var amng = service.actuatorsManager;
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV.prototype), "_mapControlMessages", this).call(this, socket, {
+				"service": service
+			});
+		}
+
+		/**
+   * Unmap control messages
+   */
+
+	}, {
+		key: "_unmapControlMessages",
+		value: function _unmapControlMessages(socket, options) {
+
+			var service = this;
+
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
+			if (options.service !== undefined) {
+				service = options.service;
+			}
+
+			_get(Object.getPrototypeOf(NGSYS_Hero_Server_ActuatorsSRV.prototype), "_unmapControlMessages", this).call(this, socket, {
+				"service": service
+			});
+
+			service._mapped = null;
 		}
 
 		/**
@@ -146,6 +176,12 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			service._mapNodeControlEvents(stNode);
 			service._mapNodeControlMessages(stNode);
+
+			if (stNode.config.numActuators > 0) {
+
+				// Emit message getActuatorsList
+				stNode.socket.emit(service.CONSTANTS.Messages.getActuatorsList);
+			}
 
 			stNode.config._ActuatorsManaged = true;
 		}
@@ -222,11 +258,14 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
 
-			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
 
@@ -332,6 +371,10 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -339,7 +382,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			var amng = service.actuatorsManager;
 			var node = options.node;
 			var socket = node.socket;
-			var data = options.data;
+			var data = msg;
 
 			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorsList'); // TODO REMOVE DEBUG LOG
 
@@ -353,7 +396,20 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 					//				actDATA._nodeEvents = node.eventEmitter;
 					actDATA._controlSocket = socket;
 
-					amng.addActuatorFromNode(actDATA);
+					try {
+
+						amng.addActuatorFromNode(actDATA);
+
+						// Emit message getActuatorOptions
+						socket.emit(service.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": actDATA.actuatorID });
+					} catch (e) {
+
+						// TODO: handle exception
+						console.log('<~EEE~> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorsList'); // TODO REMOVE DEBUG LOG
+						console.log('<~EEE~> Cannot add actuator from node.'); // TODO REMOVE DEBUG LOG
+						console.log(e); // TODO REMOVE DEBUG LOG
+						console.log(actDATA); // TODO REMOVE DEBUG LOG
+					}
 				});
 			}
 		}
@@ -368,6 +424,10 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -379,9 +439,11 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			var actuatorID = msg.actuatorID;
 			var actuatorOptions = msg.options;
 
-			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorOptions'); // TODO REMOVE DEBUG LOG
-
 			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
+
+			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorOptions'); // TODO REMOVE DEBUG LOG
+			console.log(' <~~~> ' + actuator_sysID); // TODO REMOVE DEBUG LOG
+			console.log(actuatorOptions); // TODO REMOVE DEBUG LOG
 
 			var response = {
 				"actuatorID": actuatorID
@@ -417,6 +479,10 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -425,7 +491,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var actuatorID = options.actuatorID;
+			var actuatorID = msg.actuatorID;
 			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
 			var response = {
@@ -445,7 +511,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 				var act = actuatorSearch.stActuator;
 
 				// Emit message getActuatorOptions
-				socket.emit(amng.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": act.config.actuatorID });
+				socket.emit(service.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": act.config.actuatorID });
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
@@ -466,6 +532,10 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -474,7 +544,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var actuatorID = options.actuatorID;
+			var actuatorID = msg.actuatorID;
 			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
 			console.log('<*> ST NGSYS_Hero_Server_ActuatorsSRV.ActuatorStarted'); // TODO REMOVE DEBUG LOG
@@ -515,6 +585,10 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			var service = this;
 
+			if (options === undefined || options === null) {
+				options = {};
+			}
+
 			if (options.service !== undefined) {
 				service = options.service;
 			}
@@ -523,7 +597,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 			var node = options.node;
 			var socket = node.socket;
 
-			var actuatorID = options.actuatorID;
+			var actuatorID = msg.actuatorID;
 			var actuator_sysID = node.config.nodeID + '.' + actuatorID;
 
 			console.log('<*> ST NGSYS_Hero_Server_ActuatorsSRV.ActuatorStopped'); // TODO REMOVE DEBUG LOG

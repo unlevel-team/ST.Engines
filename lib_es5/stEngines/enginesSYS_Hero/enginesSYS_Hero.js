@@ -129,8 +129,6 @@ var NGSystem_Hero = function (_EnginesSystem) {
 
 		ngSYS.controlChannel = null;
 
-		console.log('<*> NGSystem_Hero'); // TODO REMOVE DEBUG LOG
-
 		return _this5;
 	}
 

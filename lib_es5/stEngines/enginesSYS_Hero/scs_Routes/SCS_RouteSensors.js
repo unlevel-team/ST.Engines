@@ -73,7 +73,7 @@ var SCS_RouteSensors = function () {
 					"sensors": []
 				};
 
-				smngr.sensorList.forEach(function (sns_, _i) {
+				smngr.sensorsList.forEach(function (sns_, _i) {
 					var sensorData = {
 						"sensorID": sns_.config.sensorID,
 						"type": sns_.config.type,
@@ -82,7 +82,7 @@ var SCS_RouteSensors = function () {
 					_response.sensors.push(sensorData);
 				});
 
-				_response.numberOfSensors = routerSensors.sensorsManager.sensorList.length;
+				_response.numberOfSensors = routerSensors.sensorsManager.sensorsList.length;
 
 				res.jsonp(_response);
 				res.end();
