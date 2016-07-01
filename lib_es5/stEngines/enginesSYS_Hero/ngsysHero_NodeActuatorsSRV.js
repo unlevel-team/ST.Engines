@@ -9,6 +9,11 @@
  * 
  */
 
+/**
+ * Import ActuatorsServices
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -22,11 +27,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ActuatorsServices = require('../services/ActuatorsServices.js').ActuatorsServices;
 
 /**
- * Sensors Services
+ * Actuators Services
+ * 
+ * <pre>
+ * for role Node
+ * 
+ * version Hero
+ * 
+ * </pre>
+ * 
+ * @class
+ * @implements ActuatorsServices
+ * 
  */
 
 var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 	_inherits(NGSYS_Hero_Node_ActuatorsSRV, _ActuatorsServices);
+
+	/**
+  * @constructs NGSYS_Hero_Node_ActuatorsSRV
+  * 
+  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
+  * @param {object} controlChannel - Control channel object
+  * 
+  */
 
 	function NGSYS_Hero_Node_ActuatorsSRV(actuatorsManager, controlChannel) {
 		_classCallCheck(this, NGSYS_Hero_Node_ActuatorsSRV);
@@ -36,6 +60,8 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 	/**
   * Map control events
+  * 
+  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
   */
 
 
@@ -56,6 +82,8 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Map control events for actuators
+   * 
+   * @param {Actuator} actuator 
    */
 
 	}, {
@@ -98,6 +126,12 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Map control messages
+   * 
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   * 
    */
 
 	}, {
@@ -146,6 +180,11 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Unmap control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   *
    */
 
 	}, {
@@ -178,6 +217,11 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Event ActuatorOptionsUpdated
+   * 	
+   * @param {object} data - Data object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   * 
    */
 
 	}, {
@@ -206,6 +250,9 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Event ActuatorEngine_Start
+   * 
+   * @param {object} data - Data object
+   * 
    */
 
 	}, {
@@ -225,6 +272,9 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Event ActuatorEngine_Stop
+   * 
+   * @param {object} data - Data object
+   * 
    */
 
 	}, {

@@ -2,11 +2,16 @@
 
 /**
  * Sensors services
- * for Node sever
+ * for role Server
  * 
  * SomeThings Engines System library
  * version Hero
  * 
+ */
+
+/**
+ * Import SensorsServices
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23,10 +28,25 @@ var SensorsServices = require('../services/SensorsServices.js').SensorsServices;
 
 /**
  * Sensors Services
+ * for role Server
+ * 
+ * version Hero
+ * 
+ * @class
+ * @implements SensorsServices
+ * 
  */
 
 var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 	_inherits(NGSYS_Hero_Server_SensorsSRV, _SensorsServices);
+
+	/**
+  * @construct NGSYS_Hero_Server_SensorsSRV
+  * 
+  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {object} controlChannel - Control channel object
+  * @param {object} nodesManager - Nodes manager object
+  */
 
 	function NGSYS_Hero_Server_SensorsSRV(sensorsManager, controlChannel, nodesManager) {
 		_classCallCheck(this, NGSYS_Hero_Server_SensorsSRV);
@@ -39,6 +59,11 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		return _this;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(NGSYS_Hero_Server_SensorsSRV, [{
 		key: "initialize",
@@ -72,6 +97,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -95,6 +124,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Unmap control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -120,6 +153,8 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Map control events for nodes
+   * 
+   * @param {object} nodesManager - Nodes manager object
    */
 
 	}, {
@@ -160,7 +195,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Manage sensors from node
    * 
-   * @param stNode Node object
+   * @param {object} stNode - Node object
    */
 
 	}, {
@@ -191,7 +226,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Map node control messages
    * 
-   * @param stNode Node object
+   * @param {object} stNode - Node object
    */
 
 	}, {
@@ -239,6 +274,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Unmap node control messages
+   * 
+   * @param {object} stNode - Node object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -268,6 +307,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Event NodeAdded
+   * 
+   * @param {object} data - Data object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -302,6 +345,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Event NodeDisconnected
+   * 
+   * @param {object} data - Data object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -327,6 +374,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Event NodeRemoved
+   * 
+   * @param {object} data - Data object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -359,6 +410,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorsList
+   * 
+   * @param {object} msg - Message object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -413,6 +468,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorOptions
+   * 
+   * @param {object} msg - Message object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -468,6 +527,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorOptionsUpdated
+   * 
+   * @param {object} msg - Message object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -517,6 +580,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorStarted
+   * 
+   * @param {object} msg - Message object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -570,6 +637,10 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorStopped
+   * 
+   * @param {object} msg - Message object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {

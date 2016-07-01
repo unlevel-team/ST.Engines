@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * Import EventEmitter
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -12,14 +17,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var EventEmitter = require('events').EventEmitter;
 
+/**
+ * Import ActuatorEngine
+ * @ignore
+ */
 var ActuatorEngine = require('../ActuatorEngine.js');
 
 /**
  * ST Actuator Dummy01
+ * 
+ * <pre>
+ * Actuator for tests
+ * </pre>
+ * 
+ * @class
+ * @implements ActuatorEngine
+ * 
  */
 
 var STActuator_Dummy01 = function (_ActuatorEngine) {
 	_inherits(STActuator_Dummy01, _ActuatorEngine);
+
+	/**
+  * @constructs STActuator_Dummy01
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function STActuator_Dummy01(config) {
 		_classCallCheck(this, STActuator_Dummy01);

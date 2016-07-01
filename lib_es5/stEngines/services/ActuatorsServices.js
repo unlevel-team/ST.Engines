@@ -3,6 +3,7 @@
 /*
  SomeThings Actuators services library
 
+ 
 */
 
 /**
@@ -41,9 +42,21 @@ var ActuatorsServices_CONSTANTS = {
  * 
  * manages the control messages related to actuators
  * 
+ * @class
+ * @property {ActuatorsManager} actuatorsManager - Actuators manager.
+ * @property {object} controlChannel - Object for control channel.
+ * 
  */
 
 var ActuatorsServices = function () {
+
+	/**
+  * @constructs ActuatorsServices
+  * 
+  * @param {ActuatorsManager} actuatorsManager - Actuators manager
+  * @param {object} controlChannel - Control channel object
+  */
+
 	function ActuatorsServices(actuatorsManager, controlChannel) {
 		_classCallCheck(this, ActuatorsServices);
 
@@ -53,6 +66,11 @@ var ActuatorsServices = function () {
 		ssrv.actuatorsManager = actuatorsManager;
 		ssrv.controlChannel = controlChannel;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(ActuatorsServices, [{
 		key: "initialize",
@@ -84,6 +102,10 @@ var ActuatorsServices = function () {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {ActuatorsServices} [options.service] - Actuators Service object
    */
 
 	}, {
@@ -127,6 +149,10 @@ var ActuatorsServices = function () {
 
 		/**
    * Unmap control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {ActuatorsServices} [options.service] - Actuators Service object
    */
 
 	}, {

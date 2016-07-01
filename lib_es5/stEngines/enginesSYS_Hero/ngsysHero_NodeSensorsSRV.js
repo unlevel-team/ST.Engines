@@ -9,6 +9,11 @@
  * 
  */
 
+/**
+ * Import SensorsServices
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -23,10 +28,26 @@ var SensorsServices = require('../services/SensorsServices.js').SensorsServices;
 
 /**
  * Sensors Services
+ * for role Node
+ * 
+ * version Hero
+ * 
+ * @class
+ * @implements SensorsServices
+ * 
  */
 
 var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 	_inherits(NGSYS_Hero_Node_SensorsSRV, _SensorsServices);
+
+	/**
+  * 
+  * @constructs NGSYS_Hero_Node_SensorsSRV
+  * 
+  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {object} controlChannel - Control chnnel object
+  * 
+  */
 
 	function NGSYS_Hero_Node_SensorsSRV(sensorsManager, controlChannel) {
 		_classCallCheck(this, NGSYS_Hero_Node_SensorsSRV);
@@ -36,6 +57,8 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	/**
   * Map control events
+  * 
+  * @param {SensorsManager} sensorsManager - Sensors manager object
   */
 
 
@@ -62,6 +85,8 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Map control events for sensors
+   * 
+   * @param {Sensor} sensor 
    */
 
 	}, {
@@ -102,6 +127,11 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
+   * 
    */
 
 	}, {
@@ -150,6 +180,11 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Unmap control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
+   * 
    */
 
 	}, {

@@ -7,6 +7,11 @@
 
 */
 
+/**
+ * Import Sensor
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -18,11 +23,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Sensor = require('../Sensor.js');
+
+/**
+ * Import Actuator
+ * @ignore
+ */
 var Actuator = require('../Actuator.js');
 
+/**
+ * Import EnginesSystem_CONSTANTS
+ * @ignore
+ */
 var EnginesSystem_CONSTANTS = require('../EnginesSystem.js').EnginesSystem_CONSTANTS;
+
+/**
+ * Import EnginesSystem
+ * @ignore
+ */
 var EnginesSystem = require('../EnginesSystem.js').EnginesSystem;
 
+/**
+ * Engines system constants
+ * 
+ * <pre>
+ * version Hero
+ * 
+ * </pre>
+ */
 var NGSystem_Hero_CONSTANTS = {
 
 	"Config": {
@@ -37,10 +64,18 @@ var NGSystem_Hero_CONSTANTS = {
 
 /**
  * VActuator
+ * 
+ * @class
+ * @implements Actuator
  */
 
 var VActuator = function (_Actuator) {
 	_inherits(VActuator, _Actuator);
+
+	/**
+  * @constructs VActuator
+  * @param {object} config - Configuration object
+  */
 
 	function VActuator(config) {
 		_classCallCheck(this, VActuator);
@@ -53,11 +88,19 @@ var VActuator = function (_Actuator) {
 
 /**
  * CylActuator
+ * 
+ * @class
+ * @implements Actuator
  */
 
 
 var CylActuator = function (_Actuator2) {
 	_inherits(CylActuator, _Actuator2);
+
+	/**
+  * @constructs CylActuator
+  * @param {object} config - Configuration object
+  */
 
 	function CylActuator(config) {
 		_classCallCheck(this, CylActuator);
@@ -70,11 +113,19 @@ var CylActuator = function (_Actuator2) {
 
 /**
  * VSensor
+ * 
+ * @class
+ * @implements Sensor
  */
 
 
 var VSensor = function (_Sensor) {
 	_inherits(VSensor, _Sensor);
+
+	/**
+  * @constructs VSensor
+  * @param {object} config - Configuration object
+  */
 
 	function VSensor(config) {
 		_classCallCheck(this, VSensor);
@@ -87,11 +138,19 @@ var VSensor = function (_Sensor) {
 
 /**
  * CylSensor
+ * 
+ * @class
+ * @implements Sensor
  */
 
 
 var CylSensor = function (_Sensor2) {
 	_inherits(CylSensor, _Sensor2);
+
+	/**
+  * @constructs CylSensor
+  * @param {object} config - Configuration object
+  */
 
 	function CylSensor(config) {
 		_classCallCheck(this, CylSensor);
@@ -105,11 +164,18 @@ var CylSensor = function (_Sensor2) {
 /**
  * NGSystem_Hero 
  * 
+ * @class
+ * @implements EnginesSystem
  */
 
 
 var NGSystem_Hero = function (_EnginesSystem) {
 	_inherits(NGSystem_Hero, _EnginesSystem);
+
+	/**
+  * @constructs NGSystem_Hero
+  * @param {object} config - Configuration object.
+  */
 
 	function NGSystem_Hero(config) {
 		_classCallCheck(this, NGSystem_Hero);
@@ -131,6 +197,11 @@ var NGSystem_Hero = function (_EnginesSystem) {
 
 		return _this5;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(NGSystem_Hero, [{
 		key: 'initialize',
@@ -154,8 +225,9 @@ var NGSystem_Hero = function (_EnginesSystem) {
 
 /**
  * Get sensor
+ * 
  * @param config
- * @returns Sensor, VSensor, CylSensor
+ * @returns {(Sensor|VSensor|CylSensor)}
  */
 
 
@@ -183,8 +255,9 @@ function getSensor(config) {
 
 /**
  * Get actuator
+ * 
  * @param config
- * @returns Actuator, VActuator or CylActuator
+ * @returns {(Actuator|VActuator|CylActuator)}
  */
 function getActuator(config) {
 
@@ -210,6 +283,10 @@ function getActuator(config) {
 
 /**
  * Get EnginesSystem
+ * 
+ * @param {object} config - Configuration object
+ * @returns {EnginesSystem}
+ * 
  */
 var getEnginesSystem = function getEnginesSystem(config) {
 

@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * Import SensorEngine
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -12,14 +17,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var SensorEngine = require('../SensorEngine.js');
 
+/**
+ * Import EventEmitter
+ * @ignore
+ */
 var EventEmitter = require('events').EventEmitter;
 
 /**
  * ST Sensor Dummy01
+ * 
+ * @class
+ * @implements SensorEngine
  */
 
 var STSensor_Dummy01 = function (_SensorEngine) {
 	_inherits(STSensor_Dummy01, _SensorEngine);
+
+	/**
+  * @constructs STSensor_Dummy01
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function STSensor_Dummy01(config) {
 		_classCallCheck(this, STSensor_Dummy01);
@@ -75,6 +93,13 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 
 			_get(Object.getPrototypeOf(STSensor_Dummy01.prototype), 'initialize', this).call(this);
 		}
+
+		/**
+   * Start engine
+   * 
+   * @override
+   */
+
 	}, {
 		key: 'startEngine',
 		value: function startEngine() {
@@ -86,6 +111,13 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 			// Emit event SensorEngine_Start
 			stSensor.eventEmitter.emit(stSensor.CONSTANTS.Events.SensorEngine_Start);
 		}
+
+		/**
+   * Stop engine
+   * 
+   * @override
+   */
+
 	}, {
 		key: 'stopEngine',
 		value: function stopEngine() {
@@ -101,6 +133,8 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 
 		/**
    * Get options
+   * 
+   * @override
    */
 
 	}, {
@@ -121,6 +155,11 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 
 		/**
    * Set options
+   * 
+   * @param {object} options - Options object
+   * @param {number} [options.ticks] - Ticks 
+   * @param {boolean} [options.showTime] - Show time
+   * @param {boolean} [options.showDeltaTime] - Show delta time 
    */
 
 	}, {

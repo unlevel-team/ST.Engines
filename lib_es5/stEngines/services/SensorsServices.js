@@ -5,6 +5,10 @@
 
 */
 
+/**
+ * Sensors services constants
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36,11 +40,23 @@ var SensorsServices_CONSTANTS = {
 /**
  * Sensors Services
  * 
+ * <pre>
  * manages the control messages related to sensors
+ * </pre>
  * 
+ * @class
  */
 
 var SensorsServices = function () {
+
+	/**
+  * 
+  * @constructs SensorsServices
+  * 
+  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {object} controlChannel - Control channel object
+  */
+
 	function SensorsServices(sensorsManager, controlChannel) {
 		_classCallCheck(this, SensorsServices);
 
@@ -50,6 +66,11 @@ var SensorsServices = function () {
 		ssrv.sensorsManager = sensorsManager;
 		ssrv.controlChannel = controlChannel;
 	}
+
+	/**
+  * Initilize
+  */
+
 
 	_createClass(SensorsServices, [{
 		key: "initialize",
@@ -84,6 +105,8 @@ var SensorsServices = function () {
 
 		/**
    * Map control events
+   * 
+   * @param {SensorsManager} sensorsManager - Sensors manager object.
    */
 
 	}, {
@@ -99,6 +122,10 @@ var SensorsServices = function () {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {SensorsServices} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -142,6 +169,10 @@ var SensorsServices = function () {
 
 		/**
    * Unmap control messages
+   * 
+   * @param {object} socket - Socket object
+   * @param {object} options - Options object
+   * @param {SensorsServices} [options.service] - Sensors Service object
    */
 
 	}, {

@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * import SensorEngine
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -12,16 +17,39 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var SensorEngine = require('../SensorEngine.js');
 
+/**
+ * import EventEmitter
+ * @ignore
+ */
 var EventEmitter = require('events').EventEmitter;
 
+/**
+ * import Cylon
+ * @ignore
+ */
 var Cylon = require('cylon');
 
 /**
  * ST Sensor Keyboard
+ * 
+ * <pre>
+ * Sensor for tests.
+ * Uses Cylon library.
+ * </pre>
+ * 
+ * @class
+ * @implements SensorEngine
+ * 
  */
 
 var STSensor_Keyboard = function (_SensorEngine) {
 	_inherits(STSensor_Keyboard, _SensorEngine);
+
+	/**
+  * @constructs STSensor_Keyboard
+  * 
+  * @param {object} config - Configuration object
+  */
 
 	function STSensor_Keyboard(config) {
 		_classCallCheck(this, STSensor_Keyboard);
@@ -103,6 +131,11 @@ var STSensor_Keyboard = function (_SensorEngine) {
 			_get(Object.getPrototypeOf(STSensor_Keyboard.prototype), 'initialize', this).call(this);
 			this._CylonRobotState = "ready";
 		}
+
+		/**
+   * Start engine
+   */
+
 	}, {
 		key: 'startEngine',
 		value: function startEngine() {
@@ -113,6 +146,11 @@ var STSensor_Keyboard = function (_SensorEngine) {
 			this._CylonRobotState = "working";
 			this.eventEmitter.emit(this.CONSTANTS.Events.SensorEngine_Start);
 		}
+
+		/**
+   * Stop engine
+   */
+
 	}, {
 		key: 'stopEngine',
 		value: function stopEngine() {

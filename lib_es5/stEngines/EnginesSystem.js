@@ -1,6 +1,6 @@
 "use strict";
 
-/*
+/**
  * SomeThings Engines System library 
  *  
  * Provides a system with server and node roles...
@@ -28,9 +28,20 @@ var EnginesSystem_CONSTANTS = {
 
 /**
  * EnginesSystem
+ * 
+ * @class
+ * @property {object} config - Configuration.
+ * 
  */
 
 var EnginesSystem = function () {
+
+	/**
+  * @constructs EnginesSystem
+  * 
+  * @param {object} config Configuration object
+  */
+
 	function EnginesSystem(config) {
 		_classCallCheck(this, EnginesSystem);
 
@@ -39,6 +50,11 @@ var EnginesSystem = function () {
 		this.CONSTANTS = EnginesSystem_CONSTANTS;
 		this.config = config;
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(EnginesSystem, [{
 		key: "initialize",
@@ -57,6 +73,8 @@ var EnginesSystem = function () {
 
 /**
  * Get EnginesSystem
+ * 
+ * @returns EnginesSystem
  */
 
 

@@ -9,6 +9,11 @@
  * version Hero
  */
 
+/**
+ * Import NGSystem_Hero_Lib
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -20,27 +25,65 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var NGSystem_Hero_Lib = require('./enginesSYS_Hero.js');
+
+/**
+ * Import NGSystem_Hero_CONSTANTS
+ * @ignore
+ */
 var NGSystem_Hero_CONSTANTS = NGSystem_Hero_Lib.NGSystem_Hero_CONSTANTS;
+
+/**
+ * Import NGSystem_Hero
+ * @ignore
+ */
 var NGSystem_Hero = NGSystem_Hero_Lib.NGSystem_Hero;
 
+/**
+ * Import SensorsManager
+ * @ignore
+ */
 var SensorsManager = require('../services/SensorsManager.js').SensorsManager;
+
+/**
+ * Import NGSYS_Hero_Node_SensorsSRV
+ * @ignore
+ */
 var NGSYS_Hero_Node_SensorsSRV = require('./ngsysHero_NodeSensorsSRV.js').NGSYS_Hero_Node_SensorsSRV;
 
+/**
+ * Import ActuatorsManager
+ * @ignore
+ */
 var ActuatorsManager = require('../services/ActuatorsManager.js').ActuatorsManager;
+
+/**
+ * Import NGSYS_Hero_Node_ActuatorsSRV
+ * @ignore
+ */
 var NGSYS_Hero_Node_ActuatorsSRV = require('./ngsysHero_NodeActuatorsSRV.js').NGSYS_Hero_Node_ActuatorsSRV;
 
 /**
  * NGSYS_Hero_Node_SensorsMNG
  * 
+ * <pre>
  * Sensors manager
  * for role Node
  * 
  * SomeThings Engines System library
  * version Hero
+ * </pre>
+ * 
+ * @class
+ * @implements SensorsManager
+ * 
  */
 
 var NGSYS_Hero_Node_SensorsMNG = function (_SensorsManager) {
 	_inherits(NGSYS_Hero_Node_SensorsMNG, _SensorsManager);
+
+	/**
+  * @constructs NGSYS_Hero_Node_SensorsMNG
+  */
 
 	function NGSYS_Hero_Node_SensorsMNG() {
 		_classCallCheck(this, NGSYS_Hero_Node_SensorsMNG);
@@ -51,7 +94,7 @@ var NGSYS_Hero_Node_SensorsMNG = function (_SensorsManager) {
 	/**
   * Add sensor
   * 
-  * @sensor Sensor object
+  * @param {Sensor} sensor - Sensor object
   */
 
 
@@ -94,16 +137,26 @@ var NGSYS_Hero_Node_SensorsMNG = function (_SensorsManager) {
 /**
  * NGSYS_Hero_Node_ActuatorsMNG
  * 
+ * <pre>
  * Actuators manager
  * for role Node
  * 
  * SomeThings Engines System library
  * version Hero
+ * </pre>
+ * 
+ * @class
+ * @implements ActuatorsManager
+ * 
  */
 
 
 var NGSYS_Hero_Node_ActuatorsMNG = function (_ActuatorsManager) {
 	_inherits(NGSYS_Hero_Node_ActuatorsMNG, _ActuatorsManager);
+
+	/**
+  * @constructs NGSYS_Hero_Node_ActuatorsMNG
+  */
 
 	function NGSYS_Hero_Node_ActuatorsMNG() {
 		_classCallCheck(this, NGSYS_Hero_Node_ActuatorsMNG);
@@ -114,7 +167,7 @@ var NGSYS_Hero_Node_ActuatorsMNG = function (_ActuatorsManager) {
 	/**
   * Adds actuator
   * 
-  * @act Actuator object
+  * @param {Actuator} act - Actuator object
   */
 
 
@@ -156,17 +209,41 @@ var NGSYS_Hero_Node_ActuatorsMNG = function (_ActuatorsManager) {
 
 /**
  * NGSYS_Hero_Node
+ * 
+ * <pre>
+ * Engines System
+ * for role Node
+ * 
+ * SomeThings Engines System library
+ * version Hero
+ * </pre>
+ * 
+ * 
+ * @class
+ * @implements NGSystem_Hero
+ * 
  */
 
 
 var NGSYS_Hero_Node = function (_NGSystem_Hero) {
 	_inherits(NGSYS_Hero_Node, _NGSystem_Hero);
 
+	/**
+  * @constructs NGSYS_Hero_Node
+  * 
+  * @param {object} config - Configuration object
+  */
+
 	function NGSYS_Hero_Node(config) {
 		_classCallCheck(this, NGSYS_Hero_Node);
 
 		return _possibleConstructorReturn(this, Object.getPrototypeOf(NGSYS_Hero_Node).call(this, config));
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(NGSYS_Hero_Node, [{
 		key: 'initialize',

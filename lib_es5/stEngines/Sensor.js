@@ -5,6 +5,12 @@
  * 
  * Generic object for a Sensor
  * 
+ * @ignore
+ */
+
+/**
+ * Import EventEmitter
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13,6 +19,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var EventEmitter = require('events').EventEmitter;
 
+/**
+ * Sensor constants
+ */
 var Sensor_CONSTANTS = {
 
 	"Events": {
@@ -22,9 +31,21 @@ var Sensor_CONSTANTS = {
 
 /**
  * Sensor
+ * 
+ * @class
+ * @property {object} config - Configuration.
+ * @property {object} eventEmitter - Object for emit events.
+ * @property {object} sensorEngine - Sensor engine.
+ * 
  */
 
 var Sensor = function () {
+
+	/**
+  * @constructs Sensor
+  * @param {object} config Configuration object
+  */
+
 	function Sensor(config) {
 		_classCallCheck(this, Sensor);
 
@@ -33,6 +54,11 @@ var Sensor = function () {
 		this.eventEmitter = new EventEmitter();
 		this.sensorEngine = null;
 	}
+
+	/**
+  * Initialize Sensor
+  */
+
 
 	_createClass(Sensor, [{
 		key: "initialize",
@@ -64,6 +90,8 @@ var Sensor = function () {
 
 		/**
    * Get sensor options
+   * 
+   * @returns {object} Actuator options
    */
 
 	}, {
@@ -87,6 +115,8 @@ var Sensor = function () {
 
 		/**
    * Set sensor options
+   * 
+   * @param {object} options Options object
    */
 
 	}, {

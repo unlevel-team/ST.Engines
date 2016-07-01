@@ -7,6 +7,11 @@
  * 
  */
 
+/**
+ * Import EventEmitter
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,10 +30,30 @@ var ActuatorsManager_CONSTANTS = {
 };
 
 /**
+ * The result object.
+ * 
+ * @typedef {Object} SearchResult
+ * @memberof ActuatorsManager
+ * @type Object
+ * @property {(Actuator|null)} STactuator - The Actuator object, may be null.
+ * @property {number} position - The position in list.
+ * 
+ */
+
+/**
  * Actuators manager
+ * 
+ * @class
+ * @property {Actuator[]} actuatorsList - List of Actuators.
+ * @property {object} eventEmitter - Object for emit events.
  */
 
 var ActuatorsManager = function () {
+
+	/**
+  * @constructs ActuatorsManager
+  */
+
 	function ActuatorsManager() {
 		_classCallCheck(this, ActuatorsManager);
 
@@ -41,7 +66,7 @@ var ActuatorsManager = function () {
 	/**
   * Adds actuator
   * 
-  * @act Actuator object
+  * @param {Actuator} act - Actuator object
   */
 
 
@@ -65,6 +90,9 @@ var ActuatorsManager = function () {
 
 		/**
    * Returns Actuator searched by ID
+   * 
+   * @param {string} actuatorID - Actuator ID
+   * @returns {ActuatorsManager.SearchResult} result - Result object
    */
 
 	}, {

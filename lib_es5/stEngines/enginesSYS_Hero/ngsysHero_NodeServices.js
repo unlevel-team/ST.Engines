@@ -9,6 +9,11 @@
  * 
  */
 
+/**
+ * Import NGSYS_Hero_Services
+ * @ignore
+ */
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -22,17 +27,36 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var NGSYS_Hero_Services = require('./ngsysHero_Services.js');
 
 /**
- * NGSYS_Hero_NodeServices
+ * Engines system services
+ * 
+ * <pre>
+ * for role Node
+ * 
+ * version Hero
+ * </pre>
+ * 
+ * @class
+ * @implements NGSYS_Hero_Services
  */
 
 var NGSYS_Hero_NodeServices = function (_NGSYS_Hero_Services) {
 	_inherits(NGSYS_Hero_NodeServices, _NGSYS_Hero_Services);
+
+	/**
+  * @constructs NGSYS_Hero_NodeServices
+  * @param {EnginesSystem} ngSYS - Engines system object
+  */
 
 	function NGSYS_Hero_NodeServices(ngSYS) {
 		_classCallCheck(this, NGSYS_Hero_NodeServices);
 
 		return _possibleConstructorReturn(this, Object.getPrototypeOf(NGSYS_Hero_NodeServices).call(this, ngSYS));
 	}
+
+	/**
+  * Initialize
+  */
+
 
 	_createClass(NGSYS_Hero_NodeServices, [{
 		key: "initialize",
@@ -43,6 +67,8 @@ var NGSYS_Hero_NodeServices = function (_NGSYS_Hero_Services) {
 
 		/**
    * Map control events
+   * 
+   * @param {EnginesSystem} ngSYS - Engines system object
    */
 
 	}, {
@@ -60,6 +86,8 @@ var NGSYS_Hero_NodeServices = function (_NGSYS_Hero_Services) {
 
 		/**
    * Map control messages
+   * 
+   * @param {object} socket - Socket object
    */
 
 	}, {

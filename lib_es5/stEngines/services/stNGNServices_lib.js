@@ -5,13 +5,23 @@
 
 */
 
+/**
+ * Import ActuatorsManager
+ * @ignore
+ */
+
 var ActuatorsManager = require('./ActuatorsManager.js');
+
+/**
+ * Import SensorsManager
+ * @ignore
+ */
 var SensorsManager = require('./SensorsManager.js');
 
 var stNGNservices_Lib = {
 
-	"ActuatorsManager": ActuatorsManager,
-	"SensorsManager": SensorsManager
+  "ActuatorsManager": ActuatorsManager,
+  "SensorsManager": SensorsManager
 
 };
 

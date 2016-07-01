@@ -5,6 +5,12 @@
  * 
  * Generic process for a Sensor
  * 
+ * @ignore
+ */
+
+/**
+ * Import EventEmitter
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -40,9 +46,24 @@ var SensorEngine_CONSTANTS = {
 
 /**
  * Sensor Engine
+ * 
+ * @class
+ * @property {object} config - Configuration.
+ * @property {object} _mainLoop - Main loop reference object.
+ * @property {String} state - State.
+ * @property {object} eventEmitter - Object for emit events.
+ * 
+ * 
  */
 
 var SensorEngine = function () {
+
+	/**
+  * @constructs SensorEngine
+  * 
+  * @param {object} config Configuration object
+  */
+
 	function SensorEngine(config) {
 		_classCallCheck(this, SensorEngine);
 
@@ -115,17 +136,42 @@ var SensorEngine = function () {
 			var sensorEngine = this;
 			sensorEngine.eventEmitter.emit(sensorEngine.CONSTANTS.Events.MainLoop_Stop); // Emit event MainLoop_Stop
 		}
+
+		/**
+   * Start engine
+   * @abstract 
+   */
+
 	}, {
 		key: "startEngine",
 		value: function startEngine() {}
+
+		/**
+   * Stop engine
+   * @abstract 
+   */
+
 	}, {
 		key: "stopEngine",
 		value: function stopEngine() {}
+
+		/**
+   * Get options
+   * @abstract 
+   * @return {object} Options object
+   */
+
 	}, {
 		key: "getOptions",
 		value: function getOptions() {
 			return {};
 		}
+
+		/**
+   * @abstract 
+   * @param {object} options Options object.
+   */
+
 	}, {
 		key: "setOptions",
 		value: function setOptions(options) {}

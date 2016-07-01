@@ -7,6 +7,12 @@
  * 
  * ... the actuator process is manager by the ActutatorEngine
  * 
+ * @ignore
+ */
+
+/**
+ * Import EventEmitter
+ * @ignore
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28,9 +34,22 @@ var Actuator_CONSTANTS = {
 
 /**
  * Actuator
+ * 
+ * @class
+ * @property {object} config - Configuration.
+ * @property {object} eventEmitter - Object for emit events.
+ * @property {object} actuatorEngine - Actuator engine.
+ * 
  */
 
 var Actuator = function () {
+
+	/**
+  * @constructs Actuator
+  * 
+  * @param {object} config Configuration object
+  */
+
 	function Actuator(config) {
 		_classCallCheck(this, Actuator);
 
@@ -39,6 +58,11 @@ var Actuator = function () {
 		this.eventEmitter = new EventEmitter();
 		this.actuatorEngine = null;
 	}
+
+	/**
+  * Initialize Actuator
+  */
+
 
 	_createClass(Actuator, [{
 		key: "initialize",
@@ -70,6 +94,7 @@ var Actuator = function () {
    * 
    * also includes the actuator engine options
    * 
+   * @returns {object} Actuator options
    */
 
 	}, {
@@ -95,6 +120,8 @@ var Actuator = function () {
    * Set actuator options
    * 
    * also includes the actuator engine options
+   * 
+   * @param {object} options Options object
    */
 
 	}, {
