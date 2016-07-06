@@ -22,6 +22,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var EventEmitter = require('events').EventEmitter;
 
 /**
+ * Import ActuatorEngine library
+ * @ignore
+ */
+var ActuatorEngine_Lib = require('./ActuatorEngine.js').ActuatorEngine_Lib;
+
+/**
  * Actuator CONSTANTS
  */
 var Actuator_CONSTANTS = {
@@ -65,7 +71,7 @@ var Actuator = function () {
 
 
 	_createClass(Actuator, [{
-		key: "initialize",
+		key: 'initialize',
 		value: function initialize() {
 
 			var act = this;
@@ -74,17 +80,20 @@ var Actuator = function () {
 			// Actuator Engine URL
 			if (act.config.options.actuatorEngineURL !== undefined && act.config.options.actuatorEngineURL !== null) {
 
-				act._actuatorEngine = null;
+				ActuatorEngine_Lib.initialze_ActuatorEngine(act);
 
-				try {
-					act._actuatorEngine = require(act.config.options.actuatorEngineURL);
-					act.actuatorEngine = new act._actuatorEngine(act.config);
-					act.actuatorEngine.initialize();
-				} catch (e) {
-					// TODO: handle exception
-					console.log('<EEE> Actuator.initialize'); // TODO REMOVE DEBUG LOG
-					console.log(e); // TODO REMOVE DEBUG LOG
-				}
+				//			act._actuatorEngine = null;
+				//			
+				//			try {
+				//				act._actuatorEngine = require(act.config.options.actuatorEngineURL);
+				//				act.actuatorEngine = new act._actuatorEngine(act.config);
+				//				act.actuatorEngine.initialize();
+				//				
+				//			} catch (e) {
+				//				// TODO: handle exception
+				//				  console.log('<EEE> Actuator.initialize');	// TODO REMOVE DEBUG LOG
+				//				  console.log(e);	// TODO REMOVE DEBUG LOG
+				//			}
 			}
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 		}
@@ -98,7 +107,7 @@ var Actuator = function () {
    */
 
 	}, {
-		key: "getOptions",
+		key: 'getOptions',
 		value: function getOptions() {
 
 			var act = this;
@@ -125,7 +134,7 @@ var Actuator = function () {
    */
 
 	}, {
-		key: "setOptions",
+		key: 'setOptions',
 		value: function setOptions(options) {
 
 			var act = this;

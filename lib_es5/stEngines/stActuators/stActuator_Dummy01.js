@@ -21,7 +21,7 @@ var EventEmitter = require('events').EventEmitter;
  * Import ActuatorEngine
  * @ignore
  */
-var ActuatorEngine = require('../ActuatorEngine.js');
+var ActuatorEngine = require('../ActuatorEngine.js').ActuatorEngine;
 
 /**
  * ST Actuator Dummy01

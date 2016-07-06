@@ -5,7 +5,6 @@
  * 
  * Generic process for a Sensor
  * 
- * @ignore
  */
 
 /**
@@ -21,6 +20,7 @@ var EventEmitter = require('events').EventEmitter;
 
 /**
  * SensorEngine CONSTANTS
+ * 
  */
 var SensorEngine_CONSTANTS = {
 
@@ -40,6 +40,60 @@ var SensorEngine_CONSTANTS = {
 
 		"SensorData": "Sensor Data"
 
+	}
+
+};
+
+/**
+ * SensorEngine_Start event.
+ *
+ * @event SensorEngine#SensorEngine_Start
+ * @type {object}
+ * @property {object} engine - The engine that is started.
+ */
+
+/**
+ * SensorEngine_Stop event.
+ *
+ * @event SensorEngine#SensorEngine_Stop
+ * @type {object}
+ * @property {object} engine - The engine that is stopped.
+ */
+
+/**
+ * Sensor engine library
+ * 
+ * @namespace SensorEngine_Lib
+ */
+var SensorEngine_Lib = {
+
+	/**
+  * Initialize sensor engine
+  * 
+  * @function
+  * 
+  * @param {Sensor} sensor - Sensor object
+  */
+	"initialze_SensorEngine": function initialze_SensorEngine(sensor) {
+
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
+		// Sensor Engine URL
+		if (sensor.config.options.sensorEngineURL !== undefined && sensor.config.options.sensorEngineURL !== null) {
+
+			sensor._sensorEngine = null;
+
+			try {
+				sensor._sensorEngine = require(sensor.config.options.sensorEngineURL);
+				sensor.sensorEngine = new sensor._sensorEngine(sensor.config);
+				sensor.sensorEngine.initialize();
+			} catch (e) {
+				// TODO: handle exception
+				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+				console.log(sensor.config); // TODO REMOVE DEBUG LOG
+			}
+		}
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 	}
 
 };
@@ -128,6 +182,8 @@ var SensorEngine = function () {
 
 		/**
    * Stop main loop
+   * 
+   * @fires SensorEngine#SensorEngine_Stop
    */
 
 	}, {
@@ -180,5 +236,11 @@ var SensorEngine = function () {
 	return SensorEngine;
 }();
 
-module.exports = SensorEngine;
+var _lib = {
+	"SensorEngine": SensorEngine,
+	"SensorEngine_Lib": SensorEngine_Lib
+
+};
+
+module.exports = _lib;
 //# sourceMappingURL=SensorEngine.js.map

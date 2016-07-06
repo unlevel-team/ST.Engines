@@ -1,6 +1,38 @@
 "use strict";
 
 /**
+ * ST Sensor Dummy01
+ * 
+ * 
+ * Sensor for made some tests..
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+/*
+ * Example of well implemented node engine in node-red
+ * @see http://nodered.org/docs/creating-nodes/first-node
+ * 
+ 
+ module.exports = function(RED) {
+    function LowerCaseNode(config) {
+        RED.nodes.createNode(this,config);
+        var node = this;
+        this.on('input', function(msg) {
+            msg.payload = msg.payload.toLowerCase();
+            node.send(msg);
+        });
+    }
+    RED.nodes.registerType("lower-case",LowerCaseNode);
+}
+ 
+ */
+
+/**
  * Import SensorEngine
  * @ignore
  */
@@ -15,9 +47,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SensorEngine = require('../SensorEngine.js');
+var SensorEngine = require('../SensorEngine.js').SensorEngine;
 
-/**
+/** 
  * Import EventEmitter
  * @ignore
  */
@@ -97,7 +129,8 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 		/**
    * Start engine
    * 
-   * @override
+   * @fires SensorEngine#SensorEngine_Start
+   * 
    */
 
 	}, {
@@ -115,7 +148,8 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 		/**
    * Stop engine
    * 
-   * @override
+   * @fires SensorEngine#SensorEngine_Stop
+   * 
    */
 
 	}, {

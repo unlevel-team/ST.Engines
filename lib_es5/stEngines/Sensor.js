@@ -5,7 +5,6 @@
  * 
  * Generic object for a Sensor
  * 
- * @ignore
  */
 
 /**
@@ -18,6 +17,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EventEmitter = require('events').EventEmitter;
+
+/**
+ * Import SensorEngine library
+ * @ignore
+ */
+var SensorEngine_Lib = require('./SensorEngine.js').SensorEngine_Lib;
 
 /**
  * Sensor constants
@@ -61,7 +66,7 @@ var Sensor = function () {
 
 
 	_createClass(Sensor, [{
-		key: "initialize",
+		key: 'initialize',
 		value: function initialize() {
 
 			var sensor = this;
@@ -70,18 +75,22 @@ var Sensor = function () {
 			// Sensor Engine URL
 			if (sensor.config.options.sensorEngineURL !== undefined && sensor.config.options.sensorEngineURL !== null) {
 
-				sensor._sensorEngine = null;
+				SensorEngine_Lib.initialze_SensorEngine(sensor);
 
-				try {
-					sensor._sensorEngine = require(sensor.config.options.sensorEngineURL);
-					sensor.sensorEngine = new sensor._sensorEngine(sensor.config);
-					sensor.sensorEngine.initialize();
-				} catch (e) {
-					// TODO: handle exception
-					console.log('<EEE> Sensor.initialize'); // TODO REMOVE DEBUG LOG
-					console.log(e); // TODO REMOVE DEBUG LOG
-					console.log(sensor.config); // TODO REMOVE DEBUG LOG
-				}
+				//			sensor._sensorEngine = null;
+				//			
+				//			try {
+				//				sensor._sensorEngine = require(sensor.config.options.sensorEngineURL);
+				//				sensor.sensorEngine = new sensor._sensorEngine(sensor.config);
+				//				sensor.sensorEngine.initialize();
+				//				
+				//			} catch (e) {
+				//				// TODO: handle exception
+				//				  console.log('<EEE> Sensor.initialize');	// TODO REMOVE DEBUG LOG
+				//				  console.log(e);	// TODO REMOVE DEBUG LOG
+				//				  console.log(sensor.config);	// TODO REMOVE DEBUG LOG
+				//
+				//			}
 			}
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 
@@ -95,7 +104,7 @@ var Sensor = function () {
    */
 
 	}, {
-		key: "getOptions",
+		key: 'getOptions',
 		value: function getOptions() {
 
 			var sensor = this;
@@ -120,7 +129,7 @@ var Sensor = function () {
    */
 
 	}, {
-		key: "setOptions",
+		key: 'setOptions',
 		value: function setOptions(options) {
 
 			var sensor = this;

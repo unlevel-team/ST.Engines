@@ -45,6 +45,59 @@ var ActuatorEngine_CONSTANTS = {
 };
 
 /**
+ * ActuatorEngine_Start event.
+ *
+ * @event ActuatorEngine#ActuatorEngine_Start
+ * @type {object}
+ * @property {object} engine - The engine that is started.
+ */
+
+/**
+ * ActuatorEngine_Stop event.
+ *
+ * @event ActuatorEngine#ActuatorEngine_Stop
+ * @type {object}
+ * @property {object} engine - The engine that is stopped.
+ */
+
+/**
+ * Actuator engine library
+ * 
+ * @namespace ActuatorEngine_Lib
+ */
+var ActuatorEngine_Lib = {
+
+	/**
+  * Initialize actuator engine
+  * 
+  * @function
+  * 
+  * @param {Actuator} act - Actuator object
+  */
+	"initialze_ActuatorEngine": function initialze_ActuatorEngine(act) {
+
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
+		// Actuator Engine URL
+		if (act.config.options.actuatorEngineURL !== undefined && act.config.options.actuatorEngineURL !== null) {
+
+			act._actuatorEngine = null;
+
+			try {
+				act._actuatorEngine = require(act.config.options.actuatorEngineURL);
+				act.actuatorEngine = new act._actuatorEngine(act.config);
+				act.actuatorEngine.initialize();
+			} catch (e) {
+				// TODO: handle exception
+				console.log('<EEE> Actuator.initialize'); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO REMOVE DEBUG LOG
+			}
+		}
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
+	}
+
+};
+
+/**
  * Actuator Engine
  * 
  * @class
@@ -173,5 +226,11 @@ var ActuatorEngine = function () {
 	return ActuatorEngine;
 }();
 
-module.exports = ActuatorEngine;
+var _lib = {
+	"ActuatorEngine": ActuatorEngine,
+	"ActuatorEngine_Lib": ActuatorEngine_Lib
+
+};
+
+module.exports = _lib;
 //# sourceMappingURL=ActuatorEngine.js.map

@@ -29,7 +29,7 @@ var Sensor = require('../Sensor.js');
  * Import SensorEngine
  * @ignore
  */
-var SensorEngine = require('../SensorEngine.js');
+var SensorEngine = require('../SensorEngine.js').SensorEngine;
 
 /**
  * Import SensorsManager_CONSTANTS
@@ -65,7 +65,7 @@ var Actuator = require('../Actuator.js');
  * Import ActuatorEngine
  * @ignore
  */
-var ActuatorEngine = require('../ActuatorEngine.js');
+var ActuatorEngine = require('../ActuatorEngine.js').ActuatorEngine;
 
 /**
  * Import ActuatorsManager_CONSTANTS
