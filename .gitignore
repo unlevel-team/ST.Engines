@@ -3,3 +3,6 @@
 /.tern-project
 /node_modules/
 /jsdoc_out/
+/lib_es5_min/
+/lib_es5/
+/npm-debug.log
