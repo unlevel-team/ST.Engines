@@ -26,6 +26,8 @@ var SensorEngine_Lib = require('./SensorEngine.js').SensorEngine_Lib;
 
 /**
  * Sensor constants
+ * 
+ * @memberof st.ngn
  */
 var Sensor_CONSTANTS = {
 
@@ -38,6 +40,8 @@ var Sensor_CONSTANTS = {
  * Sensor
  * 
  * @class
+ * @memberof st.ngn
+ * 
  * @property {object} config - Configuration.
  * @property {object} eventEmitter - Object for emit events.
  * @property {object} sensorEngine - Sensor engine.

@@ -20,6 +20,9 @@ var EventEmitter = require('events').EventEmitter;
 
 /**
  * SensorsManager CONSTANTS
+ * 
+ * @memberof st.ngn.services
+ * 
  */
 var SensorsManager_CONSTANTS = {
 
@@ -33,9 +36,10 @@ var SensorsManager_CONSTANTS = {
  * The result object.
  * 
  * @typedef {Object} SearchResult
- * @memberof SensorsManager
+ * @memberof st.ngn.services.SensorsManager
+ * 
  * @type Object
- * @property {(Sensor|null)} STsensor - The Sensor object, may be null.
+ * @property {(st.ngn.Sensor|null)} STsensor - The Sensor object, may be null.
  * @property {number} position - The position in list.
  * 
  */
@@ -44,7 +48,9 @@ var SensorsManager_CONSTANTS = {
  * Sensors Manager
  * 
  * @class
- * @property {Sensor[]} sensorsList - List of Sensors.
+ * @memberof st.ngn.services
+ * 
+ * @property {st.ngn.Sensor[]} sensorsList - List of Sensors.
  * @property {object} eventEmitter - Object for emit events.
  * 
  */
@@ -67,7 +73,7 @@ var SensorsManager = function () {
 	/**
   * Add sensor
   * 
-  * @param {Sensor} sensor - The Sensor object
+  * @param {st.ngn.Sensor} sensor - The Sensor object
   */
 
 
@@ -93,7 +99,7 @@ var SensorsManager = function () {
    * Returns Sensor searched by ID
    * 
    * @param {String} sensorID - Sensor ID
-   * @returns {SensorsManager.SearchResult} result - Result object
+   * @returns {st.ngn.services.SensorsManager.SearchResult} result - Result object
    *  
    */
 

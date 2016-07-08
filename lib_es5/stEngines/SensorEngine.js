@@ -21,6 +21,8 @@ var EventEmitter = require('events').EventEmitter;
 /**
  * SensorEngine CONSTANTS
  * 
+ * @memberof st.ngn
+ * 
  */
 var SensorEngine_CONSTANTS = {
 
@@ -47,23 +49,26 @@ var SensorEngine_CONSTANTS = {
 /**
  * SensorEngine_Start event.
  *
- * @event SensorEngine#SensorEngine_Start
+ * @event st.ngn.SensorEngine#SensorEngine_Start
+ * @memberof st.ngn.SensorEngine
  * @type {object}
- * @property {object} engine - The engine that is started.
+ * @property {st.ngn.SensorEngine} engine - The engine that is started.
  */
 
 /**
  * SensorEngine_Stop event.
  *
- * @event SensorEngine#SensorEngine_Stop
+ * @event st.ngn.SensorEngine#SensorEngine_Stop
+ * @memberof st.ngn.SensorEngine
  * @type {object}
- * @property {object} engine - The engine that is stopped.
+ * @property {st.ngn.SensorEngine} engine - The engine that is stopped.
  */
 
 /**
  * Sensor engine library
  * 
  * @namespace SensorEngine_Lib
+ * @memberof st.ngn
  */
 var SensorEngine_Lib = {
 
@@ -71,8 +76,10 @@ var SensorEngine_Lib = {
   * Initialize sensor engine
   * 
   * @function
+  * @memberof st.ngn.SensorEngine_Lib
   * 
-  * @param {Sensor} sensor - Sensor object
+  * @param {st.ngn.Sensor} sensor - Sensor object
+  * 
   */
 	"initialze_SensorEngine": function initialze_SensorEngine(sensor) {
 
@@ -94,6 +101,33 @@ var SensorEngine_Lib = {
 			}
 		}
 		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
+
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
+		// Sensor Engine URI (stURI format)
+		if (sensor.config.options.sensorEngineURI !== undefined && sensor.config.options.sensorEngineURI !== null) {
+
+			var net_Services = require("st.network").get_Services();
+			var net_NETServices = net_Services.get_NetServices();
+			var NETservices_Lib = net_NETServices.NETservices_Lib;
+
+			try {
+
+				var stURI_DATA = NETservices_Lib.parse_stURI(sensor.config.options.sensorEngineURI);
+
+				console.log('<~i~> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
+				console.log(' <~> NETservices_Lib.parse_stURI'); // TODO REMOVE DEBUG LOG
+				console.log(stURI_DATA); // TODO REMOVE DEBUG LOG
+			} catch (e) {
+				// TODO: handle exception
+
+				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
+				console.log(' <~> NETservices_Lib.parse_stURI'); // TODO REMOVE DEBUG LOG
+
+				console.log(e); // TODO REMOVE DEBUG LOG
+				console.log(sensor.config.options.sensorEngineURI); // TODO REMOVE DEBUG LOG
+			}
+		}
+		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 	}
 
 };
@@ -102,6 +136,8 @@ var SensorEngine_Lib = {
  * Sensor Engine
  * 
  * @class
+ * @memberof st.ngn
+ * 
  * @property {object} config - Configuration.
  * @property {object} _mainLoop - Main loop reference object.
  * @property {String} state - State.
@@ -183,7 +219,7 @@ var SensorEngine = function () {
 		/**
    * Stop main loop
    * 
-   * @fires SensorEngine#SensorEngine_Stop
+   * @fires st.ngn.SensorEngine#SensorEngine_Stop
    */
 
 	}, {

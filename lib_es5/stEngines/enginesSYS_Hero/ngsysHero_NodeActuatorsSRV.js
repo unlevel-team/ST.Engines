@@ -37,7 +37,8 @@ var ActuatorsServices = require('../services/ActuatorsServices.js').ActuatorsSer
  * </pre>
  * 
  * @class
- * @implements ActuatorsServices
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.ActuatorsServices
  * 
  */
 
@@ -47,7 +48,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 	/**
   * @constructs NGSYS_Hero_Node_ActuatorsSRV
   * 
-  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
+  * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
   * @param {object} controlChannel - Control channel object
   * 
   */
@@ -61,7 +62,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 	/**
   * Map control events
   * 
-  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
+  * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
   */
 
 
@@ -83,7 +84,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 		/**
    * Map control events for actuators
    * 
-   * @param {Actuator} actuator 
+   * @param {st.ngn.Actuator} actuator 
    */
 
 	}, {
@@ -127,10 +128,9 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 		/**
    * Map control messages
    * 
-   * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
    * 
    */
 
@@ -183,7 +183,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
    *
    */
 
@@ -220,7 +220,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    * 	
    * @param {object} data - Data object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node_ActuatorsSRV} [options.service] - Actuators Service object
    * 
    */
 

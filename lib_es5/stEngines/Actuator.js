@@ -29,6 +29,9 @@ var ActuatorEngine_Lib = require('./ActuatorEngine.js').ActuatorEngine_Lib;
 
 /**
  * Actuator CONSTANTS
+ * 
+ * @memberof st.ngn
+ * 
  */
 var Actuator_CONSTANTS = {
 
@@ -42,6 +45,8 @@ var Actuator_CONSTANTS = {
  * Actuator
  * 
  * @class
+ * @memberof st.ngn
+ * 
  * @property {object} config - Configuration.
  * @property {object} eventEmitter - Object for emit events.
  * @property {object} actuatorEngine - Actuator engine.

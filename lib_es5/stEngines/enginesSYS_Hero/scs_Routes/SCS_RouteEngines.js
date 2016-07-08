@@ -1,6 +1,17 @@
 "use strict";
 
 /**
+ * Server Control System Engines routes
+ * 
+ * version Hero
+ * 
+ * @namespace st.ngn.ngnSYS_Hero.scs_routes
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * 
+ */
+
+/**
  * import express
  * @ignore
  */
@@ -31,10 +42,12 @@ var SCS_RouteActuators = require('./SCS_RouteActuators.js');
  * </pre>
  * 
  * @class 
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes
+ * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Messages counter
- * @property {SensorsManager} sensorsManager - Sensors manager object
- * @property {ActuatorsManager} actuatorsManager - Actuators manager object
+ * @property {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
+ * @property {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
  * @property {object} routesforSersors - Express route object for Sensors
  * @property {object} routesforActuators - Express route object for Sensors
  * 
@@ -45,8 +58,8 @@ var SCS_RouteEngines = function () {
 	/**
   * @constructs SCS_RouteEngines
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
-  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
   */
 
 	function SCS_RouteEngines(sensorsManager, actuatorsManager) {

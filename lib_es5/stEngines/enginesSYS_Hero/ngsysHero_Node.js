@@ -74,7 +74,9 @@ var NGSYS_Hero_Node_ActuatorsSRV = require('./ngsysHero_NodeActuatorsSRV.js').NG
  * </pre>
  * 
  * @class
- * @implements SensorsManager
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.services.SensorsManager
  * 
  */
 
@@ -94,7 +96,7 @@ var NGSYS_Hero_Node_SensorsMNG = function (_SensorsManager) {
 	/**
   * Add sensor
   * 
-  * @param {Sensor} sensor - Sensor object
+  * @param {st.ngn.Sensor} sensor - Sensor object
   */
 
 
@@ -146,7 +148,8 @@ var NGSYS_Hero_Node_SensorsMNG = function (_SensorsManager) {
  * </pre>
  * 
  * @class
- * @implements ActuatorsManager
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.ActuatorsManager
  * 
  */
 
@@ -167,7 +170,7 @@ var NGSYS_Hero_Node_ActuatorsMNG = function (_ActuatorsManager) {
 	/**
   * Adds actuator
   * 
-  * @param {Actuator} act - Actuator object
+  * @param {st.ngn.Actuator} act - Actuator object
   */
 
 
@@ -220,7 +223,8 @@ var NGSYS_Hero_Node_ActuatorsMNG = function (_ActuatorsManager) {
  * 
  * 
  * @class
- * @implements NGSystem_Hero
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.ngnSYS_Hero.NGSystem_Hero
  * 
  */
 

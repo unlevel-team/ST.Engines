@@ -1,9 +1,17 @@
 "use strict";
 
 /**
+ * SomeThins project
+ * 
+ * @namespace st
+ */
+
+/**
  * SomeThings Engines library
  * 
- * @ignore
+ * @namespace st.ngn
+ * @memberof  st
+ * 
  */
 
 /**

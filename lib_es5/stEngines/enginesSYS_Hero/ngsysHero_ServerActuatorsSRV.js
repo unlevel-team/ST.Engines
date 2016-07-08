@@ -30,6 +30,9 @@ var ActuatorsServices = require('../services/ActuatorsServices.js').ActuatorsSer
  * Actuators Services 
  * 
  * @class
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.ActuatorsServices
+ * 
  * @property {NodesManager} nodesManager - Nodes manager object.
  * @property {object} eventEmitter - Object for emit events.
  * 
@@ -37,6 +40,16 @@ var ActuatorsServices = require('../services/ActuatorsServices.js').ActuatorsSer
 
 var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 	_inherits(NGSYS_Hero_Server_ActuatorsSRV, _ActuatorsServices);
+
+	/**
+  * 
+  * @constructs NGSYS_Hero_Server_ActuatorsSRV
+  * 
+  * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager
+  * @param {object} controlChannel - Actuators manager
+  * @param {NodesManager} nodesManager - Nodes manager
+  * 
+  */
 
 	function NGSYS_Hero_Server_ActuatorsSRV(actuatorsManager, controlChannel, nodesManager) {
 		_classCallCheck(this, NGSYS_Hero_Server_ActuatorsSRV);
@@ -52,6 +65,11 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		return _this;
 	}
 
+	/**
+  * Initialize
+  */
+
+
 	_createClass(NGSYS_Hero_Server_ActuatorsSRV, [{
 		key: "initialize",
 		value: function initialize() {
@@ -66,6 +84,14 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 			service._mapControlEventsForNodes(service.nodesManager);
 		}
+
+		/**
+   * Map control events
+   * 
+   * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager
+   * 
+   */
+
 	}, {
 		key: "_mapControlEvents",
 		value: function _mapControlEvents(actuatorsManager) {
@@ -83,6 +109,8 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 
 		/**
    * Map control events for nodes
+   * 
+   * @param {NodesManager} nodesManager - Nodes manager
    */
 
 	}, {
@@ -171,7 +199,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		/**
    * Manage actuators from node
    * 
-   * @param stNode Node object
+   * @param {Node} stNode - Node object
    */
 
 	}, {
@@ -202,7 +230,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		/**
    * Map node control messages
    * 
-   * @param stNode Node object
+   * @param {Node} stNode - Node object
    */
 
 	}, {
@@ -258,8 +286,8 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		/**
    * Unmap node control messages
    * 
-   * @param stNode Node object
-   * @param options Options object
+   * @param {Node} stNode - Node object
+   * @param {object} options - Options object
    */
 
 	}, {

@@ -8,6 +8,9 @@
 
 /**
  * ActuatorsServices CONSTANTS
+ * 
+ * @memberof st.ngn.services
+ * 
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43,7 +46,9 @@ var ActuatorsServices_CONSTANTS = {
  * manages the control messages related to actuators
  * 
  * @class
- * @property {ActuatorsManager} actuatorsManager - Actuators manager.
+ * @memberof st.ngn.services
+ * 
+ * @property {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager.
  * @property {object} controlChannel - Object for control channel.
  * 
  */
@@ -51,6 +56,8 @@ var ActuatorsServices_CONSTANTS = {
 var ActuatorsServices = function () {
 
 	/**
+  * 
+  * 
   * @constructs ActuatorsServices
   * 
   * @param {ActuatorsManager} actuatorsManager - Actuators manager
@@ -103,9 +110,11 @@ var ActuatorsServices = function () {
 		/**
    * Map control messages
    * 
+   * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {ActuatorsServices} [options.service] - Actuators Service object
+   * @param {st.ngn.services.ActuatorsServices} [options.service] - Actuators Service object
+   * 
    */
 
 	}, {
@@ -152,7 +161,7 @@ var ActuatorsServices = function () {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {ActuatorsServices} [options.service] - Actuators Service object
+   * @param {st.ngn.services.ActuatorsServices} [options.service] - Actuators Service object
    */
 
 	}, {

@@ -21,6 +21,8 @@ var EventEmitter = require('events').EventEmitter;
 
 /**
  * ActuatorEngine CONSTANTS
+ * 
+ * @memberof st.ngn
  */
 var ActuatorEngine_CONSTANTS = {
 
@@ -47,23 +49,26 @@ var ActuatorEngine_CONSTANTS = {
 /**
  * ActuatorEngine_Start event.
  *
- * @event ActuatorEngine#ActuatorEngine_Start
+ * @event st.ngn.ActuatorEngine#ActuatorEngine_Start
+ * @memberof st.ngn.ActuatorEngine
  * @type {object}
- * @property {object} engine - The engine that is started.
+ * @property {st.ngn.ActuatorEngine} engine - The engine that is started.
  */
 
 /**
  * ActuatorEngine_Stop event.
  *
- * @event ActuatorEngine#ActuatorEngine_Stop
+ * @event st.ngn.ActuatorEngine#ActuatorEngine_Stop
+ * @memberof st.ngn.ActuatorEngine
  * @type {object}
- * @property {object} engine - The engine that is stopped.
+ * @property {st.ngn.ActuatorEngine} engine - The engine that is stopped.
  */
 
 /**
  * Actuator engine library
  * 
  * @namespace ActuatorEngine_Lib
+ * @memberof st.ngn
  */
 var ActuatorEngine_Lib = {
 
@@ -71,8 +76,9 @@ var ActuatorEngine_Lib = {
   * Initialize actuator engine
   * 
   * @function
+  * @memberof st.ngn.ActuatorEngine_Lib
   * 
-  * @param {Actuator} act - Actuator object
+  * @param {st.ngn.Actuator} act - Actuator object
   */
 	"initialze_ActuatorEngine": function initialze_ActuatorEngine(act) {
 
@@ -101,6 +107,8 @@ var ActuatorEngine_Lib = {
  * Actuator Engine
  * 
  * @class
+ * @memberof st.ngn
+ * 
  * @property {object} config - Configuration.
  * @property {object} _mainLoop - Main loop reference object.
  * @property {String} state - State.
@@ -174,6 +182,8 @@ var ActuatorEngine = function () {
 
 		/**
    * Stop main loop
+   * 
+   * @fires st.ngn.ActuatorEngine#ActuatorEngine_Stop
    */
 
 	}, {

@@ -120,7 +120,8 @@ var NGSystem_Hero = NGSystem_Hero_Lib.NGSystem_Hero;
  * </pre>
  * 
  * @class
- * @implements SensorEngine
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.SensorEngine
  */
 
 var SnsEngineRef = function (_SensorEngine) {
@@ -178,7 +179,8 @@ var SnsEngineRef = function (_SensorEngine) {
  * </pre>
  * 
  * @class
- * @implements Sensor
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.Sensor
  */
 
 
@@ -301,7 +303,8 @@ var SensorRef = function (_Sensor) {
  * </pre>
  * 
  * @class
- * @implements SensorsManager
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.SensorsManager
  */
 
 
@@ -320,12 +323,14 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 
 	/**
   * Returns Sensor searched by sysID
+  * 
+  * @param {string} sysID - Sensor sysID
   */
 
 
 	_createClass(NGSYS_Hero_Server_SensorsMNG, [{
 		key: 'getSensorBy_sysID',
-		value: function getSensorBy_sysID(sensorID) {
+		value: function getSensorBy_sysID(sysID) {
 
 			var smngr = this;
 
@@ -334,7 +339,7 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 
 			_i = smngr.sensorsList.map(function (x) {
 				return x.config._sysID;
-			}).indexOf(sensorID);
+			}).indexOf(sysID);
 			if (_i !== -1) {
 				sensor = smngr.sensorsList[_i];
 			}
@@ -347,7 +352,7 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 
 		/**
    * Returns Sensors searched by nodeID
-   * @param nodeID 
+   * @param {string} nodeID - Node ID 
    */
 
 	}, {
@@ -372,7 +377,7 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 		/**
    * Add sensor
    * 
-   * @param sensor SensorRef object
+   * @param {st.ngn.ngnSYS_Hero.SensorRef} sensor - SensorRef object
    */
 
 	}, {
@@ -396,7 +401,8 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 		/**
    * Add sensor from node
    * 
-   * @param config Configuration object
+   * @param {object} config - Configuration object
+   * @param {object} options - Options object
    */
 
 	}, {
@@ -426,6 +432,9 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
 
 		/**
    * Turn off sensors of node
+   * 
+   * @param {string} nodeID - Node ID
+   * 
    */
 
 	}, {
@@ -461,7 +470,8 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
  * </pre>
  * 
  * @class
- * @implements ActuatorEngine
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.ActuatorEngine
  * 
  */
 
@@ -515,7 +525,8 @@ var ActEngineRef = function (_ActuatorEngine) {
  * </pre>
  * 
  * @class
- * @implements Actuator
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.Actuator
  * 
  */
 
@@ -631,7 +642,8 @@ var ActuatorRef = function (_Actuator) {
  * </pre>
  * 
  * @class
- * @implements ActuatorsManager
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.ActuatorsManager
  * 
  */
 
@@ -651,6 +663,8 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 
 	/**
   * Returns Actuator searched by sysID
+  * 
+  * @param {string} actuatorID - Actuator ID
   */
 
 
@@ -678,7 +692,7 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 
 		/**
    * Returns Actuators searched by nodeID
-   * @param nodeID 
+   * @param {string} nodeID - Node ID
    */
 
 	}, {
@@ -703,7 +717,7 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 		/**
    * Add actuator
    * 
-   * @param actuator ActuatorRef object
+   * @param {st.ngn.ngnSYS_Hero.ActuatorRef} actuator - ActuatorRef object
    */
 
 	}, {
@@ -727,7 +741,8 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 		/**
    * Add actuator from node
    * 
-   * @param config Configuration object
+   * @param {object} config - Configuration object
+   * @param {object} options - Options object
    */
 
 	}, {
@@ -757,6 +772,8 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
 
 		/**
    * Turn off actuators of node
+   * 
+   * @param {string} nodeID - Node ID
    */
 
 	}, {
@@ -791,7 +808,8 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
  * </pre>
  * 
  * @class
- * @implements NGSystem_Hero
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.ngnSYS_Hero.NGSystem_Hero
  */
 
 

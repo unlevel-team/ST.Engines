@@ -21,10 +21,11 @@ var bodyParser = require('body-parser');
  * Routes for Actuators
  * 
  * @class
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes
  * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Messages counter
- * @property {ActuatorsManager} actuatorsManager - Actuators manager object
+ * @property {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
  * 
  */
 
@@ -33,7 +34,7 @@ var SCS_RouteActuators = function () {
 	/**
   * @constructs SCS_RouteActuators
   * 
-  * @param {ActuatorsManager} actuatorsManager - Actuators manager object
+  * @param {st.ngn.services.ActuatorsManager} actuatorsManager - Actuators manager object
   */
 
 	function SCS_RouteActuators(actuatorsManager) {

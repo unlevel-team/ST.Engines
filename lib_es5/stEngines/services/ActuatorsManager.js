@@ -20,6 +20,9 @@ var EventEmitter = require('events').EventEmitter;
 
 /**
  * ActuatorsManager CONSTANTS
+ * 
+ * @memberof st.ngn.services
+ * 
  */
 var ActuatorsManager_CONSTANTS = {
 
@@ -33,9 +36,9 @@ var ActuatorsManager_CONSTANTS = {
  * The result object.
  * 
  * @typedef {Object} SearchResult
- * @memberof ActuatorsManager
+ * @memberof st.ngn.services.ActuatorsManager
  * @type Object
- * @property {(Actuator|null)} STactuator - The Actuator object, may be null.
+ * @property {(st.ngn.Actuator|null)} STactuator - The Actuator object, may be null.
  * @property {number} position - The position in list.
  * 
  */
@@ -44,7 +47,9 @@ var ActuatorsManager_CONSTANTS = {
  * Actuators manager
  * 
  * @class
- * @property {Actuator[]} actuatorsList - List of Actuators.
+ * @memberof st.ngn.services
+ * 
+ * @property {st.ngn.Actuator[]} actuatorsList - List of Actuators.
  * @property {object} eventEmitter - Object for emit events.
  */
 
@@ -66,7 +71,7 @@ var ActuatorsManager = function () {
 	/**
   * Adds actuator
   * 
-  * @param {Actuator} act - Actuator object
+  * @param {st.ngn.Actuator} act - Actuator object
   */
 
 
@@ -92,7 +97,7 @@ var ActuatorsManager = function () {
    * Returns Actuator searched by ID
    * 
    * @param {string} actuatorID - Actuator ID
-   * @returns {ActuatorsManager.SearchResult} result - Result object
+   * @returns {st.ngn.services.ActuatorsManager.SearchResult} result - Result object
    */
 
 	}, {

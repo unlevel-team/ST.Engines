@@ -21,9 +21,11 @@ var bodyParser = require('body-parser');
  * Routes for Sensors
  * 
  * @class
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes
+ * 
  * @property {object} expressRoute - Express route object
  * @property {number} messages - Messages counter
- * @property {SensorsManager} sensorsManager - Sensors manager object
+ * @property {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
  */
 
 var SCS_RouteSensors = function () {
@@ -31,7 +33,7 @@ var SCS_RouteSensors = function () {
 	/**
   * @constructs SCS_RouteSensors
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
   */
 
 	function SCS_RouteSensors(sensorsManager) {

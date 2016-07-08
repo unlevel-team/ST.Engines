@@ -28,11 +28,14 @@ var SensorsServices = require('../services/SensorsServices.js').SensorsServices;
 
 /**
  * Sensors Services
+ * <pre>
  * for role Node
  * 
  * version Hero
+ * </pre>
  * 
  * @class
+ * @memberof st.ngn.ngnSYS_Hero
  * @implements SensorsServices
  * 
  */
@@ -44,7 +47,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
   * 
   * @constructs NGSYS_Hero_Node_SensorsSRV
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
   * @param {object} controlChannel - Control chnnel object
   * 
   */
@@ -58,7 +61,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 	/**
   * Map control events
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
   */
 
 
@@ -86,7 +89,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 		/**
    * Map control events for sensors
    * 
-   * @param {Sensor} sensor 
+   * @param {st.ngn.Sensor} sensor 
    */
 
 	}, {
@@ -130,7 +133,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
    * 
    */
 
@@ -183,7 +186,7 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node_SensorsSRV} [options.service] - Sensors Service object
    * 
    */
 

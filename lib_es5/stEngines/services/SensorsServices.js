@@ -7,6 +7,9 @@
 
 /**
  * Sensors services constants
+ * 
+ * @memberof st.ngn.services
+ * 
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45,6 +48,8 @@ var SensorsServices_CONSTANTS = {
  * </pre>
  * 
  * @class
+ * 
+ * @memberof st.ngn.services
  */
 
 var SensorsServices = function () {
@@ -53,7 +58,7 @@ var SensorsServices = function () {
   * 
   * @constructs SensorsServices
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
   * @param {object} controlChannel - Control channel object
   */
 

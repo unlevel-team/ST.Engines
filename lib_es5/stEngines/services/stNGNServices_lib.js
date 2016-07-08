@@ -1,9 +1,13 @@
 "use strict";
 
-/*
- SomeThings Engines services library
-
-*/
+/**
+ * SomeThings Engines services library
+ * 
+ * @namespace st.ngn.services
+ * @memberof st.ngn 
+ * 
+ *
+ */
 
 /**
  * Import ActuatorsManager

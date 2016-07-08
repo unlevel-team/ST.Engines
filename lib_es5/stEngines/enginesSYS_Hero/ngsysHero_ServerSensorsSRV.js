@@ -33,7 +33,8 @@ var SensorsServices = require('../services/SensorsServices.js').SensorsServices;
  * version Hero
  * 
  * @class
- * @implements SensorsServices
+ * @memberof st.ngn.ngnSYS_Hero
+ * @implements st.ngn.services.SensorsServices
  * 
  */
 
@@ -43,9 +44,9 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 	/**
   * @construct NGSYS_Hero_Server_SensorsSRV
   * 
-  * @param {SensorsManager} sensorsManager - Sensors manager object
+  * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
   * @param {object} controlChannel - Control channel object
-  * @param {object} nodesManager - Nodes manager object
+  * @param {NodesManager} nodesManager - Nodes manager object
   */
 
 	function NGSYS_Hero_Server_SensorsSRV(sensorsManager, controlChannel, nodesManager) {
@@ -82,6 +83,8 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Map control events
+   * 
+   * @param {st.ngn.services.SensorsManager} sensorsManager - Sensors manager object
    */
 
 	}, {
@@ -100,7 +103,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -127,7 +130,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} socket - Socket object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -154,7 +157,8 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Map control events for nodes
    * 
-   * @param {object} nodesManager - Nodes manager object
+   * @param {NodesManager} nodesManager - Nodes manager object
+   * 
    */
 
 	}, {
@@ -195,7 +199,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Manage sensors from node
    * 
-   * @param {object} stNode - Node object
+   * @param {Node} stNode - Node object
    */
 
 	}, {
@@ -226,7 +230,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Map node control messages
    * 
-   * @param {object} stNode - Node object
+   * @param {Node} stNode - Node object
    */
 
 	}, {
@@ -275,9 +279,9 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		/**
    * Unmap node control messages
    * 
-   * @param {object} stNode - Node object
+   * @param {Node} stNode - Node object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -310,7 +314,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} data - Data object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -348,7 +352,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} data - Data object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -377,7 +381,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} data - Data object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -413,7 +417,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -471,7 +475,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -530,7 +534,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -583,7 +587,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {
@@ -640,7 +644,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
-   * @param {NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
+   * @param {st.ngn.ngnSYS_Hero.NGSYS_Hero_Server_SensorsSRV} [options.service] - Sensors Service object
    */
 
 	}, {

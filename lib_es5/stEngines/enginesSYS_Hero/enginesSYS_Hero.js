@@ -1,11 +1,17 @@
 "use strict";
 
-/*
- SomeThings Engines System library
- 
- version Hero
-
-*/
+/**
+ * 
+ * SomeThings Engines System library
+ * 
+ * <pre>
+ * version Hero
+ * </pre>
+ * 
+ * @namespace st.ngn.ngnSYS_Hero
+ * @memberof st.ngn
+ * 
+ */
 
 /**
  * Import Sensor
@@ -49,6 +55,9 @@ var EnginesSystem = require('../EnginesSystem.js').EnginesSystem;
  * version Hero
  * 
  * </pre>
+ * 
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
  */
 var NGSystem_Hero_CONSTANTS = {
 
@@ -66,7 +75,9 @@ var NGSystem_Hero_CONSTANTS = {
  * VActuator
  * 
  * @class
- * @implements Actuator
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.Actuator
  */
 
 var VActuator = function (_Actuator) {
@@ -90,7 +101,9 @@ var VActuator = function (_Actuator) {
  * CylActuator
  * 
  * @class
- * @implements Actuator
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.Actuator
  */
 
 
@@ -115,7 +128,9 @@ var CylActuator = function (_Actuator2) {
  * VSensor
  * 
  * @class
- * @implements Sensor
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.Sensor
  */
 
 
@@ -140,7 +155,10 @@ var VSensor = function (_Sensor) {
  * CylSensor
  * 
  * @class
- * @implements Sensor
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.Sensor
+ * 
  */
 
 
@@ -165,7 +183,11 @@ var CylSensor = function (_Sensor2) {
  * NGSystem_Hero 
  * 
  * @class
- * @implements EnginesSystem
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @implements st.ngn.EnginesSystem
+ * 
+ * 
  */
 
 
@@ -226,8 +248,11 @@ var NGSystem_Hero = function (_EnginesSystem) {
 /**
  * Get sensor
  * 
- * @param config
- * @returns {(Sensor|VSensor|CylSensor)}
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * 
+ * @param {object} config - Configuration object
+ * @returns {(st.ngn.Sensor|st.ngn.ngnSYS_Hero.VSensor|st.ngn.ngnSYS_Hero.CylSensor)}
  */
 
 
@@ -256,8 +281,10 @@ function getSensor(config) {
 /**
  * Get actuator
  * 
- * @param config
- * @returns {(Actuator|VActuator|CylActuator)}
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
+ * @param {object} config - Configuration object
+ * @returns {(st.ngn.Actuator|st.ngn.ngnSYS_Hero.VActuator|st.ngn.ngnSYS_Hero.CylActuator)}
  */
 function getActuator(config) {
 
@@ -284,8 +311,10 @@ function getActuator(config) {
 /**
  * Get EnginesSystem
  * 
+ * @memberof st.ngn.ngnSYS_Hero
+ * 
  * @param {object} config - Configuration object
- * @returns {EnginesSystem}
+ * @returns {st.ngn.ngnSYS_Hero.NGSYS_Hero_Node|st.ngn.ngnSYS_Hero.Role_Server}
  * 
  */
 var getEnginesSystem = function getEnginesSystem(config) {

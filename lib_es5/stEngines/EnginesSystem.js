@@ -9,6 +9,9 @@
 
 /**
  * Engines system constants
+ * 
+ * @memberof st.ngn
+ * 
  */
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -30,6 +33,8 @@ var EnginesSystem_CONSTANTS = {
  * EnginesSystem
  * 
  * @class
+ * @memberof st.ngn
+ * 
  * @property {object} config - Configuration.
  * 
  */
@@ -74,7 +79,9 @@ var EnginesSystem = function () {
 /**
  * Get EnginesSystem
  * 
- * @returns EnginesSystem
+ * @memberof st.ngn
+ * 
+ * @returns {st.ngn.EnginesSystem}
  */
 
 
