@@ -42,6 +42,7 @@ var Sensor_CONSTANTS = {
  * @class
  * @memberof st.ngn
  * 
+ * @property {boolean} enabled - Enabled flag.
  * @property {object} config - Configuration.
  * @property {object} eventEmitter - Object for emit events.
  * @property {object} sensorEngine - Sensor engine.
@@ -58,10 +59,13 @@ var Sensor = function () {
 	function Sensor(config) {
 		_classCallCheck(this, Sensor);
 
-		this.config = config;
-		this.CONSTANTS = Sensor_CONSTANTS;
-		this.eventEmitter = new EventEmitter();
-		this.sensorEngine = null;
+		var _sensor = this;
+
+		_sensor.enabled = false;
+		_sensor.config = config;
+		_sensor.CONSTANTS = Sensor_CONSTANTS;
+		_sensor.eventEmitter = new EventEmitter();
+		_sensor.sensorEngine = null;
 	}
 
 	/**
@@ -73,13 +77,24 @@ var Sensor = function () {
 		key: 'initialize',
 		value: function initialize() {
 
-			var sensor = this;
+			var _sensor = this;
+			var _config = _sensor.config;
+			var _configOptions = _config.options;
+
+			if (_config.enabled === true) {
+				_sensor.enabled = true;
+			}
+
+			// Only when is enabled
+			if (_sensor.enabled !== true) {
+				return;
+			}
 
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
 			// Sensor Engine URL
-			if (sensor.config.options.sensorEngineURL !== undefined && sensor.config.options.sensorEngineURL !== null) {
+			if (_configOptions.sensorEngineURL !== undefined && _configOptions.sensorEngineURL !== null) {
 
-				SensorEngine_Lib.initialze_SensorEngine(sensor);
+				SensorEngine_Lib.initialze_SensorEngine(_sensor);
 
 				//			sensor._sensorEngine = null;
 				//			
@@ -98,7 +113,7 @@ var Sensor = function () {
 			}
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 
-			if (sensor.config.options.sensorEngine !== undefined && sensor.config.options.sensorEngine !== null) {}
+			if (_configOptions.sensorEngine !== undefined && _configOptions.sensorEngine !== null) {}
 		}
 
 		/**

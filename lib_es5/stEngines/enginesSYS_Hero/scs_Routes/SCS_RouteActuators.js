@@ -18,6 +18,66 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 /**
+ * SCS Response default
+ * 
+ * @typedef {Object} SCS_Response_Default
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteActuators
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Actuators'
+ * @property {string} action - 'Default'
+ * @property {number} messagesReceived - Number of messages received
+ * 
+ */
+
+/**
+ * SCS Response list
+ * <pre>
+ * mapped to '/list/'
+ * </pre>
+ * 
+ * @typedef {Object} SCS_Response_List
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteActuators
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Actuators'
+ * @property {string} action - 'List'
+ * @property {number} numberOfActuators - The number of actuators
+ * @property {Object[]} actuators - Actuators list
+ * @property {string} actuators[].actuatorID - Actuator ID
+ * @property {string} actuators[].type - Actuator type
+ * @property {string} actuators[]._sysID - Actuator sysID
+ * @property {string} actuators[].engine - Engine name. Could be 'not defined'
+ * @property {string} actuators[].state - Engine state.
+ * 
+ */
+
+/**
+ * SCS Response info
+ * <pre>
+ * mapped to '/:actuatorID/info'
+ * </pre>
+ * 
+ * @typedef {Object} SCS_Response_Info
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteActuators
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Actuators'
+ * @property {string} action - 'Info'
+ * @property {string} actuatorID - Actuator ID
+ * @property {Object} actuator - Actuator data
+ * @property {string} actuator.actuatorID - Actuator ID
+ * @property {string} actuator.type - Actuator type
+ * @property {string} actuator._sysID - Actuator sysID
+ * @property {string} actuator.engine - Engine name. Could be 'not defined'
+ * @property {string} actuator.state - Engine state.
+ * 
+ */
+
+/**
  * Routes for Actuators
  * 
  * @class
@@ -76,44 +136,27 @@ var SCS_RouteActuators = function () {
 
 			// define the home page route
 			routerActuators.expressRoute.get('/', function (req, res) {
-				//			res.write('Messages received: ' + routerActuators.messages + '<br />');
-				//			res.end();
-				var _response = {
-					"context": "ST Server Actuators",
-					"action": "Default",
-					"messagesReceived": routerActuators.messages
 
-				};
-				res.jsonp(_response);
-				res.end();
+				routerActuators._route_Default(req, res, {
+					"scsRouteActuators": routerActuators
+				});
 			});
 
 			// List of Actuators
 			routerActuators.expressRoute.get('/list/', function (req, res) {
 
-				var _response = {
-					"context": "ST Server Actuators",
-					"action": "list",
-					"numberOfActuators": 0,
-					"actuators": []
-				};
+				routerActuators._route_List(req, res, {
+					"scsRouteActuators": routerActuators
+				});
+			});
 
-				var _i = 0;
-				for (_i = 0; _i < routerActuators.actuatorsManager.actuatorsList.length; _i++) {
-					var actuator = routerActuators.actuatorsManager.actuatorsList[_i];
+			// Get Actuator information
+			routerActuators.expressRoute.get('/:actuatorID/info', function (req, res) {
 
-					var actuatorData = {
-						"actuatorID": actuator.config.actuatorID,
-						"type": actuator.config.type,
-						"_sysID": actuator.config._sysID
-					};
-					_response.actuators.push(actuatorData);
-				}
-
-				_response.numberOfActuators = routerActuators.actuatorsManager.actuatorsList.length;
-
-				res.jsonp(_response);
-				res.end();
+				routerActuators._route_Info(req, res, {
+					"scsRouteActuators": routerActuators,
+					"actuatorID": req.params.actuatorID
+				});
 			});
 
 			// Get Actuator options
@@ -289,6 +332,166 @@ var SCS_RouteActuators = function () {
 				res.jsonp(_response);
 				res.end();
 			});
+		}
+
+		/**
+   * Returns actuator data
+   * @private
+   */
+
+	}, {
+		key: '_getActuatorData',
+		value: function _getActuatorData(_act) {
+			var _actuatorData = {
+				"actuatorID": _act.config.actuatorID,
+				"type": _act.config.type,
+				"_sysID": _act.config._sysID,
+				"engine": "not defined",
+				"state": "not defined"
+
+			};
+
+			if (_act.actuatorEngine !== null) {
+				if (_act.actuatorEngine.name !== undefined) {
+					_actuatorData.engine = _act.actuatorEngine.name;
+				}
+				_actuatorData.state = _act.actuatorEngine.state;
+			}
+
+			return _actuatorData;
+		}
+
+		/**
+   * Response for default action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   * 
+   */
+
+	}, {
+		key: '_route_Default',
+		value: function _route_Default(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteActuators = this;
+			if (options.scsRouteActuators !== undefined) {
+				_SCS_RouteActuators = options.scsRouteActuators;
+			}
+
+			var _response = {
+				"context": "ST Server Actuators",
+				"action": "Default",
+				"messagesReceived": _SCS_RouteActuators.messages
+
+			};
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Response for list action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   */
+
+	}, {
+		key: '_route_List',
+		value: function _route_List(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteActuators = this;
+			if (options.scsRouteActuators !== undefined) {
+				_SCS_RouteActuators = options.scsRouteActuators;
+			}
+
+			var _amngr = _SCS_RouteActuators.actuatorsManager;
+
+			var _response = {
+				"context": "ST Server Actuators",
+				"action": "list",
+				"numberOfActuators": 0,
+				"actuators": []
+			};
+
+			_amngr.actuatorsList.forEach(function (_act, _i) {
+
+				var _actuatorData = _SCS_RouteActuators._getActuatorData(_act);
+				_response.actuators.push(_actuatorData);
+			});
+
+			_response.numberOfActuators = _amngr.actuatorsList.length;
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Response for info action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   */
+
+	}, {
+		key: '_route_Info',
+		value: function _route_Info(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteActuators = this;
+			if (options.scsRouteActuators !== undefined) {
+				_SCS_RouteActuators = options.scsRouteActuators;
+			}
+
+			var _amngr = _SCS_RouteActuators.actuatorsManager;
+
+			var _actuatorID = options.actuatorID;
+
+			var _response = {
+				"context": "ST Server Actuators",
+				"action": "Info",
+				"actuatorID": _actuatorID,
+				"actuator": {}
+			};
+
+			try {
+
+				var _actuatorSearch = _amngr.getActuatorBy_sysID(_actuatorID);
+				if (_actuatorSearch.stActuator === null) {
+					throw "Actuator not found";
+				}
+
+				var _actuator = _actuatorSearch.stActuator;
+				_response.actuator = _SCS_RouteActuators._getActuatorData(_actuator);
+			} catch (e) {
+				// TODO: handle exception
+
+				_response.response = 'Something happends...';
+				_response.error = e;
+			}
+
+			res.jsonp(_response);
+			res.end();
 		}
 	}]);
 

@@ -407,39 +407,48 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 		key: "_msg_ActuatorsList",
 		value: function _msg_ActuatorsList(msg, options) {
 
-			var service = this;
+			var _service = this;
 
 			if (options === undefined || options === null) {
 				options = {};
 			}
 
 			if (options.service !== undefined) {
-				service = options.service;
+				_service = options.service;
 			}
 
-			var amng = service.actuatorsManager;
-			var node = options.node;
-			var socket = node.socket;
-			var data = msg;
+			var _amng = _service.actuatorsManager;
+			var _node = options.node;
+			var _nodeID = _node.config.nodeID;
+			var _socket = _node.socket;
+			var _data = msg;
 
 			console.log('<*> NGSYS_Hero_Server_ActuatorsSRV.Messages.ActuatorsList'); // TODO REMOVE DEBUG LOG
 
-			if (data.numActuators > 0) {
+			if (_data.numActuators > 0) {
 
-				data.actuators.forEach(function (actDATA, _i) {
+				_data.actuators.forEach(function (actDATA, _i) {
 
-					actDATA._sysID = node.config.nodeID + '.' + actDATA.actuatorID;
-					actDATA._refSTNodeID = node.config.nodeID;
+					var _actConfig = {
+						"actuatorID": actDATA.actuatorID,
+						"type": actDATA.type,
 
-					//				actDATA._nodeEvents = node.eventEmitter;
-					actDATA._controlSocket = socket;
+						"_sysID": _nodeID + '.' + actDATA.actuatorID,
+						"_refSTNodeID": _nodeID,
+						"_controlSocket": _socket
+					};
+
+					var _actOptions = {
+						"engine": actDATA.engine,
+						"state": actDATA.state
+					};
 
 					try {
 
-						amng.addActuatorFromNode(actDATA);
+						_amng.addActuatorFromNode(_actConfig, _actOptions);
 
 						// Emit message getActuatorOptions
-						socket.emit(service.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": actDATA.actuatorID });
+						_socket.emit(_service.CONSTANTS.Messages.getActuatorOptions, { "actuatorID": actDATA.actuatorID });
 					} catch (e) {
 
 						// TODO: handle exception

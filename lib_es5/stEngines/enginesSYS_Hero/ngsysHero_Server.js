@@ -403,27 +403,33 @@ var NGSYS_Hero_Server_SensorsMNG = function (_SensorsManager) {
    * 
    * @param {object} config - Configuration object
    * @param {object} options - Options object
+   * @param {st.ngn.services.SensorsManager} [options.sensorsManager] - Sensors manager
+   * @param {string} options.engine - Engine name
    */
 
 	}, {
 		key: 'addSensorFromNode',
 		value: function addSensorFromNode(config, options) {
 
-			var smng = this;
+			var _smng = this;
 
 			if (options === undefined || options === null) {
 				options = {};
 			}
 
 			if (options.sensorsManager !== undefined) {
-				smng = options.sensorsManager;
+				_smng = options.sensorsManager;
 			}
 
-			var sensor = new SensorRef(config);
-			sensor.initialize();
+			var _sensor = new SensorRef(config);
+			_sensor.initialize();
+
+			if (options.engine !== undefined) {
+				_sensor.sensorEngine.name = options.engine;
+			}
 
 			try {
-				smng.addSensor(sensor);
+				_smng.addSensor(_sensor);
 			} catch (e) {
 				// TODO: handle exception
 				throw "Cannot add sensor. " + e;
@@ -743,27 +749,34 @@ var NGSYS_Hero_Server_ActuatorsMNG = function (_ActuatorsManager) {
    * 
    * @param {object} config - Configuration object
    * @param {object} options - Options object
+   * @param {st.ngn.services.ActuatorsManager} [options.actuatorsManager] - Actuators manager
+   * @param {string} options.engine - Engine name
+   * 
    */
 
 	}, {
 		key: 'addActuatorFromNode',
 		value: function addActuatorFromNode(config, options) {
 
-			var amng = this;
+			var _amng = this;
 
 			if (options === undefined || options === null) {
 				options = {};
 			}
 
 			if (options.actuatorsManager !== undefined) {
-				amng = options.actuatorsManager;
+				_amng = options.actuatorsManager;
 			}
 
-			var actuator = new ActuatorRef(config);
-			actuator.initialize();
+			var _actuator = new ActuatorRef(config);
+			_actuator.initialize();
+
+			if (options.engine !== undefined) {
+				_actuator.actuatorEngine.name = options.engine;
+			}
 
 			try {
-				amng.addActuator(actuator);
+				_amng.addActuator(_actuator);
 			} catch (e) {
 				// TODO: handle exception
 				throw "Cannot add actuator. " + e;

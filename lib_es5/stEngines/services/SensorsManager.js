@@ -64,10 +64,11 @@ var SensorsManager = function () {
 	function SensorsManager() {
 		_classCallCheck(this, SensorsManager);
 
-		this.sensorsList = [];
-		this.eventEmitter = new EventEmitter();
+		var _smng = this;
+		_smng.sensorsList = [];
+		_smng.eventEmitter = new EventEmitter();
 
-		this.CONSTANTS = SensorsManager_CONSTANTS;
+		_smng.CONSTANTS = SensorsManager_CONSTANTS;
 	}
 
 	/**

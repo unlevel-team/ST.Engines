@@ -81,7 +81,10 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(STSensor_Dummy01).call(this, config));
 
-		_this._lastTime = null;
+		var _snsEngine = _this;
+		_snsEngine.name = "STSensor_Dummy01";
+
+		_snsEngine._lastTime = null;
 		return _this;
 	}
 

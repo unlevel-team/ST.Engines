@@ -149,7 +149,9 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 			// Map message getActuatorsList
 			socket.on(service.CONSTANTS.Messages.getActuatorsList, function (msg) {
-				service._msg_getActuatorsList(msg, service);
+				service._msg_getActuatorsList(msg, {
+					"service": service
+				});
 			});
 
 			// Map message getActuatorOptions
@@ -298,33 +300,58 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 	}, {
 		key: '_msg_getActuatorsList',
-		value: function _msg_getActuatorsList(msg, service) {
+		value: function _msg_getActuatorsList(msg, options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
-			var amng = service.actuatorsManager;
-			var socket = service.controlChannel.socket;
+
+			var _service = this;
+
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _amng = _service.actuatorsManager;
+			var _socket = _service.controlChannel.socket;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.getActuatorsList'); // TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.numActuators = amng.actuatorsList.length;
-			response.actuators = [];
+			var _response = {};
+			_response.numActuators = _amng.actuatorsList.length;
+			_response.actuators = [];
 
-			amng.actuatorsList.forEach(function (act_, _i) {
+			// Only for enabled
+			var _actuatorsEnabled = _amng.actuatorsList.filter(function (_actuator, _i) {
 
-				var actuator = {
+				if (_actuator.enabled === true) {
+					return true;
+				}
+
+				return false;
+			});
+
+			_actuatorsEnabled.forEach(function (act_, _i) {
+
+				var _actuator = {
 					"actuatorID": act_.config.id,
 					"type": act_.config.type,
-					"state": act_.config.state
+					"engine": "not defined",
+					"state": "config"
 				};
 
-				response.actuators.push(actuator);
+				if (act_.actuatorEngine !== null) {
+					if (act_.actuatorEngine.name !== undefined) {
+						_actuator.engine = act_.actuatorEngine.name;
+					}
+					_actuator.state = act_.actuatorEngine.state;
+				}
+
+				_response.actuators.push(_actuator);
 			});
 
 			// Emit message ActuatorsList
-			socket.emit(service.CONSTANTS.Messages.ActuatorsList, response);
+			_socket.emit(_service.CONSTANTS.Messages.ActuatorsList, _response);
 		}
 
 		/**

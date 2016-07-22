@@ -414,6 +414,12 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 
 		/**
    * Message SensorsList
+   * <pre>
+   * Server receives message `SensorList` message from node 
+   * </pre>
+   * 
+   * 
+   * @protected
    * 
    * @param {object} msg - Message object
    * @param {object} options - Options object
@@ -424,39 +430,48 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 		key: "_msg_SensorsList",
 		value: function _msg_SensorsList(msg, options) {
 
-			var service = this;
+			var _service = this;
 
 			if (options === undefined || options === null) {
 				options = {};
 			}
 
 			if (options.service !== undefined) {
-				service = options.service;
+				_service = options.service;
 			}
 
-			var smng = service.sensorsManager;
-			var node = options.node;
-			var socket = node.socket;
-			var data = msg;
+			var _smng = _service.sensorsManager;
+			var _node = options.node;
+			var _nodeID = _node.config.nodeID;
+			var _socket = _node.socket;
+			var _data = msg;
 
 			console.log('<*> NGSYS_Hero_Server_SensorsSRV.Messages.SensorsList'); // TODO REMOVE DEBUG LOG
 
-			if (data.numSensors > 0) {
+			if (_data.numSensors > 0) {
 
-				data.sensors.forEach(function (snsDATA, _i) {
+				_data.sensors.forEach(function (snsDATA, _i) {
 
-					snsDATA._sysID = node.config.nodeID + '.' + snsDATA.sensorID;
-					snsDATA._refSTNodeID = node.config.nodeID;
+					var _snsConfig = {
+						"sensorID": snsDATA.sensorID,
+						"type": snsDATA.type,
 
-					//				snsDATA._nodeEvents = node.eventEmitter;
-					snsDATA._controlSocket = socket;
+						"_sysID": _nodeID + '.' + snsDATA.sensorID,
+						"_refSTNodeID": _nodeID,
+						"_controlSocket": _socket
+					};
+
+					var _snsOptions = {
+						"engine": snsDATA.engine,
+						"state": snsDATA.state
+					};
 
 					try {
 
-						smng.addSensorFromNode(snsDATA);
+						_smng.addSensorFromNode(_snsConfig, _snsOptions);
 
-						socket.emit(service.CONSTANTS.Messages.getSensorOptions, {
-							"sensorID": snsDATA.sensorID
+						_socket.emit(_service.CONSTANTS.Messages.getSensorOptions, {
+							"sensorID": _snsConfig.sensorID
 						});
 					} catch (e) {
 
@@ -464,7 +479,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 						console.log('<~EEE~> NGSYS_Hero_Server_SensorsSRV.Messages.SensorsList'); // TODO REMOVE DEBUG LOG
 						console.log('<~EEE~> Cannot add sensor from node.'); // TODO REMOVE DEBUG LOG
 						console.log(e); // TODO REMOVE DEBUG LOG
-						console.log(snsDATA); // TODO REMOVE DEBUG LOG
+						console.log(_snsConfig); // TODO REMOVE DEBUG LOG
 					}
 				});
 			}

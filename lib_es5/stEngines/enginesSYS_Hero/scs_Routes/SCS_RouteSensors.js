@@ -18,6 +18,91 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 /**
+ * SCS Response default
+ * 
+ * @typedef {Object} SCS_Response_Default
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteSensors
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Sensors'
+ * @property {string} action - 'Default'
+ * @property {number} messagesReceived - Number of messages received
+ * 
+ */
+
+/**
+ * SCS Response list
+ * <pre>
+ * mapped to '/list/'
+ * </pre>
+ * 
+ * @typedef {Object} SCS_Response_List
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteSensors
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Sensors'
+ * @property {string} action - 'List'
+ * @property {number} numberOfSensors - The number of sensors
+ * @property {Object[]} sensors - Sensors list
+ * @property {string} sensors[].sensorID - Sensor ID
+ * @property {string} sensors[].type - Sensor type
+ * @property {string} sensors[]._sysID - Sensor sysID
+ * @property {string} sensors[].engine - Engine name. Could be 'not defined'
+ * @property {string} sensors[].state - Engine state.
+ * 
+ */
+
+/**
+ * SCS Response info
+ * <pre>
+ * mapped to '/:sensorID/info'
+ * </pre>
+ * 
+ * @typedef {Object} SCS_Response_Info
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteSensors
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Sensors'
+ * @property {string} action - 'Info'
+ * @property {string} sensorID - Sensor ID
+ * @property {Object} sensor - Sensor data
+ * @property {string} sensor.sensorID - Sensor ID
+ * @property {string} sensor.type - Sensor type
+ * @property {string} sensor._sysID - Sensor sysID
+ * @property {string} sensor.engine - Engine name. Could be 'not defined'
+ * @property {string} sensor.state - Engine state.
+ * 
+ */
+
+/**
+ * SCS Response sensor options
+ * <pre>
+ * mapped to '/:sensorID/options'
+ * </pre>
+ * 
+ * @typedef {Object} SCS_Response_Options
+ * @memberof st.ngn.ngnSYS_Hero.scs_routes.SCS_RouteSensors
+ * @type Object
+ * @protected
+ * 
+ * @property {string} context - 'ST Server Sensors'
+ * @property {string} action - 'Get Options of Sensor'
+ * @property {string} sensorID - 'The Sensor ID'
+ * @property {Object[]} options - 'Sensor options'
+ * 
+ * 
+ * @property {number} numberOfSensors - The number of sensors
+ * @property {Object[]} sensors - Sensors list
+ * @property {string} sensors[].sensorID - Sensor ID
+ * @property {string} sensors[].type - Sensor type
+ * @property {string} sensors[]._sysID - Sensor sysID
+ * 
+ */
+
+/**
  * Routes for Sensors
  * 
  * @class
@@ -39,11 +124,13 @@ var SCS_RouteSensors = function () {
 	function SCS_RouteSensors(sensorsManager) {
 		_classCallCheck(this, SCS_RouteSensors);
 
-		this.expressRoute = null;
-		this.messages = 0;
-		this.sensorsManager = sensorsManager;
+		var _scsRouteSensors = this;
 
-		this.mapServiceRoutes();
+		_scsRouteSensors.expressRoute = null;
+		_scsRouteSensors.messages = 0;
+		_scsRouteSensors.sensorsManager = sensorsManager;
+
+		_scsRouteSensors.mapServiceRoutes();
 	}
 
 	/**
@@ -75,45 +162,26 @@ var SCS_RouteSensors = function () {
 			// define the home page route
 			routerSensors.expressRoute.get('/', function (req, res) {
 
-				//			res.write('Messages received: ' + routerNodes.messages + '<br />');
-				//			res.end();
-
-				var _response = {
-					"context": "ST Server Sensors",
-					"action": "Default",
-					"messagesReceived": routerSensors.messages
-
-				};
-
-				res.jsonp(_response);
-				res.end();
+				routerSensors._route_Default(req, res, {
+					"scsRouteSensors": routerSensors
+				});
 			});
 
 			// List of Sensors
 			routerSensors.expressRoute.get('/list/', function (req, res) {
 
-				var smngr = routerSensors.sensorsManager;
-
-				var _response = {
-					"context": "ST Server Sensors",
-					"action": "List",
-					"numberOfSensors": 0,
-					"sensors": []
-				};
-
-				smngr.sensorsList.forEach(function (sns_, _i) {
-					var sensorData = {
-						"sensorID": sns_.config.sensorID,
-						"type": sns_.config.type,
-						"_sysID": sns_.config._sysID
-					};
-					_response.sensors.push(sensorData);
+				routerSensors._route_List(req, res, {
+					"scsRouteSensors": routerSensors
 				});
+			});
 
-				_response.numberOfSensors = routerSensors.sensorsManager.sensorsList.length;
+			// Get Sensor information
+			routerSensors.expressRoute.get('/:sensorID/info', function (req, res) {
 
-				res.jsonp(_response);
-				res.end();
+				routerSensors._route_Info(req, res, {
+					"scsRouteSensors": routerSensors,
+					"sensorID": req.params.sensorID
+				});
 			});
 
 			// Get Sensor options
@@ -211,13 +279,15 @@ var SCS_RouteSensors = function () {
 						sensorSearch.stSensor.start().then(function (value) {
 							console.log(value); // TODO REMOVE DEBUG LOG
 							console.log(' <*> Sensor Started'); // TODO REMOVE DEBUG LOG
-						}, function (reason) {});
+						}, function (reason) {
+							console.log(reason); // TODO REMOVE DEBUG LOG
+							console.log(' <*> Sensor Start problem...'); // TODO REMOVE DEBUG LOG
+						});
 					} else {
-						_response.response = 'Sensor not found.';
-					}
+							_response.response = 'Sensor not found.';
+						}
 				} catch (e) {
 					// TODO: handle exception
-
 					_response.response = 'Something happends...';
 					_response.error = e;
 				}
@@ -248,10 +318,13 @@ var SCS_RouteSensors = function () {
 						sensorSearch.stSensor.stop().then(function (value) {
 							console.log(value); // TODO REMOVE DEBUG LOG
 							console.log(' <*> Sensor Stopped'); // TODO REMOVE DEBUG LOG
-						}, function (reason) {});
+						}, function (reason) {
+							console.log(reason); // TODO REMOVE DEBUG LOG
+							console.log(' <*> Sensor Stop problem...'); // TODO REMOVE DEBUG LOG
+						});
 					} else {
-						_response.response = 'Sensor not found.';
-					}
+							_response.response = 'Sensor not found.';
+						}
 				} catch (e) {
 					// TODO: handle exception
 
@@ -289,6 +362,166 @@ var SCS_RouteSensors = function () {
 				res.jsonp(_response);
 				res.end();
 			});
+		}
+
+		/**
+   * Returns sensor data
+   * @private
+   */
+
+	}, {
+		key: '_getSensorData',
+		value: function _getSensorData(_sns) {
+			var _sensorData = {
+				"sensorID": _sns.config.sensorID,
+				"type": _sns.config.type,
+				"_sysID": _sns.config._sysID,
+				"engine": "not defined",
+				"state": "not defined"
+
+			};
+
+			if (_sns.sensorEngine !== null) {
+				if (_sns.sensorEngine.name !== undefined) {
+					_sensorData.engine = _sns.sensorEngine.name;
+				}
+				_sensorData.state = _sns.sensorEngine.state;
+			}
+
+			return _sensorData;
+		}
+
+		/**
+   * Response for default action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   * 
+   */
+
+	}, {
+		key: '_route_Default',
+		value: function _route_Default(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteSensors = this;
+			if (options.scsRouteSensors !== undefined) {
+				_SCS_RouteSensors = options.scsRouteSensors;
+			}
+
+			var _response = {
+				"context": "ST Server Sensors",
+				"action": "Default",
+				"messagesReceived": _SCS_RouteSensors.messages
+
+			};
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Response for list action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   */
+
+	}, {
+		key: '_route_List',
+		value: function _route_List(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteSensors = this;
+			if (options.scsRouteSensors !== undefined) {
+				_SCS_RouteSensors = options.scsRouteSensors;
+			}
+
+			var _smngr = _SCS_RouteSensors.sensorsManager;
+
+			var _response = {
+				"context": "ST Server Sensors",
+				"action": "List",
+				"numberOfSensors": 0,
+				"sensors": []
+			};
+
+			_smngr.sensorsList.forEach(function (_sns, _i) {
+
+				var _sensorData = _SCS_RouteSensors._getSensorData(_sns);
+				_response.sensors.push(_sensorData);
+			});
+
+			_response.numberOfSensors = _smngr.sensorsList.length;
+
+			res.jsonp(_response);
+			res.end();
+		}
+
+		/**
+   * Response for info action
+   * 
+   * @protected
+   * 
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @param {Object} options - Options
+   */
+
+	}, {
+		key: '_route_Info',
+		value: function _route_Info(req, res, options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			var _SCS_RouteSensors = this;
+			if (options.scsRouteSensors !== undefined) {
+				_SCS_RouteSensors = options.scsRouteSensors;
+			}
+
+			var _smngr = _SCS_RouteSensors.sensorsManager;
+			var _sensorID = options.sensorID;
+
+			var _response = {
+				"context": "ST Server Sensors",
+				"action": "Info",
+				"sensorID": _sensorID,
+				"sensor": {}
+			};
+
+			try {
+
+				var sensorSearch = _smngr.getSensorBy_sysID(_sensorID);
+				if (sensorSearch.stSensor !== null) {
+
+					var _sns = sensorSearch.stSensor;
+					_response.sensor = _SCS_RouteSensors._getSensorData(_sns);
+				} else {
+					_response.response = 'Sensor not found.';
+				}
+			} catch (e) {
+				// TODO: handle exception
+
+				_response.response = 'Something happends...';
+				_response.error = e;
+			}
+
+			res.jsonp(_response);
+			res.end();
 		}
 	}]);
 

@@ -7,6 +7,24 @@
 */
 
 /**
+ * Actuator list message
+ * 
+ * @typedef {Object} ActuatorList_MSG
+ * @memberof st.ngn.services.ActuatorsServices
+ * @type Object
+ * @protected
+ * 
+ * @property {number} numActuators - Number of actuators
+ * @property {object[]} actuators - Actuators list
+ * @property {string} actuators.actuatorID - Actuator ID
+ * @property {string} actuators.type - Actuator type
+ * @property {string} actuators.engine - Actuator engine type
+ * @property {string} actuators.state - Actuator engine state
+ * 
+ * 
+ */
+
+/**
  * ActuatorsServices CONSTANTS
  * 
  * @memberof st.ngn.services

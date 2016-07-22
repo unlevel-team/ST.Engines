@@ -152,7 +152,9 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 			// Map message getSensorsList
 			socket.on(service.CONSTANTS.Messages.getSensorsList, function (msg) {
-				service._msg_getSensorsList(msg, service);
+				service._msg_getSensorsList(msg, {
+					"service": service
+				});
 			});
 
 			// Map message getSensorOptions
@@ -294,34 +296,58 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_getSensorsList",
-		value: function _msg_getSensorsList(msg, service) {
+		value: function _msg_getSensorsList(msg, options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
-			var socket = service.controlChannel.socket;
+			var _service = this;
+
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _smng = _service.sensorsManager;
+			var _socket = _service.controlChannel.socket;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.getSensorsList'); // TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.numSensors = smng.sensorsList.length;
-			response.sensors = [];
+			var _response = {};
+			_response.numSensors = _smng.sensorsList.length;
+			_response.sensors = [];
 
-			smng.sensorsList.forEach(function (sns_, _i) {
+			// Only for enabled
+			var _sensorsEnabled = _smng.sensorsList.filter(function (_sensor, _i) {
 
-				var sensor = {
-					"sensorID": sns_.config.id,
-					"type": sns_.config.type,
-					"state": sns_.config.state
+				if (_sensor.enabled === true) {
+					return true;
+				}
+
+				return false;
+			});
+
+			_sensorsEnabled.forEach(function (_sns, _i) {
+
+				var _sensor = {
+					"sensorID": _sns.config.id,
+					"type": _sns.config.type,
+					"engine": "not defined",
+					"state": "config"
 				};
 
-				response.sensors.push(sensor);
+				if (_sns.sensorEngine !== null) {
+					if (_sns.sensorEngine.name !== undefined) {
+						_sensor.engine = _sns.sensorEngine.name;
+					}
+					_sensor.state = _sns.sensorEngine.state;
+				}
+
+				_response.sensors.push(_sensor);
 			});
 
 			// Emit message SensorsList
-			socket.emit(service.CONSTANTS.Messages.SensorsList, response);
+			_socket.emit(_service.CONSTANTS.Messages.SensorsList, _response);
 		}
 
 		/**

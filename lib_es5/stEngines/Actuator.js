@@ -47,6 +47,7 @@ var Actuator_CONSTANTS = {
  * @class
  * @memberof st.ngn
  * 
+ * @property {boolean} enabled - Enabled flag.
  * @property {object} config - Configuration.
  * @property {object} eventEmitter - Object for emit events.
  * @property {object} actuatorEngine - Actuator engine.
@@ -64,10 +65,13 @@ var Actuator = function () {
 	function Actuator(config) {
 		_classCallCheck(this, Actuator);
 
-		this.config = config;
-		this.CONSTANTS = Actuator_CONSTANTS;
-		this.eventEmitter = new EventEmitter();
-		this.actuatorEngine = null;
+		var _act = this;
+
+		_act.enabled = false;
+		_act.config = config;
+		_act.CONSTANTS = Actuator_CONSTANTS;
+		_act.eventEmitter = new EventEmitter();
+		_act.actuatorEngine = null;
 	}
 
 	/**
@@ -79,13 +83,24 @@ var Actuator = function () {
 		key: 'initialize',
 		value: function initialize() {
 
-			var act = this;
+			var _act = this;
+			var _config = _act.config;
+			var _configOptions = _config.options;
+
+			if (_config.enabled === true) {
+				_act.enabled = true;
+			}
+
+			// Only when is enabled
+			if (_act.enabled !== true) {
+				return;
+			}
 
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
 			// Actuator Engine URL
-			if (act.config.options.actuatorEngineURL !== undefined && act.config.options.actuatorEngineURL !== null) {
+			if (_act.config.options.actuatorEngineURL !== undefined && _act.config.options.actuatorEngineURL !== null) {
 
-				ActuatorEngine_Lib.initialze_ActuatorEngine(act);
+				ActuatorEngine_Lib.initialze_ActuatorEngine(_act);
 
 				//			act._actuatorEngine = null;
 				//			

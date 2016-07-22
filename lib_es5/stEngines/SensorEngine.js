@@ -157,14 +157,16 @@ var SensorEngine = function () {
 	function SensorEngine(config) {
 		_classCallCheck(this, SensorEngine);
 
-		this.config = config;
-		this._mainLoop = null;
+		var _snsEngine = this;
 
-		this.CONSTANTS = SensorEngine_CONSTANTS;
+		_snsEngine.config = config;
+		_snsEngine._mainLoop = null;
 
-		this.state = this.CONSTANTS.States.SEstate_Config;
+		_snsEngine.CONSTANTS = SensorEngine_CONSTANTS;
 
-		this.eventEmitter = new EventEmitter();
+		_snsEngine.state = this.CONSTANTS.States.SEstate_Config;
+
+		_snsEngine.eventEmitter = new EventEmitter();
 	}
 
 	/**
