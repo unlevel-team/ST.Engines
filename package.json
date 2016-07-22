@@ -6,7 +6,6 @@
   "readme": "ST Network",
   "readmeFilename": "readme.md",
   "scripts": {
-    "gulp": "gulp",
     "toES5": "gulp babel",
     "jsDocs": "gulp docs"
   },
