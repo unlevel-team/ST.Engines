@@ -1,12 +1,11 @@
 {
   "name": "st.engines",
-  "version": "0.0.1-beta00-build007",
+  "version": "0.0.1-beta00-build008",
   "description": "ST Engines",
   "author": "Unlevel Team <unlevelteam@gmail.com>",
   "readme": "ST Network",
   "readmeFilename": "readme.md",
   "scripts": {
-    "gulp": "gulp",
     "toES5": "gulp babel",
     "jsDocs": "gulp docs"
   },
