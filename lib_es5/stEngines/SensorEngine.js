@@ -163,8 +163,7 @@ var SensorEngine = function () {
 		_snsEngine._mainLoop = null;
 
 		_snsEngine.CONSTANTS = SensorEngine_CONSTANTS;
-
-		_snsEngine.state = this.CONSTANTS.States.SEstate_Config;
+		_snsEngine.state = _snsEngine.CONSTANTS.States.SEstate_Config;
 
 		_snsEngine.eventEmitter = new EventEmitter();
 	}

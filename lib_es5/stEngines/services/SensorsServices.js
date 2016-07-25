@@ -182,9 +182,14 @@ var SensorsServices = function () {
 			});
 
 			socket.on("disconnect", function (data) {
-				service._unmapControlMessages(socket, {
-					"service": service
-				});
+				try {
+					service._unmapControlMessages(socket, {
+						"service": service
+					});
+				} catch (e) {
+					// TODO: handle exception
+
+				}
 			});
 
 			service._mapped = true;

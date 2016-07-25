@@ -277,9 +277,6 @@ var SensorRef = function (_Sensor) {
 			var stSensor = this;
 			var socket = stSensor.config._controlSocket;
 
-			console.log('<*> ST SensorRef.setOptions'); // TODO REMOVE DEBUG LOG
-			console.log(options); // TODO REMOVE DEBUG LOG
-
 			try {
 				// Emit message setSensorOptions
 				socket.emit(SensorsServices_CONSTANTS.Messages.setSensorOptions, { "sensorID": stSensor.config.sensorID, "options": options });
@@ -626,9 +623,6 @@ var ActuatorRef = function (_Actuator) {
 
 			var stActuator = this;
 			var socket = stActuator.config._controlSocket;
-
-			console.log('<*> ST ActuatorRef.setOptions'); // TODO REMOVE DEBUG LOG
-			console.log(options); // TODO REMOVE DEBUG LOG
 
 			// Emit message setActuatorOptions
 			socket.emit(ActuatorsServices_CONSTANTS.Messages.setActuatorOptions, { "actuatorID": stActuator.config.actuatorID, "options": options });

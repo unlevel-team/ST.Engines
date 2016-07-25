@@ -127,14 +127,14 @@ var ActuatorEngine = function () {
 	function ActuatorEngine(config) {
 		_classCallCheck(this, ActuatorEngine);
 
-		this.config = config;
-		this._mainLoop = null;
+		var _actEngine = this;
+		_actEngine.config = config;
+		_actEngine._mainLoop = null;
 
-		this.state = ActuatorEngine_CONSTANTS.States.State_Config;
+		_actEngine.CONSTANTS = ActuatorEngine_CONSTANTS;
+		_actEngine.state = _actEngine.CONSTANTS.States.State_Config;
 
-		this.CONSTANTS = ActuatorEngine_CONSTANTS;
-
-		this.eventEmitter = new EventEmitter();
+		_actEngine.eventEmitter = new EventEmitter();
 	}
 
 	/**
