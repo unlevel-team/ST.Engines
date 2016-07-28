@@ -111,10 +111,21 @@ var ActuatorsServices = function () {
 				throw "Control channel is required";
 			}
 
-			service._mapControlEvents(service.actuatorsManager);
-			service._mapControlMessages(service.controlChannel.socket, {
-				"service": service
-			});
+			try {
+				service._mapControlEvents(service.actuatorsManager);
+			} catch (e) {
+				// TODO: handle exception
+				throw "Error mapping control events. " + e;
+			}
+
+			try {
+				service._mapControlMessages(service.controlChannel.socket, {
+					"service": service
+				});
+			} catch (e) {
+				// TODO: handle exception
+				throw "Error mapping control messages. " + e;
+			}
 		}
 
 		/**
@@ -166,9 +177,13 @@ var ActuatorsServices = function () {
 			});
 
 			socket.on("disconnect", function (data) {
-				service._unmapControlMessages(socket, {
-					"service": service
-				});
+				try {
+					service._unmapControlMessages(socket, {
+						"service": service
+					});
+				} catch (e) {
+					// TODO: handle exception
+				}
 			});
 
 			service._mapped = true;

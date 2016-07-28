@@ -111,7 +111,8 @@ var STSensor_Dummy01 = function (_SensorEngine) {
 					// Emit event SensorData
 					stSensor.eventEmitter.emit(stSensor.CONSTANTS.Events.SensorData, { "ticks": stSensor.config.options.ticks });
 
-					console.log('<*> STSensor_Dummy01.Events.SensorData'); // TODO REMOVE DEBUG LOG
+					// console.log('<*> STSensor_Dummy01.Events.SensorData');	// TODO REMOVE DEBUG LOG
+					console.log('<~i~> STSensor_Dummy01 (info):'); // TODO REMOVE DEBUG LOG
 
 					stSensor._lastTime = new Date().getTime();
 

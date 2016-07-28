@@ -49,8 +49,12 @@ var STActuator_Dummy01 = function (_ActuatorEngine) {
 
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(STActuator_Dummy01).call(this, config));
 
-		_this._lastTime = null;
-		_this._lastActuatorDATA = {
+		var _actEngine = _this;
+
+		_actEngine.name = "STActuator_Dummy01";
+
+		_actEngine._lastTime = null;
+		_actEngine._lastActuatorDATA = {
 			"time": null,
 			"data": null
 		};
@@ -80,6 +84,8 @@ var STActuator_Dummy01 = function (_ActuatorEngine) {
 
 					stActuator._ticks = 0;
 					stActuator._lastTime = new Date().getTime();
+
+					console.log('<~i~> STActuator_Dummy01 (info):'); // TODO REMOVE DEBUG LOG
 
 					if (actOptions.showTime) {
 						console.log(' <~~~> Time: ' + stActuator._lastTime); // TODO REMOVE DEBUG LOG
@@ -168,7 +174,7 @@ var STActuator_Dummy01 = function (_ActuatorEngine) {
 
 			var actOptions = stActuator.config.options;
 
-			if (options.ticks) {
+			if (options.ticks !== undefined) {
 				actOptions.ticks = options.ticks;
 			}
 
