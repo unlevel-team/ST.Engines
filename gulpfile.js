@@ -42,69 +42,6 @@ gulp.task('compress', function (cb) {
 
 
 
-/**
- * Task for 'browserify' test: 0
- */
-gulp.task('toBrowser0', function () {
-	  // set up the browserify instance on a task basis
-	  var b = browserify({
-	    entries: paths.es5 + '/stEngines/**/*.js',			// './entry.js'
-
-	    debug: true,
-	    bundleExternal: false
-	  });
-
-	  return b.bundle()
-	    .pipe(source('app.js'))
-	    .pipe(buffer())
-	    .pipe(sourcemaps.init({loadMaps: true}))
-	        // Add transformation tasks to the pipeline here.
-//	        .pipe(uglify())
-	        .on('error', gutil.log)
-	    .pipe(sourcemaps.write('./'))
-	    .pipe(gulp.dest(paths.es5_min));
-});
-
-
-/**
- * Task for 'browserify' test: 1
- */
-gulp.task('toBrowser1', function () {
-	
-	  var browserified = transform(function(filename) {
-	    var b = browserify(filename);
-	    return b.bundle();
-	  });
-	  
-	  return gulp.src([paths.es5 + '/**/*.js'])
-	    .pipe(browserified)
-	    .pipe(uglify())
-	    .pipe(gulp.dest( paths.es5_min ));
-});
-
-
-
-/**
- * Task for 'browserify' test: 2
- */
-gulp.task('toBrowser2', function() {  
-	
-	
-	var browserified = transform(function(filename) {
-		    var b = browserify(filename);
-		    return b.bundle();
-		  });
-	  
-    return gulp.src(paths.es5 + '/**/*.js')
-        .pipe(concat('scripts.js'))
-        .pipe(gulp.dest(paths.es5_min))
-        .pipe(rename('scripts.min.js'))
-        .pipe(browserified)
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.es5_min));
-});
-
-
 gulp.task('babel', function () {
     return gulp.src(paths.es6)
         .pipe(sourcemaps.init())
