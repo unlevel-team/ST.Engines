@@ -29,7 +29,6 @@
     "network"
   ],
   "dependencies": {
-    "bluebird": "^3.4.6",
     "body-parser": "~1.15",
     "source-map-support": "*"
   },
