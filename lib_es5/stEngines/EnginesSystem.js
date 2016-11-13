@@ -50,10 +50,10 @@ var EnginesSystem = function () {
 	function EnginesSystem(config) {
 		_classCallCheck(this, EnginesSystem);
 
-		//		let ngSYS = this;
+		var _ngSYS = this;
 
-		this.CONSTANTS = EnginesSystem_CONSTANTS;
-		this.config = config;
+		_ngSYS.CONSTANTS = EnginesSystem_CONSTANTS;
+		_ngSYS.config = config;
 	}
 
 	/**

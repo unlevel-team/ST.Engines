@@ -67,7 +67,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 
 
 	_createClass(NGSYS_Hero_Node_ActuatorsSRV, [{
-		key: '_mapControlEvents',
+		key: "_mapControlEvents",
 		value: function _mapControlEvents(actuatorsManager) {
 
 			var service = this;
@@ -88,15 +88,15 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_mapActuatorControlEvents',
+		key: "_mapActuatorControlEvents",
 		value: function _mapActuatorControlEvents(actuator) {
 
 			var service = this;
 
 			var actuatorEngine = actuator.actuatorEngine;
 
-			console.log('<*> NGSYS_Hero_Node._mapActuatorControlEvents'); // TODO REMOVE DEBUG LOG
-			console.log(actuator);
+			// console.log('<*> NGSYS_Hero_Node._mapActuatorControlEvents');	// TODO REMOVE DEBUG LOG
+			// console.log(actuator.config);
 
 			// Map event ActuatorOptionsUpdated
 			actuator.eventEmitter.on(actuator.CONSTANTS.Events.ActuatorOptionsUpdated, function (data) {
@@ -108,7 +108,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 			if (actuatorEngine !== null) {
 
 				// Map event ActuatorEngine_Start
-				actuatorEngine.eventEmitter.on(actuatorEngine.CONSTANTS.Events.ActuatorEngine_Start, function (data) {
+				actuatorEngine.eventEmitter.on(actuatorEngine.CONSTANTS.Events.Engine_Start, function (data) {
 					service._event_ActuatorEngine_Start({
 						"data": data,
 						"actuator": actuator
@@ -116,7 +116,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 				});
 
 				// Map event ActuatorEngine_Stop
-				actuatorEngine.eventEmitter.on(actuatorEngine.CONSTANTS.Events.ActuatorEngine_Stop, function (data) {
+				actuatorEngine.eventEmitter.on(actuatorEngine.CONSTANTS.Events.Engine_Stop, function (data) {
 					service._event_ActuatorEngine_Stop({
 						"data": data,
 						"actuator": actuator
@@ -135,48 +135,64 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_mapControlMessages',
+		key: "_mapControlMessages",
 		value: function _mapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_mapControlMessages', this).call(this, socket, options);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), "_mapControlMessages", this).call(this, socket, options);
 
-			var service = this;
+			var _service = this;
 			if (options.service !== undefined) {
-				service = options.service;
+				_service = options.service;
 			}
 
-			var amng = service.actuatorsManager;
+			var _amng = _service.actuatorsManager;
 
 			// Map message getActuatorsList
-			socket.on(service.CONSTANTS.Messages.getActuatorsList, function (msg) {
-				service._msg_getActuatorsList(msg, {
-					"service": service
+			socket.on(_service.CONSTANTS.Messages.getActuatorsList, function (_msg) {
+				_service._msg_getActuatorsList({
+					'msg': _msg,
+					'service': _service
 				});
 			});
 
 			// Map message getActuatorOptions
-			socket.on(service.CONSTANTS.Messages.getActuatorOptions, function (msg) {
-				service._msg_getActuatorOptions(msg, service);
+			socket.on(_service.CONSTANTS.Messages.getActuatorOptions, function (_msg) {
+				_service._msg_getActuatorOptions({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message setActuatorOptions
-			socket.on(service.CONSTANTS.Messages.setActuatorOptions, function (msg) {
-				service._msg_setActuatorOptions(msg, service);
+			socket.on(_service.CONSTANTS.Messages.setActuatorOptions, function (_msg) {
+				_service._msg_setActuatorOptions({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message StartActuator
-			socket.on(service.CONSTANTS.Messages.StartActuator, function (msg) {
-				service._msg_StartActuator(msg, service);
+			socket.on(_service.CONSTANTS.Messages.StartActuator, function (_msg) {
+				_service._msg_StartActuator({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message StopActuator
-			socket.on(service.CONSTANTS.Messages.StopActuator, function (msg) {
-				service._msg_StopActuator(msg, service);
+			socket.on(_service.CONSTANTS.Messages.StopActuator, function (_msg) {
+				_service._msg_StopActuator({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message TurnOffActuators
-			socket.on(service.CONSTANTS.Messages.TurnOffActuators, function (msg) {
-				service._msg_TurnOffActuators(msg, service);
+			socket.on(_service.CONSTANTS.Messages.TurnOffActuators, function (_msg) {
+				_service._msg_TurnOffActuators({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 		}
 
@@ -190,10 +206,10 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_unmapControlMessages',
+		key: "_unmapControlMessages",
 		value: function _unmapControlMessages(socket, options) {
 
-			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), '_unmapControlMessages', this).call(this, socket, options);
+			_get(Object.getPrototypeOf(NGSYS_Hero_Node_ActuatorsSRV.prototype), "_unmapControlMessages", this).call(this, socket, options);
 
 			var service = this;
 			if (options.service !== undefined) {
@@ -227,7 +243,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_event_ActuatorOptionsUpdated',
+		key: "_event_ActuatorOptionsUpdated",
 		value: function _event_ActuatorOptionsUpdated(data, options) {
 
 			var service = this;
@@ -258,7 +274,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_event_ActuatorEngine_Start',
+		key: "_event_ActuatorEngine_Start",
 		value: function _event_ActuatorEngine_Start(data) {
 
 			var service = this;
@@ -280,7 +296,7 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_event_ActuatorEngine_Stop',
+		key: "_event_ActuatorEngine_Stop",
 		value: function _event_ActuatorEngine_Stop(data) {
 
 			var service = this;
@@ -299,18 +315,19 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_getActuatorsList',
-		value: function _msg_getActuatorsList(msg, options) {
+		key: "_msg_getActuatorsList",
+		value: function _msg_getActuatorsList(options) {
 
 			if (options === undefined) {
 				options = {};
 			}
 
 			var _service = this;
-
 			if (options.service !== undefined) {
 				_service = options.service;
 			}
+
+			var _msg = options.msg;
 
 			var _amng = _service.actuatorsManager;
 			var _socket = _service.controlChannel.socket;
@@ -331,20 +348,20 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
 				return false;
 			});
 
-			_actuatorsEnabled.forEach(function (act_, _i) {
+			_actuatorsEnabled.forEach(function (_act, _i) {
 
 				var _actuator = {
-					"actuatorID": act_.config.id,
-					"type": act_.config.type,
+					"actuatorID": _act.config.id,
+					"type": _act.config.type,
 					"engine": "not defined",
 					"state": "config"
 				};
 
-				if (act_.actuatorEngine !== null) {
-					if (act_.actuatorEngine.name !== undefined) {
-						_actuator.engine = act_.actuatorEngine.name;
+				if (_act.actuatorEngine !== null) {
+					if (_act.actuatorEngine.name !== undefined) {
+						_actuator.engine = _act.actuatorEngine.name;
 					}
-					_actuator.state = act_.actuatorEngine.state;
+					_actuator.state = _act.actuatorEngine.state;
 				}
 
 				_response.actuators.push(_actuator);
@@ -359,44 +376,51 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_getActuatorOptions',
-		value: function _msg_getActuatorOptions(msg, service) {
+		key: "_msg_getActuatorOptions",
+		value: function _msg_getActuatorOptions(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var amng = service.actuatorsManager;
-			var socket = service.controlChannel.socket;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _amng = _service.actuatorsManager;
+			var _socket = _service.controlChannel.socket;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.getActuatorOptions'); // TODO REMOVE DEBUG LO
 
-			var actuatorID = msg.actuatorID;
+			var _actuatorID = _msg.actuatorID;
 
-			var response = {
-				"actuatorID": actuatorID
+			var _response = {
+				"actuatorID": _actuatorID
 			};
 
 			try {
 
-				var actuatorSearch = amng.getActuatorByID(actuatorID);
-				if (actuatorSearch.STactuator === null) {
+				var _actuatorSearch = _amng.getActuatorByID(_actuatorID);
+				if (_actuatorSearch.STactuator === null) {
 					throw "Actuator not found.";
 				}
 
-				var actuator = actuatorSearch.STactuator;
+				var _actuator = _actuatorSearch.STactuator;
 
-				response.options = actuator.getOptions();
+				_response.options = _actuator.getOptions();
 
 				// Emit message ActuatorOptions
-				socket.emit(service.CONSTANTS.Messages.ActuatorOptions, response);
-			} catch (e) {
+				_socket.emit(_service.CONSTANTS.Messages.ActuatorOptions, _response);
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_ActuatorsSRV.Messages.getActuatorOptions ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -405,42 +429,49 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_setActuatorOptions',
-		value: function _msg_setActuatorOptions(msg, service) {
+		key: "_msg_setActuatorOptions",
+		value: function _msg_setActuatorOptions(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var amng = service.actuatorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _amng = _service.actuatorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.setActuatorOptions'); // TODO REMOVE DEBUG LO
-			console.log(msg); // TODO REMOVE DEBUG LO
+			console.log(_msg); // TODO REMOVE DEBUG LO
 
-			var actuatorID = msg.actuatorID;
-			var options = msg.options;
+			var _actuatorID = _msg.actuatorID;
+			var _options = _msg.options;
 
-			var response = {
-				"actuatorID": actuatorID
+			var _response = {
+				'actuatorID': _actuatorID
 			};
 
 			try {
 
-				var actuatorSearch = amng.getActuatorByID(actuatorID);
-				if (actuatorSearch.STactuator === null) {
+				var _actuatorSearch = _amng.getActuatorByID(_actuatorID);
+				if (_actuatorSearch.STactuator === null) {
 					throw "Actuator not found.";
 				}
 
-				var actuator = actuatorSearch.STactuator;
+				var _actuator = _actuatorSearch.STactuator;
 
-				actuator.setOptions(options);
-			} catch (e) {
+				_actuator.setOptions(_options);
+			} catch (_e) {
 				// TODO: handle exception
 				response.result = "ERROR";
-				response.error = e;
+				response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_ActuatorsSRV.Messages.setActuatorOptions ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -449,40 +480,50 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_StartActuator',
-		value: function _msg_StartActuator(msg, service) {
+		key: "_msg_StartActuator",
+		value: function _msg_StartActuator(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var amng = service.actuatorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _amng = _service.actuatorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.StartActuator'); // TODO REMOVE DEBUG LOG
-			console.log(msg); // TODO REMOVE DEBUG LOG
+			console.log(_msg); // TODO REMOVE DEBUG LOG
 			//		  console.log(' <~> ' + msg);	// TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				var _actuatorSearch = amng.getActuatorByID(msg.actuatorID);
+				var _actuatorSearch = _amng.getActuatorByID(_msg.actuatorID);
 
 				if (_actuatorSearch.STactuator !== null) {
-					_actuatorSearch.STactuator.actuatorEngine.startEngine();
-					response.result = "OK";
+
+					// _actuatorSearch.STactuator.actuatorEngine.startEngine();
+
+					_actuatorSearch.STactuator.actuatorEngine.startEngine({
+						'ngnInterface': _actuatorSearch.STactuator.actuatorEngine
+					});
 				} else {
-					console.log("Not found!!!"); // TODO REMOVE DEBUG LOG
 					throw "Actuator not found.";
 				}
-			} catch (e) {
+			} catch (_e) {
 				// TODO: handle exception
 				response.result = "ERROR";
-				response.error = e;
+				response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_ActuatorsSRV.Messages.StartActuator ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 
 			//			msg.result = response.result;
@@ -493,39 +534,50 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_StopActuator',
-		value: function _msg_StopActuator(msg, service) {
+		key: "_msg_StopActuator",
+		value: function _msg_StopActuator(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var amng = service.actuatorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _amng = _service.actuatorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.StopActuator'); // TODO REMOVE DEBUG LOG
-			console.log(msg); // TODO REMOVE DEBUG LOG
+			console.log(_msg); // TODO REMOVE DEBUG LOG
 			//		console.log(' <~> ' + msg);	// TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				var _actuatorSearch = amng.getActuatorByID(msg.actuatorID);
+				var _actuatorSearch = _amng.getActuatorByID(_msg.actuatorID);
 
 				if (_actuatorSearch.STactuator !== null) {
-					_actuatorSearch.STactuator.actuatorEngine.stopEngine();
-					response.result = "OK";
+
+					// _actuatorSearch.STactuator.actuatorEngine.stopEngine();
+
+					_actuatorSearch.STactuator.actuatorEngine.stopEngine({
+						'ngnInterface': _actuatorSearch.STactuator.actuatorEngine
+					});
 				} else {
 					throw "Actuator not found.";
 				}
-			} catch (e) {
+			} catch (_e) {
 
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 				console.log('<EEE> NGSYS_Hero_Node_ActuatorsSRV.Messages.StopActuator ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -534,30 +586,37 @@ var NGSYS_Hero_Node_ActuatorsSRV = function (_ActuatorsServices) {
    */
 
 	}, {
-		key: '_msg_TurnOffActuators',
-		value: function _msg_TurnOffActuators(msg, service) {
+		key: "_msg_TurnOffActuators",
+		value: function _msg_TurnOffActuators(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var amng = service.actuatorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _amng = _service.actuatorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_ActuatorsSRV.Messages.TurnOffActuators'); // TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				amng.turnOffActuators();
-			} catch (e) {
+				_amng.turnOffActuators();
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_ActuatorsSRV.Messages.TurnOffActuators ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 	}]);

@@ -99,8 +99,8 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 			var service = this;
 			var sensorEngine = sensor.sensorEngine;
 
-			console.log('<*> NGSYS_Hero_Node._mapSensorControlEvents'); // TODO REMOVE DEBUG LOG
-			console.log(sensor);
+			// console.log('<*> NGSYS_Hero_Node._mapSensorControlEvents');	// TODO REMOVE DEBUG LOG
+			// console.log(sensor.config);	// TODO REMOVE DEBUG LOG
 
 			sensor.eventEmitter.on(sensor.CONSTANTS.Events.SensorOptionsUpdated, function (data) {
 				service._event_SensorOptionsUpdated(data, {
@@ -110,17 +110,17 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 			if (sensorEngine !== null) {
 
-				// Map event SensorEngine_Start
-				sensorEngine.eventEmitter.on(sensorEngine.CONSTANTS.Events.SensorEngine_Start, function (data) {
-					service._event_SensorEngine_Start({
+				// Map event Engine_Start
+				sensorEngine.eventEmitter.on(sensorEngine.CONSTANTS.Events.Engine_Start, function (data) {
+					service._event_Engine_Start({
 						"data": data,
 						"sensor": sensor
 					});
 				});
 
-				// Map event SensorEngine_Stop
-				sensorEngine.eventEmitter.on(sensorEngine.CONSTANTS.Events.SensorEngine_Stop, function (data) {
-					service._event_SensorEngine_Stop({
+				// Map event Engine_Stop
+				sensorEngine.eventEmitter.on(sensorEngine.CONSTANTS.Events.Engine_Stop, function (data) {
+					service._event_Engine_Stop({
 						"data": data,
 						"sensor": sensor
 					});
@@ -143,43 +143,59 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 			_get(Object.getPrototypeOf(NGSYS_Hero_Node_SensorsSRV.prototype), "_mapControlMessages", this).call(this, socket, options);
 
-			var service = this;
+			var _service = this;
 			if (options.service !== undefined) {
-				service = options.service;
+				_service = options.service;
 			}
 
-			var smng = service.sensorsManager;
+			var _smng = _service.sensorsManager;
 
 			// Map message getSensorsList
-			socket.on(service.CONSTANTS.Messages.getSensorsList, function (msg) {
-				service._msg_getSensorsList(msg, {
-					"service": service
+			socket.on(_service.CONSTANTS.Messages.getSensorsList, function (_msg) {
+				_service._msg_getSensorsList({
+					'msg': _msg,
+					'service': _service
 				});
 			});
 
 			// Map message getSensorOptions
-			socket.on(service.CONSTANTS.Messages.getSensorOptions, function (msg) {
-				service._msg_getSensorOptions(msg, service);
+			socket.on(_service.CONSTANTS.Messages.getSensorOptions, function (_msg) {
+				_service._msg_getSensorOptions({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message setSensorOptions
-			socket.on(service.CONSTANTS.Messages.setSensorOptions, function (msg) {
-				service._msg_setSensorOptions(msg, service);
+			socket.on(_service.CONSTANTS.Messages.setSensorOptions, function (_msg) {
+				_service._msg_setSensorOptions({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message StartSensor
-			socket.on(service.CONSTANTS.Messages.StartSensor, function (msg) {
-				service._msg_StartSensor(msg, service);
+			socket.on(_service.CONSTANTS.Messages.StartSensor, function (_msg) {
+				_service._msg_StartSensor({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message StopSensor
-			socket.on(service.CONSTANTS.Messages.StopSensor, function (msg) {
-				service._msg_StopSensor(msg, service);
+			socket.on(_service.CONSTANTS.Messages.StopSensor, function (_msg) {
+				_service._msg_StopSensor({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 
 			// Map message TurnOffSensors
-			socket.on(service.CONSTANTS.Messages.TurnOffSensors, function (msg) {
-				service._msg_TurnOffSensors(msg, service);
+			socket.on(_service.CONSTANTS.Messages.TurnOffSensors, function (_msg) {
+				_service._msg_TurnOffSensors({
+					'msg': _msg,
+					'service': _service
+				});
 			});
 		}
 
@@ -253,12 +269,12 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 		}
 
 		/**
-   * Event SensorEngine_Start
+   * Event Engine_Start
    */
 
 	}, {
-		key: "_event_SensorEngine_Start",
-		value: function _event_SensorEngine_Start(data) {
+		key: "_event_Engine_Start",
+		value: function _event_Engine_Start(data) {
 
 			var service = this;
 			var socket = service.controlChannel.socket;
@@ -272,12 +288,12 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 		}
 
 		/**
-   * Event SensorEngine_Stop
+   * Event Engine_Stop
    */
 
 	}, {
-		key: "_event_SensorEngine_Stop",
-		value: function _event_SensorEngine_Stop(data) {
+		key: "_event_Engine_Stop",
+		value: function _event_Engine_Stop(data) {
 
 			var service = this;
 			var socket = service.controlChannel.socket;
@@ -296,17 +312,18 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_getSensorsList",
-		value: function _msg_getSensorsList(msg, options) {
+		value: function _msg_getSensorsList(options) {
 
 			if (options === undefined) {
 				options = {};
 			}
 
 			var _service = this;
-
 			if (options.service !== undefined) {
 				_service = options.service;
 			}
+
+			var _msg = options.msg;
 
 			var _smng = _service.sensorsManager;
 			var _socket = _service.controlChannel.socket;
@@ -356,43 +373,50 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_getSensorOptions",
-		value: function _msg_getSensorOptions(msg, service) {
+		value: function _msg_getSensorOptions(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
-			var socket = service.controlChannel.socket;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _smng = _service.sensorsManager;
+			var _socket = _service.controlChannel.socket;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.getSensorOptions'); // TODO REMOVE DEBUG LO
 
-			var sensorID = msg.sensorID;
+			var _sensorID = _msg.sensorID;
 
-			var response = {
-				"sensorID": sensorID
+			var _response = {
+				"sensorID": _sensorID
 			};
 
 			try {
 
-				var sensorSearch = smng.getSensorByID(sensorID);
-				if (sensorSearch.STsensor === null) {
+				var _sensorSearch = _smng.getSensorByID(_sensorID);
+				if (_sensorSearch.STsensor === null) {
 					throw "Sensor not found.";
 				}
 
-				var sensor = sensorSearch.STsensor;
+				var _sensor = _sensorSearch.STsensor;
 
-				response.options = sensor.getOptions();
+				_response.options = _sensor.getOptions();
 
 				// Emit message SensorOptions
-				socket.emit(service.CONSTANTS.Messages.SensorOptions, response);
-			} catch (e) {
+				_socket.emit(_service.CONSTANTS.Messages.SensorOptions, _response);
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_SensorsSRV.Messages.getSensorOptions ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -402,41 +426,48 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_setSensorOptions",
-		value: function _msg_setSensorOptions(msg, service) {
+		value: function _msg_setSensorOptions(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _smng = _service.sensorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.setSensorOptions'); // TODO REMOVE DEBUG LO
-			console.log(msg); // TODO REMOVE DEBUG LO
+			console.log(_msg); // TODO REMOVE DEBUG LO
 
-			var sensorID = msg.sensorID;
-			var options = msg.options;
+			var _sensorID = _msg.sensorID;
+			var _options = _msg.options;
 
-			var response = {
-				"sensorID": sensorID
+			var _response = {
+				"sensorID": _sensorID
 			};
 
 			try {
 
-				var sensorSearch = smng.getSensorByID(sensorID);
-				if (sensorSearch.STsensor === null) {
+				var _sensorSearch = _smng.getSensorByID(_sensorID);
+				if (_sensorSearch.STsensor === null) {
 					throw "Sensor not found.";
 				}
 
-				var sensor = sensorSearch.STsensor;
+				var _sensor = _sensorSearch.STsensor;
 
-				sensor.setOptions(options);
-			} catch (e) {
+				_sensor.setOptions(_options);
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_SensorsSRV.Messages.setSensorOptions ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -446,39 +477,49 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_StartSensor",
-		value: function _msg_StartSensor(msg, service) {
+		value: function _msg_StartSensor(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _smng = _service.sensorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.StartSensor'); // TODO REMOVE DEBUG LOG
-			console.log(msg); // TODO REMOVE DEBUG LOG
+			console.log(_msg); // TODO REMOVE DEBUG LOG
 			//		  console.log(' <~> ' + msg);	// TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				var _sensorSearch = smng.getSensorByID(msg.sensorID);
+				var _sensorSearch = _smng.getSensorByID(_msg.sensorID);
 
 				if (_sensorSearch.STsensor !== null) {
-					_sensorSearch.STsensor.sensorEngine.startEngine();
-					response.result = "OK";
+
+					_sensorSearch.STsensor.sensorEngine.startEngine({
+						'ngnInterface': _sensorSearch.STsensor.sensorEngine
+					});
 				} else {
 					console.log("Not found!!!"); // TODO REMOVE DEBUG LOG
 					throw "Sensor not found.";
 				}
-			} catch (e) {
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
+				;
 
 				console.log('<EEE> NGSYS_Hero_Node_SensorsSRV.Messages.StartSensor ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 
 			//			msg.result = response.result;
@@ -490,38 +531,47 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_StopSensor",
-		value: function _msg_StopSensor(msg, service) {
+		value: function _msg_StopSensor(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _smng = _service.sensorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.StopSensor'); // TODO REMOVE DEBUG LOG
-			console.log(msg); // TODO REMOVE DEBUG LOG
+			console.log(_msg); // TODO REMOVE DEBUG LOG
 			//		console.log(' <~> ' + msg);	// TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				var _sensorSearch = smng.getSensorByID(msg.sensorID);
+				var _sensorSearch = _smng.getSensorByID(_msg.sensorID);
 
 				if (_sensorSearch.STsensor !== null) {
-					_sensorSearch.STsensor.sensorEngine.stopEngine();
-					response.result = "OK";
+
+					_sensorSearch.STsensor.sensorEngine.stopEngine({
+						'ngnInterface': _sensorSearch.STsensor.sensorEngine
+					});
 				} else {
 					throw "Sensor not found.";
 				}
-			} catch (e) {
+			} catch (_e) {
 
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 				console.log('<EEE> NGSYS_Hero_Node_SensorsSRV.Messages.StopSensor ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 
@@ -531,29 +581,36 @@ var NGSYS_Hero_Node_SensorsSRV = function (_SensorsServices) {
 
 	}, {
 		key: "_msg_TurnOffSensors",
-		value: function _msg_TurnOffSensors(msg, service) {
+		value: function _msg_TurnOffSensors(options) {
 
-			if (service === undefined) {
-				service = this;
+			if (options === undefined) {
+				options = {};
 			}
 
-			var smng = service.sensorsManager;
+			var _service = this;
+			if (options.service !== undefined) {
+				_service = options.service;
+			}
+
+			var _msg = options.msg;
+
+			var _smng = _service.sensorsManager;
 
 			console.log('<*> NGSYS_Hero_Node_SensorsSRV.Messages.TurnOffSensors'); // TODO REMOVE DEBUG LOG
 
-			var response = {};
-			response.result = null;
+			var _response = {};
+			_response.result = null;
 
 			try {
 
-				smng.turnOffSensors();
-			} catch (e) {
+				_smng.turnOffSensors();
+			} catch (_e) {
 				// TODO: handle exception
-				response.result = "ERROR";
-				response.error = e;
+				_response.result = "ERROR";
+				_response.error = _e;
 
 				console.log('<EEE> NGSYS_Hero_Node_SensorsSRV.Messages.TurnOffSensors ERROR'); // TODO REMOVE DEBUG LOG
-				console.log(response); // TODO REMOVE DEBUG LOG
+				console.log(_response); // TODO REMOVE DEBUG LOG
 			}
 		}
 	}]);

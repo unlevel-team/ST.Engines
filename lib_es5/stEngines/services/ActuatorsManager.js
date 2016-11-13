@@ -132,9 +132,14 @@ var ActuatorsManager = function () {
 			var amng = this;
 			var actList = amng.actuatorsList;
 
-			actList.forEach(function (act_, _i) {
-				if (act_.actuatorEngine !== null) {
-					act_.actuatorEngine.stopEngine();
+			actList.forEach(function (_act, _i) {
+
+				if (_act.actuatorEngine !== null) {
+					var _actEngine = _act.actuatorEngine;
+
+					if (_actEngine.state === _actEngine.CONSTANTS.States.Working) {
+						_actEngine.stopEngine();
+					}
 				}
 			});
 

@@ -643,7 +643,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				var sns = sensorSearch.stSensor;
 				var engine = sns.sensorEngine;
 
-				engine.state = engine.CONSTANTS.States.SEstate_Working;
+				engine.state = engine.CONSTANTS.States.Working;
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
@@ -700,7 +700,7 @@ var NGSYS_Hero_Server_SensorsSRV = function (_SensorsServices) {
 				var sns = sensorSearch.stSensor;
 				var engine = sns.sensorEngine;
 
-				engine.state = engine.CONSTANTS.States.SEstate_Ready;
+				engine.state = engine.CONSTANTS.States.Ready;
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";

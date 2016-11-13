@@ -27,20 +27,25 @@ var EventEmitter = require('events').EventEmitter;
 var SensorEngine_CONSTANTS = {
 
 	"States": {
-		"SEstate_Config": "config",
-		"SEstate_Ready": "ready",
-		"SEstate_Working": "working",
-		"SEstate_Stop": "stop"
+		"Config": "config",
+		"Ready": "ready",
+		"Working": "working",
+		"Stop": "stop"
 	},
 
 	"Events": {
-		"MainLoop_Tick": "Main Loop",
+		"MainLoop_Tick": "Main Loop Tick",
 		"MainLoop_Stop": "Main Loop Stop",
 
 		"SensorEngine_Start": "SE start",
 		"SensorEngine_Stop": "SE stop",
 
-		"SensorData": "Sensor Data"
+		"SensorData": "Sensor Data",
+
+		"Engine_Start": "NGN start",
+		"Engine_Stop": "NGN stop",
+
+		"EngineData": "NGN Data"
 
 	}
 
@@ -72,6 +77,8 @@ var SensorEngine_CONSTANTS = {
  */
 var SensorEngine_Lib = {
 
+	'CONSTANTS': SensorEngine_CONSTANTS,
+
 	/**
   * Initialize sensor engine
   * 
@@ -83,48 +90,55 @@ var SensorEngine_Lib = {
   */
 	"initialze_SensorEngine": function initialze_SensorEngine(sensor) {
 
+		var _sensorConfig = sensor.config;
+		var _options = _sensorConfig.options;
+
 		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
 		// Sensor Engine URL
-		if (sensor.config.options.sensorEngineURL !== undefined && sensor.config.options.sensorEngineURL !== null) {
+		if (_options.sensorEngineURL !== undefined && _options.sensorEngineURL !== null) {
 
 			sensor._sensorEngine = null;
 
 			try {
-				sensor._sensorEngine = require(sensor.config.options.sensorEngineURL);
-				sensor.sensorEngine = new sensor._sensorEngine(sensor.config);
+				sensor._sensorEngine = require(_options.sensorEngineURL);
+				sensor.sensorEngine = new sensor._sensorEngine(_sensorConfig);
 				sensor.sensorEngine.initialize();
 			} catch (e) {
 				// TODO: handle exception
-				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
-				console.log(e); // TODO REMOVE DEBUG LOG
-				console.log(sensor.config); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO: REMOVE DEBUG LOG
+				console.log(e); // TODO: REMOVE DEBUG LOG
+				console.log(sensor.config); // TODO: REMOVE DEBUG LOG
 			}
 		}
 		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 
 		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
-		// Sensor Engine URI (stURI format)
-		if (sensor.config.options.sensorEngineURI !== undefined && sensor.config.options.sensorEngineURI !== null) {
+		// Engine IRI (stIRI format)
+		//
+		// Try new methods for load engines
+		//
+		if (_options.engineURI !== undefined && _options.engineURI !== null && sensor.sensorEngine === null) {
 
-			var net_Services = require("st.network").get_Services();
-			var net_NETServices = net_Services.get_NetServices();
-			var NETservices_Lib = net_NETServices.NETservices_Lib;
+			var _BaseEngines_Lib = require('./baseEngines/stBaseNGN.js').BaseEngines_Lib;
+
+			// console.log('<~i~> SensorEngine_Lib.initialze_SensorEngine');	// TODO: REMOVE DEBUG LOG
+			// console.log(sensor);	// TODO: REMOVE DEBUG LOG
 
 			try {
 
-				var stURI_DATA = NETservices_Lib.parse_stURI(sensor.config.options.sensorEngineURI);
+				sensor.sensorEngine = _BaseEngines_Lib.initialize_Engine({
+					'engineOptions': _options,
+					'bngnOptions': _sensorConfig
+				});
 
-				console.log('<~i~> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
-				console.log(' <~> NETservices_Lib.parse_stURI'); // TODO REMOVE DEBUG LOG
-				console.log(stURI_DATA); // TODO REMOVE DEBUG LOG
+				sensor.sensorEngine.initialize();
 			} catch (e) {
 				// TODO: handle exception
 
-				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO REMOVE DEBUG LOG
-				console.log(' <~> NETservices_Lib.parse_stURI'); // TODO REMOVE DEBUG LOG
+				console.log('<EEE> SensorEngine_Lib.initialze_SensorEngine'); // TODO: REMOVE DEBUG LOG
+				console.log(' <~> _BaseEngines_Lib.initialize_Engine'); // TODO: REMOVE DEBUG LOG
 
-				console.log(e); // TODO REMOVE DEBUG LOG
-				console.log(sensor.config.options.sensorEngineURI); // TODO REMOVE DEBUG LOG
+				console.log(e); // TODO: REMOVE DEBUG LOG
 			}
 		}
 		// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
@@ -163,7 +177,7 @@ var SensorEngine = function () {
 		_snsEngine._mainLoop = null;
 
 		_snsEngine.CONSTANTS = SensorEngine_CONSTANTS;
-		_snsEngine.state = _snsEngine.CONSTANTS.States.SEstate_Config;
+		_snsEngine.state = _snsEngine.CONSTANTS.States.Config;
 
 		_snsEngine.eventEmitter = new EventEmitter();
 	}
@@ -182,10 +196,10 @@ var SensorEngine = function () {
 			// Map event MainLoop_Stop
 			sensorEngine.eventEmitter.on(sensorEngine.CONSTANTS.Events.MainLoop_Stop, function () {
 				clearInterval(sensorEngine._mainLoop);
-				sensorEngine.state = sensorEngine.CONSTANTS.States.SEstate_Ready;
+				sensorEngine.state = sensorEngine.CONSTANTS.States.Ready;
 			});
 
-			sensorEngine.state = sensorEngine.CONSTANTS.States.SEstate_Ready;
+			sensorEngine.state = sensorEngine.CONSTANTS.States.Ready;
 		}
 
 		/**
@@ -198,14 +212,14 @@ var SensorEngine = function () {
 
 			var sensorEngine = this;
 
-			if (sensorEngine.state !== sensorEngine.CONSTANTS.States.SEstate_Ready) {
+			if (sensorEngine.state !== sensorEngine.CONSTANTS.States.Ready) {
 				throw "Bad state";
 			}
 
-			sensorEngine.state = sensorEngine.CONSTANTS.States.SEstate_Working;
+			sensorEngine.state = sensorEngine.CONSTANTS.States.Working;
 
 			sensorEngine._mainLoop = setInterval(function () {
-				if (sensorEngine.state === sensorEngine.CONSTANTS.States.SEstate_Working) {
+				if (sensorEngine.state === sensorEngine.CONSTANTS.States.Working) {
 
 					// Emit event MainLoop_Tick
 					sensorEngine.eventEmitter.emit(sensorEngine.CONSTANTS.Events.MainLoop_Tick);
@@ -220,7 +234,7 @@ var SensorEngine = function () {
 		/**
    * Stop main loop
    * 
-   * @fires st.ngn.SensorEngine#SensorEngine_Stop
+   * @fires st.ngn.SensorEngine#MainLoop_Stop
    */
 
 	}, {
@@ -261,8 +275,9 @@ var SensorEngine = function () {
 		}
 
 		/**
+   * Set options
    * @abstract 
-   * @param {object} options Options object.
+   * @param {object} options - Options object.
    */
 
 	}, {

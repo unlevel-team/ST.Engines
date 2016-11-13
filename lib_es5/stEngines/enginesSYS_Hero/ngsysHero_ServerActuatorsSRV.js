@@ -611,7 +611,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 				var act = actuatorSearch.stActuator;
 				var engine = act.actuatorEngine;
 
-				engine.state = engine.CONSTANTS.States.State_Working;
+				engine.state = engine.CONSTANTS.States.Working;
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";
@@ -664,7 +664,7 @@ var NGSYS_Hero_Server_ActuatorsSRV = function (_ActuatorsServices) {
 				var act = actuatorSearch.stActuator;
 				var engine = act.actuatorEngine;
 
-				engine.state = engine.CONSTANTS.States.State_Ready;
+				engine.state = engine.CONSTANTS.States.Ready;
 			} catch (e) {
 				// TODO: handle exception
 				response.result = "ERROR";

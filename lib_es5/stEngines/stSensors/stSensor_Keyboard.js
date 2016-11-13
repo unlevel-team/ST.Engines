@@ -144,7 +144,7 @@ var STSensor_Keyboard = function (_SensorEngine) {
 			}
 
 			this._CylonRobotState = "working";
-			this.eventEmitter.emit(this.CONSTANTS.Events.SensorEngine_Start);
+			this.eventEmitter.emit(this.CONSTANTS.Events.Engine_Start);
 		}
 
 		/**
@@ -157,7 +157,7 @@ var STSensor_Keyboard = function (_SensorEngine) {
 			//		this._CylonRobot.halt();
 			//		Cylon.halt();
 			this._CylonRobotState = "stop";
-			this.eventEmitter.emit(this.CONSTANTS.Events.SensorEngine_Stop);
+			this.eventEmitter.emit(this.CONSTANTS.Events.Engine_Stop);
 		}
 	}]);
 

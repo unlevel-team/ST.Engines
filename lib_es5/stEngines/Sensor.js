@@ -92,81 +92,77 @@ var Sensor = function () {
 
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
 			// Sensor Engine URL
-			if (_configOptions.sensorEngineURL !== undefined && _configOptions.sensorEngineURL !== null) {
+			if (_configOptions.sensorEngineURL !== undefined && _configOptions.sensorEngineURL !== null || _configOptions.engineURI !== undefined) {
 
 				SensorEngine_Lib.initialze_SensorEngine(_sensor);
-
-				//			sensor._sensorEngine = null;
-				//			
-				//			try {
-				//				sensor._sensorEngine = require(sensor.config.options.sensorEngineURL);
-				//				sensor.sensorEngine = new sensor._sensorEngine(sensor.config);
-				//				sensor.sensorEngine.initialize();
-				//				
-				//			} catch (e) {
-				//				// TODO: handle exception
-				//				  console.log('<EEE> Sensor.initialize');	// TODO REMOVE DEBUG LOG
-				//				  console.log(e);	// TODO REMOVE DEBUG LOG
-				//				  console.log(sensor.config);	// TODO REMOVE DEBUG LOG
-				//
-				//			}
 			}
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
-
-			if (_configOptions.sensorEngine !== undefined && _configOptions.sensorEngine !== null) {}
 		}
 
 		/**
    * Get sensor options
    * 
-   * @returns {object} Actuator options
+   * @returns {object} Sensor options
    */
 
 	}, {
 		key: 'getOptions',
 		value: function getOptions() {
 
-			var sensor = this;
+			var _sensor = this;
+			var _config = _sensor.config;
+			var _options = _config.options;
 
-			var sensorOptions = {
-				"loopTime": sensor.config.loopTime,
-				"sensorEngineURL": sensor.config.options.sensorEngineURL
-
+			var _sensorOptions = {
+				"loopTime": _config.loopTime,
+				"engineURI": _options.engineURI,
+				"engineURL": _options.engineURL,
+				'engineOptions': null
 			};
 
-			if (sensor.sensorEngine !== null) {
-				sensorOptions.engineOptions = sensor.sensorEngine.getOptions();
+			if (_sensor.sensorEngine !== null) {
+				// Get engine options in synchro mode...
+				_sensorOptions.engineOptions = _sensor.sensorEngine.getOptions();
 			}
 
-			return sensorOptions;
+			return _sensorOptions;
 		}
 
 		/**
    * Set sensor options
    * 
-   * @param {object} options Options object
+   * @param {object} options - Options object
    */
 
 	}, {
 		key: 'setOptions',
 		value: function setOptions(options) {
 
-			var sensor = this;
+			var _sensor = this;
 
-			if (sensor.sensorEngine !== undefined && sensor.sensorEngine.state === sensor.sensorEngine.CONSTANTS.States.SEstate_Working) {
+			if (_sensor.sensorEngine !== undefined && _sensor.sensorEngine.state === _sensor.sensorEngine.CONSTANTS.States.Working) {
 				throw "Bad sensor state.";
 			}
 
-			if (options.loopTime) {
-				sensor.config.loopTime = options.loopTime;
+			if (options.loopTime !== undefined) {
+				_sensor.config.loopTime = options.loopTime;
 			}
 
-			if (options.engineOptions) {
-				sensor.sensorEngine.setOptions(options.engineOptions);
+			if (options.engineOptions !== undefined) {
+
+				// Set engine options in synchro mode...
+
+				//_sensor.sensorEngine.setOptions(options.engineOptions);
+
+				_sensor.sensorEngine.setOptions({
+					'ngnInterface': _sensor.sensorEngine,
+					'ngnOptions': options.engineOptions,
+					'bngnOptions': options
+				});
 			}
 
-			// Emit event SensorOptionsUpdated
-			sensor.eventEmitter.emit(sensor.CONSTANTS.Events.SensorOptionsUpdated, { "sensor": sensor });
+			// Emit event 'SensorOptionsUpdated'
+			_sensor.eventEmitter.emit(_sensor.CONSTANTS.Events.SensorOptionsUpdated, { "sensor": _sensor });
 		}
 	}]);
 

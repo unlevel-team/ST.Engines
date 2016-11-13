@@ -97,23 +97,11 @@ var Actuator = function () {
 			}
 
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ \/ ~~~
-			// Actuator Engine URL
-			if (_act.config.options.actuatorEngineURL !== undefined && _act.config.options.actuatorEngineURL !== null) {
+			// Actuator Engine URL or stIRI
+
+			if (_configOptions.actuatorEngineURL !== undefined && _configOptions.actuatorEngineURL !== null || _configOptions.engineURI !== undefined) {
 
 				ActuatorEngine_Lib.initialze_ActuatorEngine(_act);
-
-				//			act._actuatorEngine = null;
-				//			
-				//			try {
-				//				act._actuatorEngine = require(act.config.options.actuatorEngineURL);
-				//				act.actuatorEngine = new act._actuatorEngine(act.config);
-				//				act.actuatorEngine.initialize();
-				//				
-				//			} catch (e) {
-				//				// TODO: handle exception
-				//				  console.log('<EEE> Actuator.initialize');	// TODO REMOVE DEBUG LOG
-				//				  console.log(e);	// TODO REMOVE DEBUG LOG
-				//			}
 			}
 			// ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ - ~~~ _ ~~~ - ~~~ - ~~~ /\ ~~~
 		}
@@ -130,16 +118,20 @@ var Actuator = function () {
 		key: 'getOptions',
 		value: function getOptions() {
 
-			var act = this;
+			var _act = this;
+			var _config = _act.config;
+			var _options = _config.options;
 
 			var actOptions = {
-				"loopTime": act.config.loopTime,
-				"actuatorEngineURL": act.config.options.actuatorEngineURL
-
+				"loopTime": _config.loopTime,
+				"engineURI": _options.engineURI,
+				"engineURL": _options.engineURL,
+				'engineOptions': null
 			};
 
-			if (act.actuatorEngine !== null) {
-				actOptions.engineOptions = act.actuatorEngine.getOptions();
+			if (_act.actuatorEngine !== null) {
+				// Get engine options in synchro mode...
+				actOptions.engineOptions = _act.actuatorEngine.getOptions();
 			}
 
 			return actOptions;
@@ -157,21 +149,31 @@ var Actuator = function () {
 		key: 'setOptions',
 		value: function setOptions(options) {
 
-			var act = this;
+			var _act = this;
 
-			if (act.actuatorEngine && act.actuatorEngine.state === act.actuatorEngine.CONSTANTS.States.State_Working) {
+			if (_act.actuatorEngine && _act.actuatorEngine.state === _act.actuatorEngine.CONSTANTS.States.Working) {
 				throw "Bad actuator state.";
 			}
 
 			if (options.loopTime) {
-				act.config.loopTime = options.loopTime;
+				_act.config.loopTime = options.loopTime;
 			}
 
 			if (options.engineOptions) {
-				act.actuatorEngine.setOptions(options.engineOptions);
+
+				// Set engine options in synchro mode...
+
+				//_act.actuatorEngine.setOptions(options.engineOptions);
+
+				_act.actuatorEngine.setOptions({
+					'ngnInterface': _act.actuatorEngine,
+					'ngnOptions': options.engineOptions,
+					'bngnOptions': options
+				});
 			}
 
-			act.eventEmitter.emit(act.CONSTANTS.Events.ActuatorOptionsUpdated, { "actuator": act });
+			// Emit event 'ActuatorOptionsUpdated'
+			_act.eventEmitter.emit(_act.CONSTANTS.Events.ActuatorOptionsUpdated, { "actuator": _act });
 		}
 	}]);
 

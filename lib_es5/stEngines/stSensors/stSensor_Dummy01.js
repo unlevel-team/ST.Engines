@@ -3,236 +3,372 @@
 /**
  * ST Sensor Dummy01
  * 
- * 
+ * <pre>
  * Sensor for made some tests..
  * 
+ * </pre>
  * 
  * 
- * 
- * 
- * 
- */
-
-/*
- * Example of well implemented node engine in node-red
- * @see http://nodered.org/docs/creating-nodes/first-node
- * 
- 
- module.exports = function(RED) {
- 
-    function LowerCaseNode(config) {
-    
-        RED.nodes.createNode(this,config);
-        var node = this;
-        
-        this.on('input', function(msg) {
-            msg.payload = msg.payload.toLowerCase();
-            node.send(msg);
-        });
-        
-    }
-    
-    RED.nodes.registerType("lower-case",LowerCaseNode);
-}
- 
  */
 
 /**
- * Import SensorEngine
- * @ignore
+ * STSensor_Dummy01 configuration object.
+ * 
+ * @typedef {Object} Config
+ * @memberof st.ngn.STSensor_Dummy01
+ * 
+ * @type Object
+ * @property {boolean} showTime - Show current time.
+ * @property {boolean} showDeltaTime - Show time interval time.
+ * @property {number} ticks - Number of 'ticks' interval.
+ * 
+ * 
  */
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SensorEngine = require('../SensorEngine.js').SensorEngine;
-
-/** 
- * Import EventEmitter
- * @ignore
- */
-var EventEmitter = require('events').EventEmitter;
 
 /**
  * ST Sensor Dummy01
  * 
  * @class
- * @implements SensorEngine
+ * @memberof st.ngn
+ * 
  */
 
-var STSensor_Dummy01 = function (_SensorEngine) {
-	_inherits(STSensor_Dummy01, _SensorEngine);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var STSensor_Dummy01 = function () {
 
 	/**
   * @constructs STSensor_Dummy01
   * 
-  * @param {object} config - Configuration object
+  * @param {object} options - Options object
+  * @param {st.ngn.STSensor_Dummy01.Config} options.config - Configuration object
   */
 
-	function STSensor_Dummy01(config) {
+	function STSensor_Dummy01(options) {
 		_classCallCheck(this, STSensor_Dummy01);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(STSensor_Dummy01).call(this, config));
+		if (options === undefined) {
+			options = {};
+		}
 
-		var _snsEngine = _this;
+		var _config = {};
+		if (options.config === undefined) {
+			_config = options.config;
+		}
+
+		var _snsEngine = this;
+
+		_snsEngine._config = _config;
+		_snsEngine.eventEmitter = null;
+
 		_snsEngine.name = "STSensor_Dummy01";
-
 		_snsEngine._lastTime = null;
-		return _this;
+		_snsEngine._ticks = 0;
+
+		_snsEngine._options = {
+			'showTime': true,
+			'showDeltaTime': true,
+			'ticks': 3
+		};
 	}
 
-	/**
-  * Initialize
-  */
-
-
 	_createClass(STSensor_Dummy01, [{
-		key: 'initialize',
+		key: "initialize",
 		value: function initialize() {
 
-			var stSensor = this;
-			stSensor._ticks = 0;
+			var _snsEngine = this;
 
-			// Map event MainLoop_Tick
-			stSensor.eventEmitter.on(stSensor.CONSTANTS.Events.MainLoop_Tick, function () {
+			/** 
+    * Import EventEmitter
+    * @ignore
+    */
+			var _EventEmitter = require('events').EventEmitter;
+			_snsEngine.eventEmitter = new _EventEmitter();
 
-				stSensor._ticks++;
-				if (stSensor._ticks >= stSensor.config.options.ticks) {
+			var _config = _snsEngine._config;
+			var _options = _snsEngine._options;
 
-					stSensor._ticks = 0;
+			if (_config.showTime === false) {
+				_options.showTime = false;
+			}
 
-					// Emit event SensorData
-					stSensor.eventEmitter.emit(stSensor.CONSTANTS.Events.SensorData, { "ticks": stSensor.config.options.ticks });
+			if (_config.showDeltaTime === false) {
+				_options.showDeltaTime = false;
+			}
 
-					// console.log('<*> STSensor_Dummy01.Events.SensorData');	// TODO REMOVE DEBUG LOG
-					console.log('<~i~> STSensor_Dummy01 (info):'); // TODO REMOVE DEBUG LOG
+			if (_config.ticks !== undefined) {
+				_options.ticks = _config.ticks;
+			}
 
-					stSensor._lastTime = new Date().getTime();
+			_snsEngine._mapEngineEvents();
+		}
+	}, {
+		key: "_mapEngineEvents",
+		value: function _mapEngineEvents(options) {
 
-					if (stSensor.config.options.showTime) {
-						console.log(' <~~~> Time: ' + stSensor._lastTime); // TODO REMOVE DEBUG LOG
-					}
+			if (options === undefined) {
+				options = {};
+			}
 
-					if (stSensor.config.options.showDeltaTime) {
+			var _snsEngine = this;
+			if (options.engine !== undefined) {
+				_snsEngine = options.engine;
+			}
 
-						if (stSensor._deltaTimeRef !== undefined) {
-							var deltaTime = stSensor._lastTime - stSensor._deltaTimeRef;
-							console.log(' <~~~> DetalTime: ' + deltaTime); // TODO REMOVE DEBUG LOG
-						}
+			_snsEngine.eventEmitter.on('Main Loop Tick', function (_data) {
 
-						stSensor._deltaTimeRef = stSensor._lastTime;
-					}
-				}
+				_snsEngine._event_MainLoopTick({
+					'engine': _snsEngine,
+					'data': _data
+				});
 			});
+		}
+	}, {
+		key: "_event_MainLoopTick",
+		value: function _event_MainLoopTick(options) {
 
-			_get(Object.getPrototypeOf(STSensor_Dummy01.prototype), 'initialize', this).call(this);
+			var _snsEngine = this;
+			if (options.engine !== undefined) {
+				_snsEngine = options.engine;
+			}
+
+			var _options = _snsEngine._options;
+
+			var _data = options.data;
+
+			console.log('<~i~> STSensor_Dummy01 (_event_MainLoopTick):'); // TODO REMOVE DEBUG LOG
+
+			_snsEngine._ticks++;
+
+			if (_snsEngine._ticks >= _options.ticks) {
+
+				_snsEngine._ticks = 0;
+				_snsEngine._lastTime = new Date().getTime();
+
+				console.log('<~i~> STSensor_Dummy01 (info):'); // TODO REMOVE DEBUG LOG
+
+				if (_options.showTime === true) {
+					console.log(' <~~~> Time: ' + _snsEngine._lastTime); // TODO REMOVE DEBUG LOG
+				}
+
+				if (_options.showDeltaTime === true) {
+					if (_snsEngine._deltaTimeRef !== undefined) {
+						var _deltaTime = _snsEngine._lastTime - _snsEngine._deltaTimeRef;
+						console.log(' <~~~> DetalTime: ' + _deltaTime); // TODO REMOVE DEBUG LOG
+					}
+					_snsEngine._deltaTimeRef = _snsEngine._lastTime;
+				}
+			}
 		}
 
 		/**
-   * Start engine
+   * Get options of engine
    * 
-   * @fires SensorEngine#SensorEngine_Start
-   * 
+   * @param {object} options - Options
+   * @param {object} [options.sensor] - Sensor object
    */
 
 	}, {
-		key: 'startEngine',
-		value: function startEngine() {
+		key: "getOptions",
+		value: function getOptions(options) {
 
-			var stSensor = this;
+			var _snsEngine = this;
 
-			stSensor.mainLoop();
+			if (options === undefined) {
+				options = {};
+			}
 
-			// Emit event SensorEngine_Start
-			stSensor.eventEmitter.emit(stSensor.CONSTANTS.Events.SensorEngine_Start);
+			if (options.sensor !== undefined) {
+				_snsEngine = options.sensor;
+			}
+
+			return _snsEngine._options;
 		}
 
 		/**
-   * Stop engine
+   * Get options of engine using the interface
    * 
-   * @fires SensorEngine#SensorEngine_Stop
-   * 
+   * @param {object} options - Options
+   * @param {object} options.ngnInterface - Engine interface
    */
 
 	}, {
-		key: 'stopEngine',
-		value: function stopEngine() {
+		key: "_getOptions",
+		value: function _getOptions(options) {
 
-			var stSensor = this;
+			if (options === undefined) {
+				options = {};
+			}
 
-			stSensor.stopMainLoop();
+			if (options.ngnInterface === undefined) {
+				throw 'ngnInterface is required.';
+			}
+			var _ngnInterface = options.ngnInterface;
 
-			// Emit event SensorEngine_Stop
-			// for MainLoop_Stop
-			stSensor.eventEmitter.emit(stSensor.CONSTANTS.Events.SensorEngine_Stop);
-		}
-
-		/**
-   * Get options
-   * 
-   * @override
-   */
-
-	}, {
-		key: 'getOptions',
-		value: function getOptions() {
-
-			var stSensor = this;
-			var snsOptions = stSensor.config.options;
-
-			var options = {
-				"ticks": snsOptions.ticks,
-				"showTime": snsOptions.showTime,
-				"showDeltaTime": snsOptions.showDeltaTime
-			};
-
-			return options;
+			var _snsEngine = _ngnInterface.custom_engine;
+			return _snsEngine.getOptions({
+				'sensor': _snsEngine
+			});
 		}
 
 		/**
    * Set options
    * 
    * @param {object} options - Options object
-   * @param {number} [options.ticks] - Ticks 
-   * @param {boolean} [options.showTime] - Show time
-   * @param {boolean} [options.showDeltaTime] - Show delta time 
+   * @param {object} [options.sensor] - Sensor object
+   * @param {object} options.options - Options object
+   * @param {number} [options.options.ticks] - Ticks 
+   * @param {boolean} [options.options.showTime] - Show time
+   * @param {boolean} [options.options.showDeltaTime] - Show delta time 
    */
 
 	}, {
-		key: 'setOptions',
+		key: "setOptions",
 		value: function setOptions(options) {
 
-			var stSensor = this;
+			var _snsEngine = this;
 
-			if (stSensor.state === stSensor.CONSTANTS.States.SEstate_Working) {
-				throw "Bad sensor state.";
+			if (options === undefined) {
+				options = {};
 			}
 
-			var actOptions = stSensor.config.options;
-
-			if (options.ticks) {
-				actOptions.ticks = options.ticks;
+			if (options.sensor !== undefined) {
+				_snsEngine = options.sensor;
 			}
 
-			if (options.showTime !== undefined) {
-				actOptions.showTime = options.showTime;
+			var _options = {};
+			if (options.options !== undefined) {
+				_options = options.options;
 			}
 
-			if (options.showDeltaTime !== undefined) {
-				actOptions.showDeltaTime = options.showDeltaTime;
+			/*
+   if (stSensor.state === stSensor.CONSTANTS.States.Working) {
+   	throw "Bad sensor state.";
+   }
+   */
+
+			var _snsOptions = _snsEngine._options;
+
+			if (_options.ticks) {
+				_snsOptions.ticks = _options.ticks;
 			}
+
+			if (_options.showTime !== undefined) {
+				_snsOptions.showTime = _options.showTime;
+			}
+
+			if (_options.showDeltaTime !== undefined) {
+				_snsOptions.showDeltaTime = _options.showDeltaTime;
+			}
+		}
+
+		/**
+   * Set options using the interface
+   * 
+   * @param {object} options - Options
+   * @param {object} options.ngnInterface - Engine interface
+   * @param {object} options.ngnOptions - Engine options
+   */
+
+	}, {
+		key: "_setOptions",
+		value: function _setOptions(options) {
+
+			if (options === undefined) {
+				options = {};
+			}
+
+			if (options.ngnInterface === undefined) {
+				throw 'ngnInterface options is required.';
+			}
+			var _ngnInterface = options.ngnInterface;
+
+			var _snsEngine = _ngnInterface.custom_engine;
+			_snsEngine.setOptions({
+				'sensor': _snsEngine,
+				'options': options.ngnOptions
+			});
 		}
 	}]);
 
 	return STSensor_Dummy01;
-}(SensorEngine);
+}();
 
-module.exports = STSensor_Dummy01;
+/**
+ * Returns an engine interface for use with ST library
+ * 
+ * <pre>
+ * - The library should return a method named 'get_NGNInterface'
+ * </pre>
+ * 
+ * @param {Object} options - options
+ * @param {Object} options.config - Configuration 
+ * 
+ * @returns {st.ngn.baseEngines.EngineInterface}
+ */
+
+
+function _get_NGNInterface(options) {
+
+	if (options === undefined || options === null) {
+		options = {};
+	}
+
+	/*
+ // reference library for specific methods... 
+ 
+ if (options.st === undefined) {
+ 	throw 'SomeThings library no fonud';
+ }
+ let _st = options.st;
+ */
+
+	// console.log('<~i~> STSensor_Dummy01 (_get_NGNInterface):');	// TODO REMOVE DEBUG LOG
+	// console.log(options);	// TODO REMOVE DEBUG LOG
+	// console.log(options.config.config.bngnOptions);	// TODO REMOVE DEBUG LOG
+
+	// Set custom options
+	var _customOptions = [{
+		'name': 'ticks',
+		'type': 'number',
+		'description': 'Number of ticks to wait...'
+	}, {
+		'name': 'showTime',
+		'type': 'boolean',
+		'alias': 'Show time',
+		'description': 'Show time or not'
+	}, {
+		'name': 'showDeltaTime',
+		'type': 'boolean',
+		'alias': 'Show delta time',
+		'description': 'Show delta time or not'
+	}];
+
+	var _snsDummy01 = new STSensor_Dummy01(options.config);
+	_snsDummy01.initialize();
+
+	var _ngnInterface = {
+		'name': _snsDummy01.name,
+		'type': 'sensor',
+		'eventEmitter': _snsDummy01.eventEmitter,
+
+		'baseNGN': 'SimpleLoop',
+
+		'custom_engine': _snsDummy01,
+		'custom_options': _customOptions,
+		'getOptions': _snsDummy01._getOptions,
+		'setOptions': _snsDummy01._setOptions
+
+	};
+
+	return _ngnInterface;
+}
+
+var _lib = {
+	'get_NGNInterface': _get_NGNInterface
+};
+
+module.exports = _lib;
 //# sourceMappingURL=stSensor_Dummy01.js.map

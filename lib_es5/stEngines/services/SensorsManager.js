@@ -137,9 +137,14 @@ var SensorsManager = function () {
 			var smng = this;
 			var snsList = smng.sensorsList;
 
-			snsList.forEach(function (sns_, _i) {
-				if (sns_.sensorEngine !== null) {
-					sns_.sensorEngine.stopEngine();
+			snsList.forEach(function (_sns, _i) {
+
+				if (_sns.sensorEngine !== null) {
+					var _snsEngine = _sns.sensorEngine;
+
+					if (_snsEngine.state === _snsEngine.CONSTANTS.States.Working) {
+						_snsEngine.stopEngine();
+					}
 				}
 			});
 
